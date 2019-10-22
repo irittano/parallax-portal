@@ -6,6 +6,8 @@ Basado en:
 
 Inspirado en:
 
+- https://gitlab.kitware.com/mike.rye/paraview_face_tracking
+
 - https://github.com/agirault/screenReality
 
 - https://www.youtube.com/watch?v=SWt_y5uIEAo&feature=youtu.be
