@@ -1,6 +1,8 @@
 # parallax-portal
 
 Inspirado en:
+- https://gitlab.kitware.com/mike.rye/paraview_face_tracking
+
 - https://github.com/DhananjaiH/Head-tracking
 
 - https://github.com/agirault/screenReality
