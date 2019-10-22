@@ -1,6 +1,7 @@
 # parallax-portal
 
 Inspirado en:
+- https://github.com/DhananjaiH/Head-tracking
 
 - https://github.com/agirault/screenReality
 
