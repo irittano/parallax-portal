@@ -1,7 +1,10 @@
 # parallax-portal
 
-Inspirado en:
+Basado en:
+
 - https://github.com/DhananjaiH/Head-tracking
+
+Inspirado en:
 
 - https://github.com/agirault/screenReality
 
@@ -15,12 +18,39 @@ Inspirado en:
 
 - https://www.youtube.com/watch?v=h5QSclrIdlE&
 
+### Dependencias
+
+- OpenCV 2.4.10 : `sudo apt install libopencv-dev`
+
+- OpenGL & freeGLUT : `sudo apt install libxi-dev libxmu-dev freeglut3-dev`
+
+### Ejecución
+
+```
+mkdir build
+cd build
+cmake ..
+make
+./bin/screenReality
+```
+
+### Atajos de teclado
+
+* **Q** : *Salir*
+* **F** : *Pantalla completa*
+* **I** : *Invertir imagen de cámara*
+* **C** : *Mostrar u ocultar camara*
+* **D** : *Mostrar información de detección*
+* **+/-** : *Cambiar tamaño de ventana de cámara*
+* **M** : *Cambiar PolygonMode entre LINE y FILL*
+* **P** : *Cambiar ProjectionMode entre Off-Axis y Regular*
+* **B** : *Bounding box display ON/OFF*
+
 ## Tareas
 
-- Optimizar detección de cara para llegar a los 30fps
+- Optimizar detección de cara para minimizar el delay
 
-- A partir de la detección hacer los cálculos para determinar una posición que
-  sirva para el dibujado ([x, y, z]?, coordenadas circulares?)
+- Revisar cómo se calcula posición del frustum de la perspectiva y corregirlo
 
 - Dibujar en 2D imágenes con paralaje para hacer el escenario de una foto de un
   lugar con un prócer
