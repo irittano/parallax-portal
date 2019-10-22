@@ -2,13 +2,13 @@
 
 Basado en:
 
-- https://github.com/DhananjaiH/Head-tracking
+- https://github.com/agirault/screenReality
 
 Inspirado en:
 
 - https://gitlab.kitware.com/mike.rye/paraview_face_tracking
 
-- https://github.com/agirault/screenReality
+- https://github.com/DhananjaiH/Head-tracking
 
 - https://www.youtube.com/watch?v=SWt_y5uIEAo&feature=youtu.be
 
