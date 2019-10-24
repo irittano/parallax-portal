@@ -26,7 +26,7 @@ cv::CascadeClassifier face_cascade;
 cv::VideoCapture *capture = NULL;
 cv::Mat frame;
 std::vector<cv::Rect> faces;
-double elapsed_time;
+double elapsed_time; // Time elapsed doing Haar cascade in teh current frame
 
 //-- display
 bool bPause = false;                //- press ' ' to change
@@ -207,9 +207,6 @@ cv::Mat detectEyes(cv::Mat image)
         int height = y2 - y1;
         cv::Rect cropRect( x1, y1, width, height);
 
-        std::cout << face << std::endl << std::flush;
-        std::cout << cropRect << std::endl << std::flush;
-
         image_gray = image_gray(cropRect);
 
         face_cascade.detectMultiScale(
@@ -242,8 +239,6 @@ cv::Mat detectEyes(cv::Mat image)
             // cv::Size(150, 150),
         );
     }
-
-    std::cout << faces.size() << std::endl << std::flush;
 
     std::clock_t end_time = std::clock();
     elapsed_time = double(end_time - begin_time) / CLOCKS_PER_SEC;
