@@ -4,6 +4,8 @@ Basado en:
 
 - https://github.com/agirault/screenReality
 
+- http://csc.lsu.edu/~kooima/pdfs/gen-perspective.pdf
+
 Inspirado en:
 
 - https://gitlab.kitware.com/mike.rye/paraview_face_tracking
@@ -52,7 +54,8 @@ make
 
 - Optimizar detección de cara para minimizar el delay
 
-- Revisar cómo se calcula posición del frustum de la perspectiva y corregirlo
+- Revisar cómo se calcula posición del frustum de la perspectiva y corregirlo.
+  Un parámetro a ver es pixelNbrPerCm
 
 - Dibujar en 2D imágenes con paralaje para hacer el escenario de una foto de un
   lugar con un prócer

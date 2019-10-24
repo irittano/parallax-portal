@@ -9,6 +9,8 @@
 #include <iostream>
 #include <stdio.h>
 
+#include <ctime>
+
 /** Constants */
 const int minFaceSize = 80; // in pixel. The smaller it is, the further away you can go
 const float f = 500; //804.71
@@ -23,6 +25,8 @@ const cv::String face_cascade_name = "./res/haarcascade_frontalface_alt.xml";
 cv::CascadeClassifier face_cascade;
 cv::VideoCapture *capture = NULL;
 cv::Mat frame;
+std::vector<cv::Rect> faces;
+double elapsed_time;
 
 //-- display
 bool bPause = false;                //- press ' ' to change
@@ -187,14 +191,56 @@ void redisplay()
 cv::Mat detectEyes(cv::Mat image)
 {
     // INIT
-    std::vector<cv::Rect> faces;
     cv::Mat image_gray;
     cv::cvtColor( image, image_gray, CV_BGR2GRAY );
     cv::equalizeHist( image_gray, image_gray );
 
-    // DETECT FACE
-    //-- Find bigger face (opencv documentation)
-    face_cascade.detectMultiScale( image_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE|CV_HAAR_FIND_BIGGEST_OBJECT, cv::Size(minFaceSize, minFaceSize) );
+    std::clock_t begin_time = std::clock();
+
+    if (faces.size() > 0) {
+        cv::Rect face = faces[0];
+        int x = std::max(face.x - face.width * 0.2, 0),
+        cv::Rect cropRect(
+            std::max(face.x - face.width * 0.2, 0.),
+            std::max(face.y - face.height * 0.2, 0.),
+            std::min(face.width * 1.4, double(windowWidth)),
+            std::min(face.height * 1.4, double(windowHeight))
+        );
+
+        std::cout << cropRect << std::endl << std::flush;
+
+        image_gray = image_gray(cropRect);
+
+        face_cascade.detectMultiScale(
+            image_gray,
+            faces,
+            1.1,
+            2,
+            0|CV_HAAR_SCALE_IMAGE|CV_HAAR_FIND_BIGGEST_OBJECT,
+            cv::Size(minFaceSize, minFaceSize),
+            // cv::Size(150, 150),
+            cv::Size(200, 200)
+        );
+
+        std::cout << faces.size() << std::endl << std::flush;
+    } else {
+
+        // DETECT FACE
+        //-- Find bigger face (opencv documentation)
+        face_cascade.detectMultiScale(
+            image_gray,
+            faces,
+            1.1,
+            2,
+            0|CV_HAAR_SCALE_IMAGE|CV_HAAR_FIND_BIGGEST_OBJECT,
+            cv::Size(minFaceSize, minFaceSize),
+            // cv::Size(150, 150),
+            cv::Size(200, 200)
+        );
+    }
+
+    std::clock_t end_time = std::clock();
+    elapsed_time = double(end_time - begin_time) / CLOCKS_PER_SEC;
 
     for( size_t i = 0; i < faces.size(); i++ )
     {
@@ -418,6 +464,7 @@ void displayCam(cv::Mat camImage)
         //-- Coord text
         std::stringstream sstm;
         sstm << "(x,y,z) = (" << (int)glCamX << "," << (int)glCamY << "," << (int)glCamZ << ")";
+        sstm << ", " << elapsed_time;
         std::string s = sstm.str();
         //std::cout<<s<<std::endl;
 
