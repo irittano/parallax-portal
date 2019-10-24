@@ -52,7 +52,11 @@ make
 
 ## Tareas
 
-- Optimizar detección de cara para minimizar el delay
+- Disminuir tembleque
+
+- Portear a python
+
+- Ver que haarcascade usar
 
 - Revisar cómo se calcula posición del frustum de la perspectiva y corregirlo.
   Un parámetro a ver es pixelNbrPerCm
