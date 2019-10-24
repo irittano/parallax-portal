@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 #import recursos
 
-cascPath = "haarcascade_frontalface_default.xml"
+cascPath = "res/haarcascade_frontalface_alt.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 
@@ -20,6 +20,8 @@ y3 = 200
 contadorinicio = 0
 contadorfd = 0
 contadorcara=15
+
+eyesGap = 6.5
 img = cv2.imread('camp2.png', -1)
 
 # -----------------------------------------------------------------------------
@@ -45,7 +47,7 @@ while True:
         frame,
         scaleFactor=1.2,
         minNeighbors=15,
-        minSize=(30, 30),
+        minSize=(50, 50),
         #flags=cv2.cv.CV_HAAR_SCALE_IMAGE
     )
 
@@ -54,8 +56,12 @@ while True:
         face = cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
         roi_gray = gray[y:y+h, x:x+w]
         roi_color = face[y:y+h, x:x+w]
-        eye1 = np.array([[int((x+0.35*w)), int((y+0.37*h)), int(w*0.05), int(h*0.05)]])
-        eye2 = np.array([[int((x+0.65*w)), int((y+0.37*h)), int(w*0.05), int(h*0.05)]])
+
+        #eye1_center = (int(x+0.30*w), int(y+0.37*h))
+        #eye2_center = (int(x+0.70*w), int(y+0.37*h))
+        #eyes_center = (int(x+0.5*w), int(y+0.37*h))
+        eye1 = np.array([[int((x+0.30*w)), int((y+0.37*h)), int(w*0.06), int(h*0.06)]])
+        eye2 = np.array([[int((x+0.7*w)), int((y+0.37*h)), int(w*0.06), int(h*0.06)]])
         #print(eye1)
         #print(type(faces), type(eye1))
         for (ex,ey,ew,eh) in eye1:
@@ -65,7 +71,7 @@ while True:
             #cv2.rectangle(frame,(ex,ey),(ex+ew,ey+eh),(255,255,0),2)
             cv2.circle(frame, (ex,ey), ew, (255,255,0),2)
     # Display the resulting frame
-    cv2.imshow('Video', frame)
+    cv2.imshow('Video', cv2.flip(frame,1))
     # press any key to exit
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
