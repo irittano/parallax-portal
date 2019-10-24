@@ -6,13 +6,13 @@ Basado en:
 
 - http://csc.lsu.edu/~kooima/pdfs/gen-perspective.pdf
 
+- https://www.youtube.com/watch?v=SWt_y5uIEAo
+
 Inspirado en:
 
 - https://gitlab.kitware.com/mike.rye/paraview_face_tracking
 
 - https://github.com/DhananjaiH/Head-tracking
-
-- https://www.youtube.com/watch?v=SWt_y5uIEAo&feature=youtu.be
 
 - http://johnnylee.net/projects/wii/
 
