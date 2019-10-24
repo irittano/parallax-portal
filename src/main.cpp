@@ -199,14 +199,15 @@ cv::Mat detectEyes(cv::Mat image)
 
     if (faces.size() > 0) {
         cv::Rect face = faces[0];
-        int x = std::max(face.x - face.width * 0.2, 0),
-        cv::Rect cropRect(
-            std::max(face.x - face.width * 0.2, 0.),
-            std::max(face.y - face.height * 0.2, 0.),
-            std::min(face.width * 1.4, double(windowWidth)),
-            std::min(face.height * 1.4, double(windowHeight))
-        );
+        int x1 = std::max(int(face.x - face.width * 0.2), 0);
+        int y1 = std::max(int(face.y - face.height * 0.2), 0);
+        int x2 = std::min(int(face.x + face.width * 1.2), camWidth);
+        int y2 = std::min(int(face.y + face.height * 1.2), camHeight);
+        int width = x2 - x1;
+        int height = y2 - y1;
+        cv::Rect cropRect( x1, y1, width, height);
 
+        std::cout << face << std::endl << std::flush;
         std::cout << cropRect << std::endl << std::flush;
 
         image_gray = image_gray(cropRect);
@@ -217,12 +218,16 @@ cv::Mat detectEyes(cv::Mat image)
             1.1,
             2,
             0|CV_HAAR_SCALE_IMAGE|CV_HAAR_FIND_BIGGEST_OBJECT,
-            cv::Size(minFaceSize, minFaceSize),
+            cv::Size(int(face.width * 0.8), int(face.height * 0.8))
             // cv::Size(150, 150),
-            cv::Size(200, 200)
         );
 
-        std::cout << faces.size() << std::endl << std::flush;
+        for( size_t i = 0; i < faces.size(); i++ )
+        {
+            faces[i].x += x1;
+            faces[i].y += y1;
+        }
+
     } else {
 
         // DETECT FACE
@@ -233,11 +238,12 @@ cv::Mat detectEyes(cv::Mat image)
             1.1,
             2,
             0|CV_HAAR_SCALE_IMAGE|CV_HAAR_FIND_BIGGEST_OBJECT,
-            cv::Size(minFaceSize, minFaceSize),
+            cv::Size(minFaceSize, minFaceSize)
             // cv::Size(150, 150),
-            cv::Size(200, 200)
         );
     }
+
+    std::cout << faces.size() << std::endl << std::flush;
 
     std::clock_t end_time = std::clock();
     elapsed_time = double(end_time - begin_time) / CLOCKS_PER_SEC;
