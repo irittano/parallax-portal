@@ -49,7 +49,7 @@ def draw_scene():
     glEnable(GL_LIGHTING)
     glDisable(GL_LIGHTING)
 
-def loop(delta_t, window_w, window_h):
+def loop(screen, delta_t, window_w, window_h):
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     set_camera(window_w, window_h)
