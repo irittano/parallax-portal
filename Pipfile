@@ -7,8 +7,10 @@ verify_ssl = true
 
 [packages]
 numpy = "*"
-pygame = "*"
+pygame = "==2.0.0-dev4"
 opencv-contrib-python = "*"
+PyOpenGL = "*"
+PyOpenGL_accelerate = "*"
 
 [requires]
 python_version = "3.7"
