@@ -15,6 +15,9 @@ MODE = None
 SCREEN_W = None
 SCREEN_H = None
 
+# Pantalla
+SCREEN = None
+
 def init():
     '''
     Inicializar, pygame and OpenGL
@@ -63,13 +66,21 @@ def set_mode_2d():
     Configura a pygame para dibujar en 2D estándar en lugar de OpenGL
     '''
 
+    global MODE
     MODE = "2d"
 
     # Supongo que la maxima resolucion es la primera devuelta por pygame
     max_screen_size = pygame.display.list_modes()[0]
 
-    screen = pygame.display.set_mode(max_screen_size,
+    global SCREEN
+    SCREEN = pygame.display.set_mode(max_screen_size,
         HWSURFACE|DOUBLEBUF)
+
+    global SCREEN_W
+    global SCREEN_H
+    SCREEN_W = max_screen_size[0]
+    SCREEN_H = max_screen_size[1]
+
 
     # No funciona?
     #  screen = pygame.display.set_mode(max_screen_size,
@@ -103,6 +114,6 @@ def start_loop(loop):
         # Tiempo pasado desde ultimo frame en segundos
         delta_t = clock.tick() / 1000
 
-        loop(delta_t, SCREEN_W, SCREEN_H)
+        loop(SCREEN, delta_t, SCREEN_W, SCREEN_H)
 
         pygame.display.flip()
