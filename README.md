@@ -22,7 +22,7 @@ Inspirado en:
 
 - https://www.youtube.com/watch?v=h5QSclrIdlE&
 
-### Dependencias Python
+## Dependencias Python
 
 Usar Pipenv:
 
@@ -33,7 +33,7 @@ pipenv install
 Sino se puede instalar con `pip3` cada dependencia que aparece en el archivo
 `Pipfile`
 
-### Ejecucion de Python
+## Ejecucion de Python
 
 Si se usa Pipenv primero hacer:
 
@@ -55,7 +55,7 @@ Para probar las distintas partes puede hacer
 ...
 ```
 
-### Estructura Python
+## Estructura Python
 
 Hay varios archivos, la idea es que `main.py` dependiendo de los argumentos
 inicie el programa posta en el `main()` de `parallax.py` o ejecute funciones
@@ -81,13 +81,20 @@ integre todo
   su `main()` tiene una demo que al menos muestra algo para verificar que anda
   OpenCV
 
-### Dependencias C++
+## Atribuciones
+
+- `casa_tucuman.jpg`: Fulviusbsas [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)]
+
+- `belgrano.jpg`: Public Domain: https://commons.wikimedia.org/wiki/File:Retrato_del_Gral._Manuel_Belgrano_-_Atribu%C3%ADdo_a_Francois_Casimir_Carbonnier.jpg
+
+
+## Dependencias C++
 
 - OpenCV 2.4.10 : `sudo apt install libopencv-dev`
 
 - OpenGL & freeGLUT : `sudo apt install libxi-dev libxmu-dev freeglut3-dev`
 
-### Ejecución C++
+## Ejecución C++
 
 ```
 mkdir build
@@ -97,7 +104,7 @@ make
 ./bin/screenReality
 ```
 
-### Atajos de teclado
+## Atajos de teclado C++
 
 * **Q** : *Salir*
 * **F** : *Pantalla completa*
@@ -140,6 +147,12 @@ make
 - Separar detección y dibujado en dos threads?
 
 - Soportar monitor 3D?
+
+## Ideas
+
+- Hacer un cuadro de texto arriba a la derecha medio futurista explicando cosas
+
+- Ponerle nombres a los proceres sobre las cabezas
 
 ## Preguntar
 
