@@ -28,7 +28,28 @@ Inspirado en:
 
 - OpenGL & freeGLUT : `sudo apt install libxi-dev libxmu-dev freeglut3-dev`
 
-### Ejecución
+### Estructura Python
+
+Hay varios archivos, la idea es que `main.py` dependiendo de los argumentos
+inicie el programa posta (todavia por hacerse) o ejecute funciones `main()` en
+distintos modulos. De esa forma cada modulo tiene una "demo" o una prueba
+cortita para ver que anda lo que esta ahi adentro.
+
+- `main.py`: Es el punto de inicio, el programa se ejecuta desde aca
+
+- `video.py`: Maneja la ventana, pygame y las cosas basicas de OpenGL
+
+- `scene_3d.py`: Tiene las funciones de dibujado para OpenGL y en su `main()`
+  tiene una demo que al menos muestra algo para verificar que anda OpenGL
+
+- `scene_2d.py`: Tiene las funciones de dibujado 2D en pygame y en su `main()`
+  tiene una demo que al menos muestra algo para verificar que anda pygame
+
+- `face_detection.py`: Tiene las funciones de deteccion de cara en OpenCV y en
+  su `main()` tiene una demo que al menos muestra algo para verificar que anda
+  OpenCV
+
+### Ejecución C++
 
 ```
 mkdir build
