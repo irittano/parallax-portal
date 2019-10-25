@@ -11,6 +11,10 @@ from OpenGL.GLU import *
 # Mantiene estado del modo de video, ya sea "2d" o "3d"
 MODE = None
 
+# Tamaño de pantalla en px
+SCREEN_W = None
+SCREEN_H = None
+
 def init():
     '''
     Inicializar, pygame and OpenGL
@@ -25,15 +29,6 @@ def init():
     glEnable(GL_LIGHT1)
     glEnable(GL_NORMALIZE)
 
-    #  glutInit()
-    #  glutInitDisplayMode(GLUT_RGBA)
-    #  glutInitWindowSize(500, 500)
-    #  glutInitWindowPosition(0, 0)
-    #  wind = glutCreateWindow("OpenGL Coding Practice")
-    #  glutDisplayFunc(showScreen)
-    #  glutIdleFunc(showScreen)
-    #  glutMainLoop()
-
 def set_mode_3d():
     '''
     Configurar el modo de video en 3D
@@ -41,6 +36,7 @@ def set_mode_3d():
     Configura a pygame para usar OpenGL para el dibujado
     '''
 
+    global MODE
     MODE = "3d"
 
     # Supongo que la maxima resolucion es la primera devuelta por pygame
@@ -53,7 +49,12 @@ def set_mode_3d():
     #  screen = pygame.display.set_mode(max_screen_size,
         #  FULLSCREEN|HWSURFACE|DOUBLEBUF|OPENGL)
 
-    glViewport(0, 0, max_screen_size[0], max_screen_size[1])
+    global SCREEN_W
+    global SCREEN_H
+    SCREEN_W = max_screen_size[0]
+    SCREEN_H = max_screen_size[1]
+
+    glViewport(0, 0, SCREEN_W, SCREEN_H)
 
 def set_mode_2d():
     '''
@@ -87,6 +88,8 @@ def start_loop(loop):
 
     Argumentos dados a la función de callback:
     - delta_t: Tiempo pasado desde ultimo frame en segundos
+    - width: Ancho de ventana en px
+    - height: Alto de ventana en px
     '''
 
     clock = pygame.time.Clock()
@@ -100,14 +103,6 @@ def start_loop(loop):
         # Tiempo pasado desde ultimo frame en segundos
         delta_t = clock.tick() / 1000
 
-        loop(delta_t)
-        print(delta_t)
+        loop(delta_t, SCREEN_W, SCREEN_H)
 
         pygame.display.flip()
-
-def _resize():
-    width, height = pygame.screen.get_size()
-
-    if MODE == "3d":
-        glViewport(0, 0, width, height)
-
