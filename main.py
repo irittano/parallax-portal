@@ -32,15 +32,20 @@ default_prm = Parameters()
 
 # Lectura de argumentos
 
-parser_facecascade = subparsers.add_parser(
+parser_parallax = subparsers.add_parser(
+    'parallax',
+    help='Iniciar el programa completo'
+)
+
+parser_face_detection = subparsers.add_parser(
     'face_detection',
     help='Probar la detección de caras'
 )
-parser_opengl = subparsers.add_parser(
+parser_scene_3d = subparsers.add_parser(
     'scene_3d',
     help='Probar escena 3d con OpenGL'
 )
-parser_opengl = subparsers.add_parser(
+parser_scene_2d = subparsers.add_parser(
     'scene_2d',
     help='Probar escena 2d con OpenGL'
 )
@@ -50,11 +55,14 @@ args = parser.parse_args()
 # Ejecutar subprogramas dando los parámetros, parámetros por defecto y
 # argumentos de terminal
 
+import parallax
 import face_detection
 import scene_3d
 import scene_2d
 
-if args.comando == 'face_detection':
+if args.comando == 'parallax':
+    parallax.main(prm, default_prm, args)
+elif args.comando == 'face_detection':
     face_detection.main(prm, default_prm, args)
 elif args.comando == 'scene_3d':
     scene_3d.main(prm, default_prm, args)

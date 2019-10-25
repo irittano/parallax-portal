@@ -22,20 +22,52 @@ Inspirado en:
 
 - https://www.youtube.com/watch?v=h5QSclrIdlE&
 
-### Dependencias
+### Dependencias Python
 
-- OpenCV 2.4.10 : `sudo apt install libopencv-dev`
+Usar Pipenv:
 
-- OpenGL & freeGLUT : `sudo apt install libxi-dev libxmu-dev freeglut3-dev`
+```
+pipenv install
+```
+
+Sino se puede instalar con `pip3` cada dependencia que aparece en el archivo
+`Pipfile`
+
+### Ejecucion de Python
+
+Si se usa Pipenv primero hacer:
+
+```
+pipenv shell
+```
+
+Despues para inicial el programa posta:
+
+```
+./main.py parallax
+```
+
+Para probar las distintas partes puede hacer
+
+```
+./main.py scene_3d
+./main.py face_detection
+...
+```
 
 ### Estructura Python
 
 Hay varios archivos, la idea es que `main.py` dependiendo de los argumentos
-inicie el programa posta (todavia por hacerse) o ejecute funciones `main()` en
-distintos modulos. De esa forma cada modulo tiene una "demo" o una prueba
-cortita para ver que anda lo que esta ahi adentro.
+inicie el programa posta en el `main()` de `parallax.py` o ejecute funciones
+`main()` en distintos modulos. De esa forma cada modulo tiene una "demo" o una
+prueba cortita para ver que anda lo que esta ahi adentro. Cada uno puede
+trabajar en esa demo sin pisarse y mas adelante hacemos `parallax.py` que
+integre todo
 
-- `main.py`: Es el punto de inicio, el programa se ejecuta desde aca
+- `main.py`: Es el punto de inicio, el programa se ejecuta desde aca.
+
+- `parallax.py`: Importa todos los modulos y usa las funciones de todos los
+  demas archivos, tiene una funcion `main()` que corre el programa en serio.
 
 - `video.py`: Maneja la ventana, pygame y las cosas basicas de OpenGL
 
@@ -48,6 +80,12 @@ cortita para ver que anda lo que esta ahi adentro.
 - `face_detection.py`: Tiene las funciones de deteccion de cara en OpenCV y en
   su `main()` tiene una demo que al menos muestra algo para verificar que anda
   OpenCV
+
+### Dependencias C++
+
+- OpenCV 2.4.10 : `sudo apt install libopencv-dev`
+
+- OpenGL & freeGLUT : `sudo apt install libxi-dev libxmu-dev freeglut3-dev`
 
 ### Ejecución C++
 
