@@ -104,6 +104,23 @@ make
 ./bin/screenReality
 ```
 
+## Detalles C++
+
+- El parametro `pixelNbrPerCm` es el pixeles por centimetro del monitor y hay
+  que ajustarlo
+
+- Habia un error en el programa original en donde `cx` y `cy` eran el doble de
+  lo que deberían
+
+- Hay que ayustar la posicion de la camara respecto a la pantalla, el programa
+  original no lo hacía
+
+- Ayuda que los cuadrados de las paredes sean cuadrados y no rectángulos
+
+- Ayuda mucho poner una caja para continuar el efecto fuera de la pantalla
+
+- Ayuda mucho cerrar un ojo
+
 ## Atajos de teclado C++
 
 * **Q** : *Salir*

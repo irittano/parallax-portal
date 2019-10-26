@@ -13,10 +13,12 @@
 
 /** Constants */
 const int minFaceSize = 80; // in pixel. The smaller it is, the further away you can go
-const float f = 500; //804.71
+// const float f = 800; //804.71
+const float f = 500; //804.71 En notebook Martin anda bien
 const float eyesGap = 6.5; //cm
-const float pixelNbrPerCm = 50.0;
-const float far = 60.0;
+const float pixelNbrPerCm = 44.0; // Notebook Martin
+// const float far = 60.0;
+const float far = 20.0;
 const float near = 1.0;
 
 /** Global variables */
@@ -106,8 +108,8 @@ int main( int argc, char **argv )
     if(!bFullScreen){
         windowWidth = camWidth*1.5;
         windowHeight = camHeight*1.5;
-        cx = pixelToCm(windowWidth);
-        cy = pixelToCm(windowHeight);
+        cx = pixelToCm(windowWidth)/2;
+        cy = pixelToCm(windowHeight)/2;
         glutInitWindowPosition( 200, 80 );
         glutInitWindowSize( windowWidth, windowHeight );
     }
@@ -126,8 +128,8 @@ int main( int argc, char **argv )
         glutFullScreen();
         windowWidth = glutGet(GLUT_SCREEN_WIDTH);
         windowHeight = glutGet(GLUT_SCREEN_HEIGHT);
-        cx = pixelToCm(windowWidth);
-        cy = pixelToCm(windowHeight);
+        cx = pixelToCm(windowWidth)/2;
+        cy = pixelToCm(windowHeight)/2;
         glViewport( 0, 0, windowWidth, windowHeight );
     }
 
@@ -260,7 +262,8 @@ cv::Mat detectEyes(cv::Mat image)
         //-- get space coordinates
         float tempZ = eyesGap/(normRightEye-normLeftEye);
         float tempX = normCenterX*glCamZ;
-        float tempY = -normCenterY*glCamZ;
+        // Suponiendo webcam ubicada arriba a 1cm del borde superior
+        float tempY = -normCenterY*glCamZ + cy/2 + 1;
 
         //-- update cam coordinates (smoothing)
         glCamZ = (glCamZ*0.5) + (tempZ*0.5);
@@ -385,16 +388,20 @@ void draw3dScene()
 
     // BOUNDING BOX
     if(bDisplayBox){
-        for(int i = 0; i <= 10; i++){
-            float j = (float)i/10.0;
-            //-- lines
-            drawLineToInf((2*j*cx)-cx, cy, 0.0);//top lines
-            drawLineToInf(cx, cy-(2*j*cy), 0.0);//right lines
-            drawLineToInf(cx-(2*j*cx), -cy, 0.0);//bottom lines
-            drawLineToInf(-cx, (2*j*cy)-cy, 0.0);//left lines
-            //-- frames
-            glColor3f(1.0-j,1.0-j,1.0-j);
-            if((i%2) == 0) drawFrame(-j*far);
+
+        float step = 3; //cm
+        for (int x = -cx; x < cx; x += step) {
+            drawLineToInf(x, cy, 0.0);//top lines
+            drawLineToInf(x, -cy, 0.0);//bottom lines
+        }
+        for (int y = -cy; y < cy; y += step) {
+            drawLineToInf(-cx, y, 0.0);//left lines
+            drawLineToInf(cx, -y, 0.0);//right lines
+        }
+        for (int z = 0; z < far; z += step) {
+            float c = 1.0-(z/far);
+            glColor3f(c,c,c);
+            drawFrame(-z);
         }
     }
 
@@ -465,7 +472,7 @@ void displayCam(cv::Mat camImage)
         //-- Coord text
         std::stringstream sstm;
         sstm << "(x,y,z) = (" << (int)glCamX << "," << (int)glCamY << "," << (int)glCamZ << ")";
-        sstm << ", " << elapsed_time;
+        sstm << ", dt = " << elapsed_time;
         std::string s = sstm.str();
         //std::cout<<s<<std::endl;
 
@@ -555,8 +562,8 @@ void onReshape( int w, int h )
 {
     windowWidth = w;
     windowHeight = h;
-    cx = pixelToCm(windowWidth);
-    cy = pixelToCm(windowHeight);
+    cx = pixelToCm(windowWidth)/2;
+    cy = pixelToCm(windowHeight)/2;
     glViewport( 0, 0, windowWidth, windowHeight );
 }
 
