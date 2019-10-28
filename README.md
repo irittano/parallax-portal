@@ -83,10 +83,27 @@ integre todo
 
 ## Atribuciones
 
+- Estampillas: Dominio público: https://commons.wikimedia.org/wiki/Stamps_of_Argentina
+
 - `casa_tucuman.jpg`: Fulviusbsas [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)]
 
-- `belgrano.jpg`: Public Domain: https://commons.wikimedia.org/wiki/File:Retrato_del_Gral._Manuel_Belgrano_-_Atribu%C3%ADdo_a_Francois_Casimir_Carbonnier.jpg
+- `belgrano.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Retrato_del_Gral._Manuel_Belgrano_-_Atribu%C3%ADdo_a_Francois_Casimir_Carbonnier.jpg
 
+- `saavedra.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Cornelio_Saavedra_-_1810.jpg
+
+- `moreno.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Mariano_Moreno.jpg
+
+- `paso.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Juanjpaso.jpg
+
+- `alberti.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Manuel_Alberti_2.jpg
+
+- `azcuenaga.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Miguel-Azcu%C3%A9naga_new.png
+
+- `castelli.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Castelli.jpg
+
+- `matheu.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Retrato_de_Domingo_Matheu.jpg
+
+- `larrea.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Juan_Larrea.jpg
 
 ## Dependencias C++
 
