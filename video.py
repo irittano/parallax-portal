@@ -6,6 +6,8 @@ import pygame
 from pygame.locals import *
 import numpy as np
 
+from config import prm
+
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
@@ -120,30 +122,31 @@ def start_loop(loop):
 
         loop(SCREEN, delta_t, SCREEN_W, SCREEN_H)
 
-        if MODE == "2d":
-            fps = font.render(str(round(1/delta_t)), False, COLOR_TEXT * 255)
-            SCREEN.blit(fps, (10, 10))
-        elif MODE == "3d":
-            glMatrixMode(GL_PROJECTION);
-            glPushMatrix();
-            glLoadIdentity();
-            gluOrtho2D(0.0, SCREEN_W, 0.0, SCREEN_H);
-            glMatrixMode(GL_MODELVIEW);
-            glPushMatrix();
-            glLoadIdentity();
+        if prm["video_show_fps"]:
+            if MODE == "2d":
+                fps = font.render(str(round(1/delta_t)), False, COLOR_TEXT * 255)
+                SCREEN.blit(fps, (10, 10))
+            elif MODE == "3d":
+                glMatrixMode(GL_PROJECTION);
+                glPushMatrix();
+                glLoadIdentity();
+                gluOrtho2D(0.0, SCREEN_W, 0.0, SCREEN_H);
+                glMatrixMode(GL_MODELVIEW);
+                glPushMatrix();
+                glLoadIdentity();
 
-            glColor3f(*COLOR_TEXT);
-            glTranslatef(0, SCREEN_H - FONT_SIZE, 0);
-            # La fuente tiene 120px de alto
-            glScalef(1/120 * FONT_SIZE, 1/120 * FONT_SIZE, 0)
-            glLineWidth(3);
-            for char in str(round(1/delta_t)):
-                glutStrokeCharacter(GLUT_STROKE_ROMAN, ord(char));
-                pass
+                glColor3f(*COLOR_TEXT);
+                glTranslatef(0, SCREEN_H - FONT_SIZE, 0);
+                # La fuente tiene 120px de alto
+                glScalef(1/120 * FONT_SIZE, 1/120 * FONT_SIZE, 0)
+                glLineWidth(3);
+                for char in str(round(1/delta_t)):
+                    glutStrokeCharacter(GLUT_STROKE_ROMAN, ord(char));
+                    pass
 
-            glMatrixMode(GL_PROJECTION);
-            glPopMatrix();
-            glMatrixMode(GL_MODELVIEW);
-            glPopMatrix();
+                glMatrixMode(GL_PROJECTION);
+                glPopMatrix();
+                glMatrixMode(GL_MODELVIEW);
+                glPopMatrix();
 
         pygame.display.flip()
