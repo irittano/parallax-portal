@@ -18,13 +18,17 @@ SCREEN_H = None
 # Pantalla
 SCREEN = None
 
+FONT_SIZE = 20
+COLOR_TEXT = (255, 0, 255)
+
 def init():
     '''
-    Inicializar, pygame and OpenGL
+    Inicializar pygame y OpenGL
 
     Luego se debe llamar a set_mode_3d() o set_mode_2d()
     '''
     pygame.init()
+    pygame.font.init()
 
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_COLOR_MATERIAL)
@@ -86,13 +90,6 @@ def set_mode_2d():
     #  screen = pygame.display.set_mode(max_screen_size,
         #  FULLSCREEN|SCALED|HWSURFACE|DOUBLEBUF)
 
-def update():
-    '''
-    Refrescar la pantalla
-    '''
-
-    pygame.display.flip()
-
 def start_loop(loop):
     '''
     Iniciar loop, llamando a la función dada en cada frame
@@ -105,6 +102,7 @@ def start_loop(loop):
     '''
 
     clock = pygame.time.Clock()
+    font = pygame.font.Font(pygame.font.get_default_font(), FONT_SIZE)
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -114,7 +112,13 @@ def start_loop(loop):
 
         # Tiempo pasado desde ultimo frame en segundos
         delta_t = clock.tick() / 1000
+        if delta_t == 0:
+            delta_t = 1e-9
 
         loop(SCREEN, delta_t, SCREEN_W, SCREEN_H)
+
+        if MODE == "2d":
+            fps = font.render(str(round(1/delta_t)), False, COLOR_TEXT)
+            SCREEN.blit(fps, (10, 10))
 
         pygame.display.flip()

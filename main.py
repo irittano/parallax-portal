@@ -26,6 +26,8 @@ class Parameters:
 
     scene_3d_perspective = False
     scene_3d_grid_size = 3 # Separacion de lineas de grilla en cm
+
+    screen_size = (1920, 1080) or None,
     px_per_cm = 44.
 
 prm = Parameters()
