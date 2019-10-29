@@ -131,6 +131,32 @@ def set_camera(prm, cam, screen, window_s):
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
+def set_lighting():
+    # Luz ambiente
+    glLightModelfv(
+        GL_LIGHT_MODEL_AMBIENT,
+        [.2, .2, .2, 1.]
+    );
+    # Add positioned light
+    glLightfv(
+        GL_LIGHT0, GL_DIFFUSE,
+        [.5, .5, .5, 1.]
+    );
+    glLightfv(
+        GL_LIGHT0,
+        GL_POSITION,
+        [4., 0., 8., 1.]
+    );
+    # Add directed light
+    glLightfv(
+        GL_LIGHT1, GL_DIFFUSE,
+        [.5, .2, .2, 1.]
+    );
+    glLightfv(
+        GL_LIGHT1, GL_POSITION,
+        [-1., .5, .5, 0]
+    );
+
 def draw_scene():
 
     def draw_bounds():
@@ -139,13 +165,15 @@ def draw_scene():
         '''
         pass
 
+    glEnable(GL_LIGHTING)
+    set_lighting()
+
     draw_line_to_inf(0, 0.3, 0)
     glColor3f(*COLOR_RED)
     draw_cube(0, 0, 0, 1)
     glColor3f(*COLOR_BLUE)
     draw_cube(2, 2, 2, 2)
 
-    glEnable(GL_LIGHTING)
     glDisable(GL_LIGHTING)
 
 def loop(prm, screen, delta_t, window_s):
