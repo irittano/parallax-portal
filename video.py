@@ -98,6 +98,7 @@ def start_loop(loop):
     Iniciar loop, llamando a la función dada en cada frame
 
     Argumentos dados a la función de callback:
+    - screen: Pantalla de pygame
     - delta_t: Tiempo pasado desde ultimo frame en segundos
     - width: Ancho de ventana en px
     - height: Alto de ventana en px
