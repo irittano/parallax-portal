@@ -4,9 +4,11 @@ Funciones de bajo nivel para manejar OpenGL y pygame (pero no para OpenCV)
 
 import pygame
 from pygame.locals import *
+import numpy as np
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GLUT import *
 
 # Mantiene estado del modo de video, ya sea "2d" o "3d"
 MODE = None
@@ -19,7 +21,7 @@ SCREEN_H = None
 SCREEN = None
 
 FONT_SIZE = 20
-COLOR_TEXT = (255, 0, 255)
+COLOR_TEXT = np.array((1., 0., 1.))
 
 def init():
     '''
@@ -30,6 +32,7 @@ def init():
     pygame.init()
     pygame.font.init()
 
+    glutInit()
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_COLOR_MATERIAL)
     glEnable(GL_LIGHT0)
@@ -118,7 +121,29 @@ def start_loop(loop):
         loop(SCREEN, delta_t, SCREEN_W, SCREEN_H)
 
         if MODE == "2d":
-            fps = font.render(str(round(1/delta_t)), False, COLOR_TEXT)
+            fps = font.render(str(round(1/delta_t)), False, COLOR_TEXT * 255)
             SCREEN.blit(fps, (10, 10))
+        elif MODE == "3d":
+            glMatrixMode(GL_PROJECTION);
+            glPushMatrix();
+            glLoadIdentity();
+            gluOrtho2D(0.0, SCREEN_W, 0.0, SCREEN_H);
+            glMatrixMode(GL_MODELVIEW);
+            glPushMatrix();
+            glLoadIdentity();
+
+            glColor3f(*COLOR_TEXT);
+            glTranslatef(0, SCREEN_H - FONT_SIZE, 0);
+            # La fuente tiene 120px de alto
+            glScalef(1/120 * FONT_SIZE, 1/120 * FONT_SIZE, 0)
+            glLineWidth(3);
+            for char in str(round(1/delta_t)):
+                glutStrokeCharacter(GLUT_STROKE_ROMAN, ord(char));
+                pass
+
+            glMatrixMode(GL_PROJECTION);
+            glPopMatrix();
+            glMatrixMode(GL_MODELVIEW);
+            glPopMatrix();
 
         pygame.display.flip()

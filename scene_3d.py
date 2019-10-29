@@ -165,8 +165,8 @@ def draw_scene():
         '''
         pass
 
-    glEnable(GL_LIGHTING)
-    set_lighting()
+    #  glEnable(GL_LIGHTING)
+    #  set_lighting()
 
     draw_line_to_inf(0, 0.3, 0)
     glColor3f(*COLOR_RED)
@@ -174,7 +174,7 @@ def draw_scene():
     glColor3f(*COLOR_BLUE)
     draw_cube(2, 2, 2, 2)
 
-    glDisable(GL_LIGHTING)
+    #  glDisable(GL_LIGHTING)
 
 def loop(prm, screen, delta_t, window_s):
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -189,7 +189,6 @@ def main(prm, default_prm, args):
     print("Entrado a escena 3D")
 
     video.init()
-    glutInit()
     video.set_mode_3d()
     video.start_loop(
         lambda screen, delta_t, window_w, window_h:
