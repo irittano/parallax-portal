@@ -24,6 +24,11 @@ class Parameters:
                 "descr": "Si mostrar FPS",
                 "val": True,
             },
+            "video_show_prm": {
+                "descr": "Si mostrar estos parametros para permitir \
+                    modificaciones",
+                "val": True,
+            },
 
             "scene_d3_perspective": {
                 "descr": "Si usar gluPerspective para pruebas en lugar de \
@@ -59,6 +64,9 @@ class Parameters:
     def __setitem__(self, key, value):
         self.parameters[key]["val"] = value
 
+    def __iter__(self):
+        return iter(self.parameters)
+
     def increment(self, key):
         prm = self.parameters[key]
         if type(prm["val"]) == bool:
@@ -69,7 +77,7 @@ class Parameters:
                 prm["val"] = prm["max"]
 
     def decrement(self, key):
-        prm = self.parameters["key"]
+        prm = self.parameters[key]
         if type(prm["val"]) == bool:
             prm["val"] = not prm["val"]
         else:

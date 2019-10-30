@@ -23,7 +23,9 @@ SCREEN_H = None
 SCREEN = None
 
 FONT_SIZE = 20
-COLOR_TEXT = np.array((1., 0., 1.))
+COLOR_DEBUG_TEXT = np.array((1., 0., 1.))
+# Fuente usada para debugging
+PYGAME_DEBUG_FONT = None
 
 def init():
     '''
@@ -33,6 +35,8 @@ def init():
     '''
     pygame.init()
     pygame.font.init()
+    global PYGAME_DEBUG_FONT
+    PYGAME_DEBUG_FONT = pygame.font.Font(pygame.font.get_default_font(), FONT_SIZE)
 
     glutInit()
     glEnable(GL_DEPTH_TEST)
@@ -95,6 +99,39 @@ def set_mode_2d():
     #  screen = pygame.display.set_mode(max_screen_size,
         #  FULLSCREEN|SCALED|HWSURFACE|DOUBLEBUF)
 
+def draw_debug_text(text, position):
+    '''
+    Dibujar linea de texto, no soporta saltos de linea
+
+    Dar posicion como tuple o np.ndarray en pixeles para esquina superior
+    izquierda
+    '''
+    if MODE == "2d":
+        surface = PYGAME_DEBUG_FONT.render(text, False, COLOR_DEBUG_TEXT * 255)
+        SCREEN.blit(surface, position)
+    elif MODE == "3d":
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        gluOrtho2D(0.0, SCREEN_W, 0.0, SCREEN_H);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+
+        glColor3f(*COLOR_DEBUG_TEXT);
+        glTranslatef(position[0], SCREEN_H - position[1] - FONT_SIZE, 0);
+        # La fuente por defecto tiene aprox 150px de alto
+        glScalef(FONT_SIZE / 150, FONT_SIZE / 150, 0)
+        glLineWidth(2);
+        for char in text:
+            glutStrokeCharacter(GLUT_STROKE_ROMAN, ord(char));
+            pass
+
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+
 def start_loop(loop):
     '''
     Iniciar loop, llamando a la función dada en cada frame
@@ -107,7 +144,7 @@ def start_loop(loop):
     '''
 
     clock = pygame.time.Clock()
-    font = pygame.font.Font(pygame.font.get_default_font(), FONT_SIZE)
+    selected = 0
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -123,30 +160,37 @@ def start_loop(loop):
         loop(SCREEN, delta_t, SCREEN_W, SCREEN_H)
 
         if prm["video_show_fps"]:
-            if MODE == "2d":
-                fps = font.render(str(round(1/delta_t)), False, COLOR_TEXT * 255)
-                SCREEN.blit(fps, (10, 10))
-            elif MODE == "3d":
-                glMatrixMode(GL_PROJECTION);
-                glPushMatrix();
-                glLoadIdentity();
-                gluOrtho2D(0.0, SCREEN_W, 0.0, SCREEN_H);
-                glMatrixMode(GL_MODELVIEW);
-                glPushMatrix();
-                glLoadIdentity();
+            draw_debug_text(str(round(1 / delta_t)), (0, 0))
 
-                glColor3f(*COLOR_TEXT);
-                glTranslatef(0, SCREEN_H - FONT_SIZE, 0);
-                # La fuente tiene 120px de alto
-                glScalef(1/120 * FONT_SIZE, 1/120 * FONT_SIZE, 0)
-                glLineWidth(3);
-                for char in str(round(1/delta_t)):
-                    glutStrokeCharacter(GLUT_STROKE_ROMAN, ord(char));
-                    pass
-
-                glMatrixMode(GL_PROJECTION);
-                glPopMatrix();
-                glMatrixMode(GL_MODELVIEW);
-                glPopMatrix();
+        if prm["video_show_prm"]:
+            draw_parameters(selected)
+            selected = handle_parameters(event, selected)
 
         pygame.display.flip()
+
+def draw_parameters(selected):
+    y = 60
+    step = 30
+    for index, key in enumerate(prm):
+        if index == selected:
+            draw_debug_text("{}: {}".format(key, prm[key]), (40, y))
+        else:
+            draw_debug_text("{}: {}".format(key, prm[key]), (10, y))
+        y += step
+
+def handle_parameters(event, selected):
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_UP:
+            selected -= 1
+        if event.key == pygame.K_DOWN:
+            selected += 1
+        if event.key == pygame.K_RIGHT:
+            for index, key in enumerate(prm):
+                if index == selected:
+                    prm.increment(key)
+        if event.key == pygame.K_LEFT:
+            for index, key in enumerate(prm):
+                if index == selected:
+                    prm.decrement(key)
+
+    return selected
