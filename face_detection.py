@@ -19,7 +19,7 @@ class FaceDetector():
     def face_detection(self, modo = False):
 
         ret, frame = self.video_capture.read()
-
+        print(self.faces)
         if len(self.faces) > 0:
 
             face = self.faces[0]
@@ -33,8 +33,8 @@ class FaceDetector():
             heigth = y2-y1
 
             crop_img = frame[x1:x1+width, y1:y1+heigth]
-            print("FaceDetector")
-            print(self.faces)
+            #print("FaceDetector")
+            #print(self.faces)
             self.faces = self.faceCascade.detectMultiScale(
                 crop_img,
                 scaleFactor=1.2,
@@ -42,10 +42,10 @@ class FaceDetector():
                 minSize=(50, 50),
                 #flags=cv2.cv.CV_HAAR_SCALE_IMAGE
             )
-            print(self.faces)
-            self.faces[0] += x1
-            self.faces[1] += y1
-
+            #print(self.faces)
+            if len(self.faces) > 0:
+                self.faces[0] += x1
+                self.faces[1] += y1
         else:
 
             self.faces = self.faceCascade.detectMultiScale(
@@ -88,17 +88,13 @@ class FaceDetector():
         self.video_capture.release()
         cv2.destroyAllWindows()
 
-
 def demo():
 
-    #cam_width = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
-    #cam_height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
     face_detector = FaceDetector()
 
     while True:
 
         frame = face_detector.face_detection(modo = True)
-        #print(type(frame))
         cv2.imshow('Video', cv2.flip(frame,1))
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
