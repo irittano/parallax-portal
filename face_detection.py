@@ -3,11 +3,13 @@ import numpy as np
 import video
 import pygame
 
+from config import prm
+
 class FaceDetector():
 
     def __init__(self):
 
-        self.video_capture = cv2.VideoCapture(0)
+        self.video_capture = cv2.VideoCapture(prm["camera_device_index"])
         cascPath = "res/haarcascade_frontalface_alt.xml"
         self.faceCascade = cv2.CascadeClassifier(cascPath)
         self.cam_width = self.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -87,7 +89,7 @@ class FaceDetector():
         cv2.destroyAllWindows()
 
 
-def main(prm, default_prm, args):
+def demo():
 
     #cam_width = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
     #cam_height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)

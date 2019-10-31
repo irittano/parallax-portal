@@ -2,6 +2,10 @@
 # tener todo en un solo lugar para luego cambiarlos durante la ejecucion del
 # programa
 
+# Tener en cuenta que algunos parámetros solo son leídos al iniciar el programa,
+# por ejemplo la resolución de pantalla. En esos casos hay que cerrar el
+# programa, cambiar el valor acá en este archivo y volver a abrirlo
+
 class Parameters:
     def __init__(self):
         self.parameters = {
@@ -19,6 +23,10 @@ class Parameters:
                     paso de la deteccion",
                 "val": 1.02, "min": 1.05, "max": 2, "step": 0.5,
             },
+            "camera_device_index": {
+                "descr": "Numero de camara a usar para la deteccion de caras",
+                "val": 0, "min": 0, "max": 4, "step": 1,
+            },
 
             "video_show_fps": {
                 "descr": "Si mostrar FPS",
@@ -30,7 +38,7 @@ class Parameters:
                 "val": True,
             },
 
-            "scene_d3_perspective": {
+            "scene_3d_perspective": {
                 "descr": "Si usar gluPerspective para pruebas en lugar de \
                     glFrustum",
                 "val": False,

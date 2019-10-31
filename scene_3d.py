@@ -10,6 +10,7 @@ Coordenadas:
 '''
 
 import video
+from config import prm
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -68,12 +69,12 @@ def draw_cube(x, y, z, size):
     glutSolidCube(size)
     glTranslatef(-x, -y, -z)
 
-def set_camera(prm, cam, screen, window_s):
+def set_camera(cam, screen, window_s):
     '''
     Configura la camara en la posicion dada
     '''
 
-    if prm.scene_3d_perspective:
+    if prm["scene_3d_perspective"]:
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluPerspective(60, window_s[0] / window_s[1], 1, 250)
@@ -176,21 +177,21 @@ def draw_scene():
 
     #  glDisable(GL_LIGHTING)
 
-def loop(prm, screen, delta_t, window_s):
+def loop(screen, delta_t, window_s):
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     # poner mejor nombre, porque es tamaño pantalla /2
-    window_s_cm = window_s / prm.px_per_cm / 2
+    window_s_cm = window_s / prm["px_per_cm"] / 2
     cam_pos = get_cam_from_mouse(window_s)
-    set_camera(prm, cam_pos, window_s_cm, window_s)
+    set_camera(cam_pos, window_s_cm, window_s)
     draw_scene()
 
-def main(prm, default_prm, args):
+def demo():
     print("Entrado a escena 3D")
 
-    video.init()
-    video.set_mode_3d()
-    video.start_loop(
+    v = video.Video()
+    v.set_mode_3d()
+    v.start_loop(
         lambda screen, delta_t, window_w, window_h:
-            loop(prm, screen, delta_t, np.array((window_w, window_h)))
+            loop(screen, delta_t, np.array((window_w, window_h)))
     )

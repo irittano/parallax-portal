@@ -40,14 +40,14 @@ class Image:
 
         screen.blit(self.scaled_img, position)
 
-def main(prm, default_prm, args):
+def demo():
     print("Entrado a escena 2D")
     print("Mover mouse para hacer paralaje")
 
-    video.init()
-    video.set_mode_2d()
+    v = video.Video()
+    v.set_mode_2d()
 
-    window_s = np.array((video.SCREEN_W, video.SCREEN_H))
+    window_s = np.array(v.screen_size)
 
 
     sprites = [ Image("./res/casa_tucuman_16_9.jpg", 0.5, 1.3, 0.3, window_s),
@@ -68,4 +68,4 @@ def main(prm, default_prm, args):
         for sprite in sprites:
             sprite.draw_image(pygame.mouse.get_pos(), window_s, screen)
 
-    video.start_loop(loop)
+    v.start_loop(loop)
