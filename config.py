@@ -1,13 +1,37 @@
-# Objeto que mantiene todos los parametros configurables del programa, permite
-# tener todo en un solo lugar para luego cambiarlos durante la ejecucion del
-# programa
+'''
+Archivo con configuraciones o parámetros
 
-# Tener en cuenta que algunos parámetros solo son leídos al iniciar el programa,
-# por ejemplo la resolución de pantalla. En esos casos hay que cerrar el
-# programa, cambiar el valor acá en este archivo y volver a abrirlo
+Este código se ejecuta solamente la primera vez que se importa este módulo,
+entonces cuando main.py haga "from config import prm" el objeto "prm" se va a
+crear. Cuando otro módulo como video.py haga lo mismo, en vez de crearse otro
+"prm" se le va a dar una referencia al objeto creado previamente. De esta forma
+todos los módulos pueden acceder a este mismo objeto como si fuera una variable
+global
+
+Tambien creo "default_prm" que mantiene los parametros por defecto, los
+mantenemos ahí para tener como referencia y saber cuales cambiamos en "prm".
+Este objeto no deberia ser modificado nunca
+'''
 
 class Parameters:
     def __init__(self):
+        '''
+        Objeto que mantiene todas los parámetros o opciones
+
+        Objeto que mantiene todos los parametros configurables del programa,
+        permite tener todo en un solo lugar para luego cambiarlos durante la
+        ejecucion del programa
+
+        Tener en cuenta que algunos parámetros solo son leídos al iniciar el
+        programa, por ejemplo la resolución de pantalla. En esos casos hay que
+        cerrar el programa, cambiar el valor acá en este archivo y volver a
+        abrirlo
+
+        Mantiene el valor de cada parámetro y una descripción por las dudas.
+        Tambien mantiene un valor mínimo, uno máximo y un incremento para usar
+        cuando se cambia el valor usando el teclado. Ver video.py
+        '''
+
         self.parameters = {
             "face_detection_min_size": {
                 "descr": "Tamaño minimo de cara detectada",
@@ -67,15 +91,51 @@ class Parameters:
         }
 
     def __getitem__(self, key):
+        '''
+        Para acceder a los parámetros
+
+        Haciendo por ejemplo:
+
+            ancho = prm["screen_w"]
+        '''
         return self.parameters[key]["val"]
 
     def __setitem__(self, key, value):
+        '''
+        Para modificar los parámetros
+
+        Haciendo por ejemplo:
+
+            prm["screen_w"] = 1080
+        '''
         self.parameters[key]["val"] = value
 
     def __iter__(self):
+        '''
+        Para iterar sobre cada parámetro
+
+        Haciendo por ejemplo:
+
+            for index, key in enumerate(prm):
+                print("Opcion N° {}, {} = {}".format(index, key, prm[key]))
+        '''
+
         return iter(self.parameters)
 
+    def __len__(self):
+        '''
+        Para obtener cantidad de parámetros
+        '''
+
+        return len(self.parameters)
+
     def increment(self, key):
+        '''
+        Usado por video.py para incrementar el valor usando el teclado
+
+        Si el parámetro es True o False se va a invertir, si el parámetro es un
+        número se va a aumentar el valor
+        '''
         prm = self.parameters[key]
         if type(prm["val"]) == bool:
             prm["val"] = not prm["val"]
@@ -85,6 +145,12 @@ class Parameters:
                 prm["val"] = prm["max"]
 
     def decrement(self, key):
+        '''
+        Usado por video.py para disminuir el valor usando el teclado
+
+        Si el parámetro es True o False se va a invertir, si el parámetro es un
+        número se va a disminuir el valor
+        '''
         prm = self.parameters[key]
         if type(prm["val"]) == bool:
             prm["val"] = not prm["val"]
@@ -93,9 +159,5 @@ class Parameters:
             if prm["val"] < prm["min"]:
                 prm["val"] = prm["min"]
 
-
 prm = Parameters()
-
-# Parametros por defecto, los mantenemos acá para tener como referencia y saber
-# cuales cambiamos. Este objeto no deberia ser modificado nunca
 default_prm = Parameters()

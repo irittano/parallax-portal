@@ -6,7 +6,8 @@ import pygame
 from pygame.locals import *
 import numpy as np
 
-from config import prm
+from config import prm, default_prm
+from misc import RequestRestartException
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -33,6 +34,11 @@ class Video:
 
         pygame.init()
         pygame.font.init()
+
+        # Al mantener presionada una tecla, a partir de los 300ms empezar a
+        # generar eventos de KEYDOWN cada 100ms. Lo uso para que al mantener
+        # presionada una tecla pueda cambiar parametros más facil
+        pygame.key.set_repeat(500, 10)
 
         # Fuente de pygame usada para debugging solamente en modo 2D
         self.pygame_debug_font = pygame.font.Font(
@@ -82,7 +88,7 @@ class Video:
             # Supongo que la maxima resolucion es la primera devuelta por pygame
             self.screen_size = pygame.display.list_modes()[0]
         else:
-            self.scren_size = (prm["screen_w"], prm["screen_h"])
+            self.screen_size = (prm["screen_w"], prm["screen_h"])
 
         self.screen = pygame.display.set_mode(self.screen_size,
             HWSURFACE|DOUBLEBUF)
@@ -105,11 +111,37 @@ class Video:
         clock = pygame.time.Clock()
         selected = 0
         while True:
+
             for event in pygame.event.get():
                 if event.type == QUIT:
                     return
                 if event.type == KEYUP and event.key == K_ESCAPE:
                     return
+                if event.type == KEYDOWN:
+                    if event.key == K_r:
+                        raise RequestRestartException
+                    if event.key == K_SPACE:
+                        prm["video_show_prm"] = not prm["video_show_prm"]
+
+                    # Esto se basa un poco en que a partir de Python 3.7 los
+                    # diccionarios mantienen el orden
+                    if prm["video_show_prm"]:
+                        if event.key == K_UP:
+                            selected -= 1
+                            if selected < 0:
+                                selected = 0
+                        if event.key == K_DOWN:
+                            selected += 1
+                            if selected >= len(prm):
+                                selected = len(prm) - 1
+                        if event.key == K_RIGHT:
+                            for index, key in enumerate(prm):
+                                if index == selected:
+                                    prm.increment(key)
+                        if event.key == K_LEFT:
+                            for index, key in enumerate(prm):
+                                if index == selected:
+                                    prm.decrement(key)
 
             # Tiempo pasado desde ultimo frame en segundos, si es cero le pongo
             # un valor chico para no tener problemas con divisiones por cero
@@ -124,7 +156,6 @@ class Video:
 
             if prm["video_show_prm"]:
                 self._draw_parameters(selected)
-                selected = self._handle_parameters(event, selected)
 
             pygame.display.flip()
 
@@ -170,28 +201,21 @@ class Video:
             glPopMatrix();
 
     def _draw_parameters(self, selected):
-        y = 60
+        self._draw_debug_text("Arrow keys to change parameters, some require a "
+            "restart with the R key", (10, 60))
+
+        y = 100
         step = 30
         for index, key in enumerate(prm):
+
+            text = "{}: {}".format(key, prm[key])
+
             if index == selected:
-                self._draw_debug_text("{}: {}".format(key, prm[key]), (40, y))
-            else:
-                self._draw_debug_text("{}: {}".format(key, prm[key]), (10, y))
+                text = "> " + text
+
+            if prm[key] != default_prm[key]:
+                text = text + " (default: {})".format(default_prm[key])
+
+            self._draw_debug_text(text, (30, y))
+
             y += step
-
-    def _handle_parameters(self, event, selected):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                selected -= 1
-            if event.key == pygame.K_DOWN:
-                selected += 1
-            if event.key == pygame.K_RIGHT:
-                for index, key in enumerate(prm):
-                    if index == selected:
-                        prm.increment(key)
-            if event.key == pygame.K_LEFT:
-                for index, key in enumerate(prm):
-                    if index == selected:
-                        prm.decrement(key)
-
-        return selected
