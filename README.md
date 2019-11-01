@@ -105,6 +105,8 @@ integre todo
 
 - `larrea.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Juan_Larrea.jpg
 
+- `scroll.png`: Pizabay license: https://pixabay.com/vectors/scrolls-rolls-papyrus-papers-34607/
+
 ## Dependencias C++
 
 - OpenCV 2.4.10 : `sudo apt install libopencv-dev`
