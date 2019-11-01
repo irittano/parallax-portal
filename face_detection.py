@@ -27,11 +27,10 @@ class FaceDetector():
 
             x1 = max(int(face[0]-face[2]*0.2), 0)
             y1 = max(int(face[1]-face[3]*0.2), 0)
-            x2 = min(int(face[0]+face[2]*1.2), self.cam_width)
-            y2 = min(int(face[1]+face[3]*1.2), self.cam_height)
+            x2 = min(int(face[0]+face[2]*1.2), int(self.cam_width))
+            y2 = min(int(face[1]+face[3]*1.2), int(self.cam_height))
             width = x2-x1
             height = y2-y1
-
             crop_img = frame[y1:y1+height, x1:x1+width]
 
             self.faces = self.faceCascade.detectMultiScale(
