@@ -11,6 +11,9 @@ pygame = "==2.0.0-dev4"
 opencv-contrib-python = "*"
 PyOpenGL = "*"
 PyOpenGL_accelerate = "*"
+pyglm = "*"
+pil = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"

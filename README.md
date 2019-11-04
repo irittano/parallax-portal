@@ -8,6 +8,20 @@ Basado en:
 
 - https://www.youtube.com/watch?v=SWt_y5uIEAo
 
+- Tutoriales OpenGL:
+
+  - http://pyopengl.sourceforge.net/context/tutorials/index.html
+
+  - https://learnopengl.com/
+
+  - https://www.opengl-tutorial.org/beginners-tutorials/tutorial-2-the-first-triangle/
+
+  - https://stackoverflow.com/questions/24416589/glsl-using-custom-output-attribute-instead-of-gl-position
+
+  - https://gist.github.com/binarycrusader/5823716a1da5f0273504
+
+  - https://github.com/JoeyDeVries/LearnOpenGL/blob/master/src/6.pbr/1.2.lighting_textured/lighting_textured.cpp
+
 Inspirado en:
 
 - https://gitlab.kitware.com/mike.rye/paraview_face_tracking
@@ -106,6 +120,8 @@ integre todo
 - `larrea.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Juan_Larrea.jpg
 
 - `scroll.png`: Pizabay license: https://pixabay.com/vectors/scrolls-rolls-papyrus-papers-34607/
+
+- Skybox: Ivar Leidus [CC BY-SA 3.0 ee (https://creativecommons.org/licenses/by-sa/3.0/ee/deed.en)] https://commons.wikimedia.org/wiki/File:Suurupi_alumine_tuletorn_panoraam.jpg
 
 ## Dependencias C++
 
