@@ -36,6 +36,10 @@ Inspirado en:
 
 - https://www.youtube.com/watch?v=h5QSclrIdlE&
 
+Herramientas:
+
+- https://christopherchudzicki.github.io/MathBox-Demos/parametric_curves_3D.html
+
 ## Dependencias Python
 
 Usar Pipenv:

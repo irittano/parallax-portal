@@ -158,13 +158,108 @@ def load_texture(path):
 
     return texture_id
 
+class CardVAO:
+
+    def __init__(self):
+        '''
+        Crear VAO para una tarjeta
+
+        Incluye VBO
+        '''
+
+        # Crear VAO y bindear
+
+        self.vao = GL.glGenVertexArrays(1)
+        GL.glBindVertexArray(self.vao)
+
+        # Cargar vertices en VBOs
+
+        self.vbo = GLVbo.VBO(
+            np.array([
+                # X, Y, Z, W, U, V
+                [-1, 1, 0, 1, 0, 1],
+                [-1,-1, 0, 1, 0, 0],
+                [ 1,-1, 0, 1, 1, 0],
+                [-1, 1, 0, 1, 0, 1],
+                [ 1,-1, 0, 1, 1, 0],
+                [ 1, 1, 0, 1, 1, 1],
+            ], dtype=np.float32)
+        )
+
+        # Números varios
+
+        # Salto en bytes entre valor y valor
+        # Son 6 números (X, Y, Z, W, U, V) de 4 bits cada uno
+        self.vbo_stride = 6 * 4
+
+        # Offset en donde se ubican valores de UV
+        # Son 4 números (X, Y, Z, W) de 4 bits cada uno
+        self.vbo_uv_offset = 4 * 4
+
+        # Desbindear VAO
+
+        GL.glBindVertexArray(0)
+
+    def draw(self, projection, view, model, texture):
+        '''
+        Dibujar todo
+
+        Toma las matrices de proyección y vista de la cámara. Previamente se
+        deben activar los shaders a usar
+        '''
+
+        # Bindear VAO, supuestamente bindea todos los VBOs
+        GL.glBindVertexArray(self.vao)
+
+        # Obtener matriz de ModelViewProjection
+
+        mvp = projection * view * model
+        GL.glUniformMatrix4fv(LOCATIONS['MVP'], 1, GL.GL_FALSE,
+            glm.value_ptr(mvp))
+
+        # Usar textura como uniform, parece que no es necesario? TODO
+        GL.glActiveTexture(GL.GL_TEXTURE0)
+        GL.glBindTexture(GL.GL_TEXTURE_2D, texture)
+        #  GL.glUniform1i(texture, LOCATIONS['texture'])
+
+        # Dibujar
+
+        with self.vbo:
+            GL.glEnableVertexAttribArray(LOCATIONS['vertexPos'])
+            GL.glEnableVertexAttribArray(LOCATIONS['vertexUV'])
+            GL.glVertexAttribPointer(
+                LOCATIONS['vertexPos'],
+                4,
+                GL.GL_FLOAT, GL.GL_FALSE,
+                self.vbo_stride,
+                self.vbo
+            )
+            GL.glVertexAttribPointer(
+                LOCATIONS['vertexUV'],
+                2,
+                GL.GL_FLOAT, GL.GL_FALSE,
+                self.vbo_stride,
+                self.vbo + self.vbo_uv_offset
+            )
+        GL.glDrawArrays(GL.GL_TRIANGLES, 0, 6*5)
+
+        GL.glDisableVertexAttribArray(LOCATIONS['vertexPos'])
+        GL.glDisableVertexAttribArray(LOCATIONS['vertexUV'])
+
+        # Desbindear VAO
+        GL.glBindVertexArray(0)
+
 class HouseVAO:
 
     def __init__(self, screen_s_cm):
         '''
         Crear VAO para la casa
 
-        Incluye todos los vértices con sus datos (VBO), su textura, etc.
+        Incluye:
+
+        - VBO: Todos los vértices con sus dato
+        - Su textura
+        - Matrix de modelo
         '''
 
         # Crear VAO y bindear
@@ -260,19 +355,29 @@ class HouseVAO:
             glm.value_ptr(mvp))
 
         # Usar textura como uniform, parece que no es necesario? TODO
-        #  GL.glActiveTexture(GL.GL_TEXTURE0)
-        #  GL.glBindTexture(GL.GL_TEXTURE_2D, self.texture)
-        #  GL.glUniform1i(self.texture, 0)
+        GL.glActiveTexture(GL.GL_TEXTURE0)
+        GL.glBindTexture(GL.GL_TEXTURE_2D, self.texture)
+        #  GL.glUniform1i(self.texture, LOCATIONS['texture'])
 
         # Dibujar
 
         with self.vbo:
             GL.glEnableVertexAttribArray(LOCATIONS['vertexPos'])
             GL.glEnableVertexAttribArray(LOCATIONS['vertexUV'])
-            GL.glVertexAttribPointer(LOCATIONS['vertexPos'], 4,
-                    GL.GL_FLOAT, GL.GL_FALSE, self.vbo_stride, self.vbo)
-            GL.glVertexAttribPointer(LOCATIONS['vertexUV'], 2, GL.GL_FLOAT,
-                    GL.GL_FALSE, self.vbo_stride, self.vbo + 4 * 4)
+            GL.glVertexAttribPointer(
+                LOCATIONS['vertexPos'],
+                4,
+                GL.GL_FLOAT, GL.GL_FALSE,
+                self.vbo_stride,
+                self.vbo
+            )
+            GL.glVertexAttribPointer(
+                LOCATIONS['vertexUV'],
+                2,
+                GL.GL_FLOAT, GL.GL_FALSE,
+                self.vbo_stride,
+                self.vbo + self.vbo_uv_offset
+            )
         GL.glDrawArrays(GL.GL_TRIANGLES, 0, 6*5)
 
         GL.glDisableVertexAttribArray(LOCATIONS['vertexPos'])
@@ -350,6 +455,8 @@ class Scene3D:
         # Cargar VAOs de objetos
 
         self.house_vao = HouseVAO(self.screen_s_cm)
+        self.card_vao = CardVAO()
+        self.card_texture = load_texture("./res/stamps/1863.png")
 
         # Iniciar loop
 
@@ -371,8 +478,18 @@ class Scene3D:
         cam_pos = get_cam_from_mouse(screen_s)
         projection, view = set_camera(cam_pos, self.screen_s_cm, screen_s)
 
-        # Dibujar
+        # Dibujar, importante por temas de alpha y depth tests dibujar en orden
+        # de atras para adelante, o sea, primero dibujar la casa
+        # https://stackoverflow.com/questions/4155397/problems-with-layers-depth-and-blending-in-opengl
+
         self.house_vao.draw(projection, view)
+        # TODO
+        model = glm.mat4(1)
+        model = glm.scale(model,
+                glm.vec3(self.screen_s_cm[0]/10, self.screen_s_cm[0]/10, self.screen_s_cm[0]/10))
+        model = glm.translate(model, glm.vec3(0, 0, -1))
+        self.card_vao.draw(projection, view, model, self.card_texture)
+
 
         # Desactivar shaders
         GLShaders.glUseProgram(0)
