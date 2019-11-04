@@ -12,7 +12,6 @@ opencv-contrib-python = "*"
 PyOpenGL = "*"
 PyOpenGL_accelerate = "*"
 pyglm = "*"
-pil = "*"
 pillow = "*"
 
 [requires]
