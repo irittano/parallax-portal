@@ -67,9 +67,9 @@ class Parameters:
                     glFrustum",
                 "val": False,
             },
-            "scene_3d_grid_size": {
-                "descr": "Separacion de grilla en cm",
-                "val": 3, "min": 0.5, "max": 30, "step": 0.5,
+            "scene_3d_speed": {
+                "descr": "Factor de velocidad de cartas en escena 3D",
+                "val": 0.4, "min": 0.1, "max": 2, "step": 0.05,
             },
 
             "screen_auto_size": {

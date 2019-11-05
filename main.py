@@ -22,6 +22,14 @@ subparsers.required = True
 
 # Lectura de argumentos
 
+parser.add_argument('-s', '--screen-size', type=int, nargs=2,
+    metavar=('WIDTH', 'HEIGHT'),
+    help=('Seleccionar resolución pantalla a usar, ingresar ancho y alto en '
+          'píxeles')
+)
+
+# Lectura de comando
+
 parser_parallax = subparsers.add_parser(
     'parallax',
     help='Iniciar el programa completo'
@@ -44,6 +52,14 @@ args = parser.parse_args()
 # Al importar config se inicializa el objeto prm que almacena los parámetros o
 # opciones
 from config import prm
+
+# Configurar argumentos
+
+if args.screen_size:
+    prm['screen_auto_size'] = False
+    prm['screen_w'], prm['screen_h'] = args.screen_size
+else:
+    prm['screen_auto_size'] = True
 
 # Ejecutar subprogramas dando los parámetros, parámetros por defecto y
 # argumentos de terminal

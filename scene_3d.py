@@ -272,31 +272,65 @@ class Cards:
         self.texture = load_texture("./res/stamps/1863.png")
 
         # Mantiene el tiempo personal de cada carta, cuando se crea empieza en
-        # -1.5, cada vez que se hace update_position() se incrementa el tiempo,
-        # y cuando llega a 1.5 se debe borrar la carta.
+        # -1.2, cada vez que se hace update_position() se incrementa el tiempo,
+        # y cuando llega a 1.2 se debe borrar la carta. 
         # El tiempo no tiene unidad, es una cuestión de animación. En
         # update_position() se calcula en cuanto incrementar en cada frame.
 
-        self.time = -1.5
+        self.time = -1.2
 
     def update_position(self, delta_t):
         '''
         Mover carta
 
         Actualiza la matriz de modelo
+
+        Ecuaciones de movimiento:
+        - X(t) = t^5
+        - Y(t) = 0.2 * cos(pi * t / 2)
+        - Z(t) = 0.4 * cos(pi * t / 2)
+
+        Tener en cuenta que la habitación es:
+        - -1 < X < 1
+        - -1 < Y < 1
+        - -1 < Z < 1
+
+        Las ecuaciones hacen que el objeto se mantenga en la habitación durante
+        (-1 < t < 1). El objeto se mueve de -X a X. Se escapa por Y = 0 y Z = 0
+        en donde debería haber una puerta/ventana.
+
+        Comprobar en https://christopherchudzicki.github.io/MathBox-Demos/parametric_curves_3D.html
         '''
 
         # Incrementar tiempo de cada carta, delta_t es el tiempo desde el último
         # frame en segundos, y se multiplica con un factor cualquiera que
         # determina que velocidad de movimiento tiene la carta
 
-        self.time += delta_t * 0.2
+        self.time += delta_t * prm['scene_3d_speed']
+        # TODO
+        if self.time > 1.2: self.time = -1.2
 
         # Actualizar matrices de modelo
 
+        t = self.time
+        x = t**5
+        y = 0.2 * np.cos(np.pi * t / 2)
+        z = 0.4 * np.cos(np.pi * t / 2)
+
         self.model = glm.mat4(1)
-        self.model = glm.translate(self.model, glm.vec3(self.time *
-            self.screen_s_cm[0], 0, -self.screen_s_cm[0] * 0.7))
+        # 3°: Aplicar posición escalando por tamaño de habitación
+        self.model = glm.translate(
+            self.model,
+            glm.vec3(
+                x * self.screen_s_cm[0], # Multiplico por dimensiones de casa
+                y * self.screen_s_cm[1],
+                z * self.screen_s_cm[0],
+            )
+        )
+        # 2°: Mover hacia atras para centrar en la habitación
+        self.model = glm.translate(self.model,
+                glm.vec3(0, 0, -1 * self.screen_s_cm[0]))
+        # 1°: Escalar imagen
         self.model = glm.scale(self.model,
                 glm.vec3(self.screen_s_cm[0]/10, self.screen_s_cm[0]/10, self.screen_s_cm[0]/10))
 
