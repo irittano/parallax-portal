@@ -20,10 +20,14 @@ class Image:
     scaling_factor = FLOAT ancho de la imagen, mantiene relacion w:h
     move_ratio = FLOAT factor de movimiento de la imagen
     scroll_p = STRING relativo al proyecto, imagen de descripcion del procer
-    x_threshold = TUPLE (min,max) posicion X para el dibujado del scroll
+    x_threshold = TUPLE (min,max) num entre 0-1 porcentaje de la pantalla
     '''
 
-    def __init__(self, path, draw_position, scaling_factor, move_ratio, window, scroll_p = None, x_threshold = None):
+    def __init__(
+        self,
+        path,
+        draw_position, scaling_factor, move_ratio, window, scroll_p = None, x_threshold = None
+    ):
         self.path = path
         self.draw_position = draw_position
         self.scaling_factor = scaling_factor
@@ -53,8 +57,10 @@ class Image:
         screen.blit(self.scaled_img, position)
 
         if (self.x_threshold):
-            if ( self.x_threshold[0] < mouse[0] < self.x_threshold[1] ):
-                position = (5/4*position[0],1/3*position[1])
+            if ( self.x_threshold[0] * window[0] < mouse[0] < self.x_threshold[1] * window[0] ):
+                centered_position = centered_position + (125,-250)
+                position = centered_position + self.move_ratio * (mouse - window / 2)
+
                 screen.blit(self.scaled_scroll, position)
         else:
             pass
@@ -69,14 +75,14 @@ def demo():
 
 
     sprites = [ Image("./res/casa_tucuman_16_9.jpg", 0.5, 1.3, 0.3, window_s),
-                Image("./res/moreno.png", (1.1, 0.8), 0.15, 0.29, window_s),
-                Image("./res/paso.png", (1.025, 0.8), 0.2, 0.29, window_s),
-                Image("./res/larrea.png", (-0.05, 0.85), 0.3, 0.25, window_s),
-                Image("./res/matheu.png", (0.08, 0.8), 0.3, 0.25, window_s),
-                Image("./res/alberti.png", (0.85, 0.8), 0.3, 0.17, window_s),
-                Image("./res/azcuenaga.png", (0.2, 0.8), 0.3, 0.17, window_s),
-                Image("./res/belgrano.png", (0.7, 0.75), 0.3, 0.125, window_s),
-                Image("./res/castelli.png", (0.3, 0.75), 0.3, 0.125, window_s),
+                Image("./res/moreno.png", (1.1, 0.8), 0.15, 0.29, window_s, "./res/scroll.png", (100,1000)),
+                Image("./res/paso.png", (1.025, 0.8), 0.2, 0.29, window_s, "./res/scroll.png", (100,1000)),
+                Image("./res/larrea.png", (-0.05, 0.85), 0.3, 0.25, window_s, "./res/scroll.png", (8/9,1)),
+                Image("./res/matheu.png", (0.08, 0.8), 0.3, 0.25, window_s, "./res/scroll.png", (7/9*window_s[0],8/9*window_s[0])),
+                Image("./res/alberti.png", (0.85, 0.8), 0.3, 0.17, window_s, "./res/scroll.png", (100,1000)),
+                Image("./res/azcuenaga.png", (0.2, 0.8), 0.3, 0.17, window_s, "./res/scroll.png", (100,1000)),
+                Image("./res/belgrano.png", (0.7, 0.75), 0.3, 0.125, window_s, "./res/scroll.png", (100,1000)),
+                Image("./res/castelli.png", (0.3, 0.75), 0.3, 0.125, window_s, "./res/scroll.png", (100,1000)),
                 Image("./res/saavedra.png", (0.5, 0.9), 0.5, 0.05, window_s, "./res/scroll.png", (100,1000)),
             ]
 
