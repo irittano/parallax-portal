@@ -51,25 +51,6 @@ LOCATIONS = {
     'vertexUV': 3,
 }
 
-def get_cam_from_mouse(screen_s):
-    '''
-    Obtener coordenadas de la camara desde la posicion del mouse
-
-    Dar como argumento tuple de ancho y alto de pantalla en pixeles
-
-    Posicion Z de la camara fija en 30
-    '''
-    mouse = pygame.mouse.get_pos()
-    pos = np.divide(
-            np.subtract(
-                np.divide(screen_s, 2),
-                mouse
-            ),
-            6
-        )
-
-    return (pos[0], -pos[1], 30)
-
 def set_camera(cam, screen, screen_s):
     '''
     Configura la camara en la posicion dada
@@ -464,10 +445,8 @@ class House:
 
 class Scene3D:
 
-    def __init__(self):
-        self.video = video.Video()
-        self.video.set_mode_3d()
-        self.screen_s = self.video.screen_size
+    def __init__(self, screen_s):
+        self.screen_s = screen_s
         self.screen_s_cm = np.array(self.screen_s) / prm['px_per_cm'] / 2
 
         # Para que las cosas se dibujen en orden correcto
@@ -532,14 +511,17 @@ class Scene3D:
         self.house = House(self.screen_s_cm)
         self.cards = Cards(self.screen_s_cm)
 
-        # Iniciar loop
+    def loop(self, delta_t, cam_pos):
+        '''
+        Actualizar la escena
 
-        self.video.start_loop(
-            lambda screen, delta_t, screen_w, screen_h:
-                self.loop(screen, delta_t, np.array((screen_w, screen_h)))
-        )
+        Dar como argumento el tiempo desde el loop anterior en segundos y un
+        vector de tres componentes con la posición (X, Y, Z) de la cabeza de la
+        persona.
 
-    def loop(self, screen, delta_t, screen_s):
+        Z debe ser un número positivo porque hacia fuera van numeros positivos
+        X positivo hacia la derecha e Y es positivo hacia arriba
+        '''
 
         # Activar shaders
         GLShaders.glUseProgram(self.shaders)
@@ -549,8 +531,7 @@ class Scene3D:
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
         # Recalcular matrices de proyección y vista
-        cam_pos = get_cam_from_mouse(screen_s)
-        projection, view = set_camera(cam_pos, self.screen_s_cm, screen_s)
+        projection, view = set_camera(cam_pos, self.screen_s_cm, self.screen_s)
 
         # Dibujar, importante por temas de alpha y depth tests dibujar en orden
         # de atras para adelante, o sea, primero dibujar la casa
@@ -567,5 +548,32 @@ class Scene3D:
 def demo():
     print('Entrado a escena 3D')
 
-    Scene3D()
+    def get_cam_from_mouse(screen_s):
+        '''
+        Obtener coordenadas de la camara desde la posicion del mouse
+
+        Dar como argumento tuple de ancho y alto de pantalla en pixeles
+
+        Posicion Z de la camara fija en 30
+        '''
+        mouse = pygame.mouse.get_pos()
+        pos = np.divide(
+                np.subtract(
+                    np.divide(screen_s, 2),
+                    mouse
+                ),
+                6
+            )
+        return (pos[0], -pos[1], 30)
+
+    v = video.Video()
+    v.set_mode_3d()
+    scene = Scene3D(v.screen_size)
+
+    def loop(screen, delta_t, screen_w, screen_h):
+        screen_s = np.array((screen_w, screen_h))
+        cam_pos = get_cam_from_mouse(screen_s)
+        scene.loop(delta_t, cam_pos)
+
+    v.start_loop(loop)
 
