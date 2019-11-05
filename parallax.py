@@ -37,7 +37,6 @@ def main():
     def loop(screen, delta_t, window_w, window_h):
 
         face = face_detector.face_detection()
-        #print(eyes_center, w, h)
         screen.fill(COLOR_BLACK)
         if face != None:
 
@@ -45,7 +44,8 @@ def main():
             global PREVIOUS_FACE
             PREVIOUS_FACE = eyes_center
             for sprite in sprites:
-                sprite.draw_image(eyes_center, window_s, screen)
+                # TODO: Cambiar 4 por factor configurable pero dentro de scene_2d, no aca
+                sprite.draw_image(np.array(eyes_center)*4, window_s, screen)
         else:
             if PREVIOUS_FACE != None:
                 for sprite in sprites:
