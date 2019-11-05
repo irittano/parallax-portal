@@ -182,6 +182,9 @@ make
 - Hacer andar parallax con la escena 3d. Hacer la interfaz facil de usar en
   scene_3d
 
+- Hacer que scene2d reciba la posición de la cara en unidades adimensionales (ni
+  pixeles ni cm) y agregar un prm que sea la sensibilidad
+
 - Ver que hacer para pasar de escena a escena, por ejemplo al detectar
   movimiento de la mano al frente de la camara
 
