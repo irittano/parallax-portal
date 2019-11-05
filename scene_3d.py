@@ -32,6 +32,8 @@ import glm
 import pygame
 import PIL.Image
 import numpy as np
+import os
+import random
 
 MIN_Z = -60 # cm
 NEAR_Z = 1 # cm
@@ -78,7 +80,7 @@ def set_camera(cam, screen, screen_s):
     projection = glm.mat4(1)
     view = glm.mat4(1)
 
-    if prm["scene_3d_perspective"]:
+    if prm['scene_3d_perspective']:
         projection = glm.perspective(glm.radians(60),
                 screen_s[0] / screen_s[1], 1, 250)
         view = glm.lookAt(cam, (0, 0, 0), (0, 1, 0))
@@ -263,32 +265,63 @@ class Cards:
             ], dtype=np.float32)
         )
 
-        # Obtener matriz de modelo
-
-        self.model = glm.mat4(1)
-
         # Cargar texturas
 
-        self.texture = load_texture("./res/stamps/1863.png")
+        self.textures = []
+        for filename in os.listdir('./res/stamps/'):
+            if filename.endswith('.png'):
+                self.textures.append(
+                        load_texture(os.path.join('./res/stamps/', filename)))
+
+        # Crear lista de cartas
+        # Cada elemento de la lista va a ser un diccionario
+
+        self.cards = []
+
+        # Tiempo en segundos hasta aparición de nueva carta
+
+        self.timer = prm['scene_3d_interval']
+
+    def create_card(self):
+        '''
+        Agregar una carta
+
+        Crear una carta más con parámetros aleatorios
+        '''
 
         # Mantiene el tiempo personal de cada carta, cuando se crea empieza en
         # -1.2, cada vez que se hace update_position() se incrementa el tiempo,
-        # y cuando llega a 1.2 se debe borrar la carta. 
+        # y cuando llega a 1.2 se debe borrar la carta.
         # El tiempo no tiene unidad, es una cuestión de animación. En
         # update_position() se calcula en cuanto incrementar en cada frame.
-
-        self.time = -1.2
+        time = -1.2
 
         # Obtener eje de rotación, es un versor de 3 componentes aleatorio
         # https://codereview.stackexchange.com/a/77944
-        self.axis = np.random.uniform(size=3)
-        self.axis /= glm.vec3(np.linalg.norm(self.axis))
+        axis = np.random.uniform(size=3)
+        axis /= glm.vec3(np.linalg.norm(axis))
+
+        # Crear matriz de modelo
+        model = glm.mat4(1)
+
+        # Textura aleatoria
+        texture = random.choice(self.textures)
+
+        # Agregar a la lista y configurar tiempo hasta aparición de nueva carta
+        self.cards.append({
+            'time': time,
+            'axis': axis,
+            'model': model,
+            'texture': texture,
+        })
+        self.timer = prm['scene_3d_interval']
 
     def update_position(self, delta_t):
         '''
-        Mover carta
+        Mover cartas
 
-        Actualiza la matriz de modelo
+        Actualiza las matrices de modelo de cartas existentes y crea nuevas
+        cartas si es la hora
 
         Ecuaciones de movimiento:
         - X(t) = t^5
@@ -310,48 +343,54 @@ class Cards:
         Comprobar en https://christopherchudzicki.github.io/MathBox-Demos/parametric_curves_3D.html
         '''
 
-        # Incrementar tiempo de cada carta, delta_t es el tiempo desde el último
-        # frame en segundos, y se multiplica con un factor cualquiera que
-        # determina que velocidad de movimiento tiene la carta
+        # Crear carta si hace falta
+        self.timer -= delta_t
+        if self.timer < 0:
+            self.create_card()
 
-        self.time += delta_t * prm['scene_3d_speed']
-        # TODO
-        if self.time > 1.2:
-            self.time = -1.2
-            self.axis = np.random.uniform(size=3)
-            self.axis /= glm.vec3(np.linalg.norm(self.axis))
+        for card in self.cards:
 
-        # Actualizar matrices de modelo
+            # Incrementar tiempo de cada carta, delta_t es el tiempo desde el
+            # último frame en segundos, y se multiplica con un factor cualquiera
+            # que determina que velocidad de movimiento tiene la carta
+            card['time'] += delta_t * prm['scene_3d_speed']
 
-        t = self.time
-        x = t**5
-        y = 0.2 * np.cos(np.pi * t / 2)
-        z = 0.4 * np.cos(np.pi * t / 2)
+            # Actualizar matrices de modelo
+            t = card['time']
+            x = t**5
+            y = 0.2 * np.cos(np.pi * t / 2)
+            z = 0.4 * np.cos(np.pi * t / 2)
+            rotation = prm['scene_3d_max_rotation'] * np.pi * np.sin(np.pi * x / 2)
 
-        rotation = prm['scene_3d_max_rotation'] * np.pi * np.sin(np.pi * x / 2)
+            model = glm.mat4(1)
 
-        self.model = glm.mat4(1)
-        # 4°: Aplicar posición escalando por tamaño de habitación
-        self.model = glm.translate(
-            self.model,
-            glm.vec3(
-                x * self.screen_s_cm[0], # Multiplico por dimensiones de casa
-                y * self.screen_s_cm[1],
-                z * self.screen_s_cm[0],
+            # 4°: Aplicar posición escalando por tamaño de habitación
+            model = glm.translate(
+                model,
+                glm.vec3(
+                    x * self.screen_s_cm[0], # Multiplico por dimensiones de casa
+                    y * self.screen_s_cm[1],
+                    z * self.screen_s_cm[0],
+                )
             )
-        )
-        # 3°: Mover hacia atras para centrar en la habitación
-        self.model = glm.translate(self.model,
-                glm.vec3(0, 0, -1 * self.screen_s_cm[0]))
-        # 2°: Escalar imagen
-        self.model = glm.scale(self.model,
-                glm.vec3(self.screen_s_cm[0]/10, self.screen_s_cm[0]/10, self.screen_s_cm[0]/10))
-        # 1°: Rotar
-        self.model = glm.rotate(self.model, rotation, self.axis)
+            # 3°: Mover hacia atras para centrar en la habitación
+            model = glm.translate(model,
+                    glm.vec3(0, 0, -1 * self.screen_s_cm[0]))
+            # 2°: Escalar imagen
+            model = glm.scale(model,
+                    glm.vec3(self.screen_s_cm[0]/10, self.screen_s_cm[0]/10, self.screen_s_cm[0]/10))
+            # 1°: Rotar
+            model = glm.rotate(model, rotation, card['axis'])
+
+            card['model'] = model
+
+        # Eliminar cartas que se fueron de la pantalla
+        self.cards = list(filter(lambda c: c['time'] < 1.2, self.cards))
 
     def draw(self, projection, view):
 
-        self.vao.draw(projection, view, self.model, self.texture)
+        for card in self.cards:
+            self.vao.draw(projection, view, card['model'], card['texture'])
 
 class House:
 
@@ -415,7 +454,7 @@ class House:
 
         # Cargar texturas
 
-        self.texture = load_texture("./res/house/house.png")
+        self.texture = load_texture('./res/house/house.png')
 
     def draw(self, projection, view):
 
@@ -427,7 +466,7 @@ class Scene3D:
         self.video = video.Video()
         self.video.set_mode_3d()
         self.screen_s = self.video.screen_size
-        self.screen_s_cm = np.array(self.screen_s) / prm["px_per_cm"] / 2
+        self.screen_s_cm = np.array(self.screen_s) / prm['px_per_cm'] / 2
 
         # Para que las cosas se dibujen en orden correcto
         GL.glEnable(GL.GL_DEPTH_TEST);
@@ -524,7 +563,7 @@ class Scene3D:
 
 
 def demo():
-    print("Entrado a escena 3D")
+    print('Entrado a escena 3D')
 
     Scene3D()
 
