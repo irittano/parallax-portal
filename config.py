@@ -38,13 +38,13 @@ class Parameters:
                 "val": 30, "min": 5, "max": 1000, "step": 1,
             },
             "face_detection_min_neighbors": {
-                "descr": "Cantidad de caras minimas a detectar para considerar \
-                    deteccion positiva",
+                "descr": ("Cantidad de caras minimas a detectar para considerar "
+                          "deteccion positiva"),
                 "val": 15, "min": 1, "max": 50, "step": 1,
             },
             "face_detection_scale_factor": {
-                "descr": "En cuanto agrandar tamaño de cara buscada en cada \
-                    paso de la deteccion",
+                "descr": ("En cuanto agrandar tamaño de cara buscada en cada "
+                          "paso de la deteccion"),
                 "val": 1.02, "min": 1.05, "max": 2, "step": 0.5,
             },
             "camera_device_index": {
@@ -57,19 +57,24 @@ class Parameters:
                 "val": True,
             },
             "video_show_prm": {
-                "descr": "Si mostrar estos parametros para permitir \
-                    modificaciones",
+                "descr": ("Si mostrar estos parametros para permitir "
+                          "modificaciones"),
                 "val": True,
             },
 
             "scene_3d_perspective": {
-                "descr": "Si usar gluPerspective para pruebas en lugar de \
-                    glFrustum",
+                "descr": ("Si usar gluPerspective para pruebas en lugar de "
+                          "glFrustum"),
                 "val": False,
             },
             "scene_3d_speed": {
                 "descr": "Factor de velocidad de cartas en escena 3D",
                 "val": 0.4, "min": 0.1, "max": 2, "step": 0.05,
+            },
+            "scene_3d_max_rotation": {
+                "descr": ("Máxima rotación de cartas en escena 3D, siendo "
+                          "1 = 90° al llegar a la pared"),
+                "val": 0.3, "min": 0.1, "max": 2, "step": 0.05,
             },
 
             "screen_auto_size": {
@@ -128,6 +133,29 @@ class Parameters:
         '''
 
         return len(self.parameters)
+
+    def index(self, index):
+        '''
+        Obtener nombre de parametro a partir de su índice
+
+        Usado en video.py. Ejemplo:
+
+            key = prm.index(2)
+        '''
+
+        for i, key in enumerate(self.parameters):
+            if index == i:
+                return key
+
+    def descr(self, key):
+        '''
+        Para obtener descripción de un parámetro
+
+        Haciendo por ejemplo:
+
+            ancho = prm.descr("screen_w")
+        '''
+        return self.parameters[key]["descr"]
 
     def increment(self, key):
         '''

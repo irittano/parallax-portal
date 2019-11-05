@@ -279,6 +279,11 @@ class Cards:
 
         self.time = -1.2
 
+        # Obtener eje de rotación, es un versor de 3 componentes aleatorio
+        # https://codereview.stackexchange.com/a/77944
+        self.axis = np.random.uniform(size=3)
+        self.axis /= glm.vec3(np.linalg.norm(self.axis))
+
     def update_position(self, delta_t):
         '''
         Mover carta
@@ -289,6 +294,7 @@ class Cards:
         - X(t) = t^5
         - Y(t) = 0.2 * cos(pi * t / 2)
         - Z(t) = 0.4 * cos(pi * t / 2)
+        - Rotacion(t) = max_rotation * pi * sin(pi * x / 2)
 
         Tener en cuenta que la habitación es:
         - -1 < X < 1
@@ -298,6 +304,8 @@ class Cards:
         Las ecuaciones hacen que el objeto se mantenga en la habitación durante
         (-1 < t < 1). El objeto se mueve de -X a X. Se escapa por Y = 0 y Z = 0
         en donde debería haber una puerta/ventana.
+        La rotación es cero cuando está en el centro y máxima en los extremos.
+        El eje de rotación es aleatorio entre carta y carta
 
         Comprobar en https://christopherchudzicki.github.io/MathBox-Demos/parametric_curves_3D.html
         '''
@@ -308,7 +316,10 @@ class Cards:
 
         self.time += delta_t * prm['scene_3d_speed']
         # TODO
-        if self.time > 1.2: self.time = -1.2
+        if self.time > 1.2:
+            self.time = -1.2
+            self.axis = np.random.uniform(size=3)
+            self.axis /= glm.vec3(np.linalg.norm(self.axis))
 
         # Actualizar matrices de modelo
 
@@ -317,8 +328,10 @@ class Cards:
         y = 0.2 * np.cos(np.pi * t / 2)
         z = 0.4 * np.cos(np.pi * t / 2)
 
+        rotation = prm['scene_3d_max_rotation'] * np.pi * np.sin(np.pi * x / 2)
+
         self.model = glm.mat4(1)
-        # 3°: Aplicar posición escalando por tamaño de habitación
+        # 4°: Aplicar posición escalando por tamaño de habitación
         self.model = glm.translate(
             self.model,
             glm.vec3(
@@ -327,12 +340,14 @@ class Cards:
                 z * self.screen_s_cm[0],
             )
         )
-        # 2°: Mover hacia atras para centrar en la habitación
+        # 3°: Mover hacia atras para centrar en la habitación
         self.model = glm.translate(self.model,
                 glm.vec3(0, 0, -1 * self.screen_s_cm[0]))
-        # 1°: Escalar imagen
+        # 2°: Escalar imagen
         self.model = glm.scale(self.model,
                 glm.vec3(self.screen_s_cm[0]/10, self.screen_s_cm[0]/10, self.screen_s_cm[0]/10))
+        # 1°: Rotar
+        self.model = glm.rotate(self.model, rotation, self.axis)
 
     def draw(self, projection, view):
 

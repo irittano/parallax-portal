@@ -14,7 +14,7 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
 FONT_SIZE = 20
-COLOR_DEBUG_TEXT = np.array((1., 0., 1.))
+COLOR_DEBUG_TEXT = np.array((0., 0., 0.))
 
 class Video:
 
@@ -135,13 +135,9 @@ class Video:
                             if selected >= len(prm):
                                 selected = len(prm) - 1
                         if event.key == K_RIGHT:
-                            for index, key in enumerate(prm):
-                                if index == selected:
-                                    prm.increment(key)
+                            prm.increment(prm.index(selected))
                         if event.key == K_LEFT:
-                            for index, key in enumerate(prm):
-                                if index == selected:
-                                    prm.decrement(key)
+                            prm.decrement(prm.index(selected))
 
             # Tiempo pasado desde ultimo frame en segundos, si es cero le pongo
             # un valor chico para no tener problemas con divisiones por cero
@@ -192,7 +188,7 @@ class Video:
             glScalef(FONT_SIZE / 150, FONT_SIZE / 150, 0)
             glLineWidth(2);
             for char in text:
-                glutStrokeCharacter(GLUT_STROKE_ROMAN, ord(char));
+                glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, ord(char));
                 pass
 
             glMatrixMode(GL_PROJECTION);
@@ -219,3 +215,5 @@ class Video:
             self._draw_debug_text(text, (30, y))
 
             y += step
+
+        self._draw_debug_text(prm.descr(prm.index(selected)), (10, y + 20))
