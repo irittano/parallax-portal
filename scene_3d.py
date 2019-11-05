@@ -377,6 +377,8 @@ class Cards:
             model = glm.translate(model,
                     glm.vec3(0, 0, -1 * self.screen_s_cm[0]))
             # 2°: Escalar imagen
+            scale_factor = self.screen_s_cm[0] * prm['scene_3d_card_size']
+            # TODO
             model = glm.scale(model,
                     glm.vec3(self.screen_s_cm[0]/10, self.screen_s_cm[0]/10, self.screen_s_cm[0]/10))
             # 1°: Rotar

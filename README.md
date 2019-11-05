@@ -59,7 +59,7 @@ Si se usa Pipenv primero hacer:
 pipenv shell
 ```
 
-Despues para inicial el programa posta:
+Despues para iniciar el programa posta:
 
 ```
 ./main.py parallax
@@ -174,57 +174,41 @@ make
 
 ## Tareas
 
-- Disminuir tembleque
+- Disminuir tembleque, ver si ponerle como inercia a la posicion de la camara
+  para que cuando pierda detección siga moviendose hacia donde iba y lentamente
+  se vaya centrando. Filtrar un poco la ubicación de la cámara con Kalman o al
+  menos un promedio de las últimas 5 posiciones metele
 
-- Portear a python
+- Hacer andar parallax con la escena 3d. Hacer la interfaz facil de usar en
+  scene_3d
 
-- Ver que haarcascade usar
+- Ver que hacer para pasar de escena a escena, por ejemplo al detectar
+  movimiento de la mano al frente de la camara
 
-- Revisar cómo se calcula posición del frustum de la perspectiva y corregirlo.
-  Un parámetro a ver es pixelNbrPerCm
+- Ver si estamos usando el XML del haarcascade correcto
 
-- Dibujar en 2D imágenes con paralaje para hacer el escenario de una foto de un
-  lugar con un prócer
+- Documentar de que es importante que haya luz de frente
 
-- Dibujar en 2D o 3D una galería de imágenes tipo Polaroid
+- Terminar de hacer lo del scroll, con transicion de transparencia, o de ultima
+  ni hacerlo
 
-- Chequear bien el angulo de visión de la camara, ver donde están los puntos
-  ciegos cuando te acercás
+- Si va al museo, poner un mensaje que diga algo de "No hay caras detectadas,
+  acercarse para ver el efecto, una persona a la vez"
 
-- Suavizar datos de detección de cara, con un promedio? Kalman?
+- Hacer configurable en prm la ubicación de la camara respecto al centro de la
+  pantalla. 
 
-- Buscar formas de determinar mejor la distancia, a lo mejor usando dos cámaras?
-  Viendo distancia entre los ojos? Haciendo que la persona se ponga una gorra
-  con pelotitas de colores? Con LEDs infrarrojos?
+- En parallax calcular posicion en cm a partir de posicion en pixeles y del f
+  de la camara que tambien tiene que ser configurable
 
-- Determinar donde poner la TV y la cámara? Poner TV en vertical y una cámara
-  justo al costado?
+- Al terminar parallax borrar codigo C++
 
-- Separar detección y dibujado en dos threads?
+- Documentar que instalar GLM y OpenGL no es tan facil
 
-- Soportar monitor 3D?
+- Hacer mas linda la escena 3d
 
-## Ideas
-
-- Hacer un cuadro de texto arriba a la derecha medio futurista explicando cosas
-
-- Ponerle nombres a los proceres sobre las cabezas
+- Buscar imagenes temáticas
 
 ## Preguntar
 
-- En serio lo van a poner en un museo o lo están viendo? Sino lo optimizamos
-  para notebooks con webcams
-
-- En dónde estaría ubicado? En contra de una pared? Pasa gente caminando por
-  atrás? Habría que marcar el piso para que la gente se de cuenta de
-  pasar de a uno?
-
-- Cuáles son los tiempos? Fin de año? Marzo?
-
 - Posibilidad de comprar una PC Mini ITX y hasta cuánto gastar
-
-- Ya tienen televisor?
-
-- Que webcam hay?
-
-- De qué temática son las imágenes? Nos pueden pasar algunas desde el museo?

@@ -80,6 +80,10 @@ class Parameters:
                 'descr': 'Segundos que tarda en aparecer nueva carta',
                 'val': 4, 'min': 0.1, 'max': 10, 'step': 0.1,
             },
+            'scene_3d_card_size': {
+                'descr': 'Tamaño de cartas, no tiene unidad, es a ojo',
+                'val': 0.2, 'min': 0.05, 'max': 1, 'step': 0.05,
+            },
 
             'screen_auto_size': {
                 'descr': 'Si usar máximo tamaño de pantalla disponible',
