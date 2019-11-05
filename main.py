@@ -27,6 +27,9 @@ parser.add_argument('-s', '--screen-size', type=int, nargs=2,
     help=('Seleccionar resolución pantalla a usar, ingresar ancho y alto en '
           'píxeles')
 )
+parser.add_argument('-c', '--cam-index', type=int,
+    help='Seleccionar camara a usar, ingresar número'
+)
 
 # Lectura de comando
 
@@ -60,6 +63,8 @@ if args.screen_size:
     prm['screen_w'], prm['screen_h'] = args.screen_size
 else:
     prm['screen_auto_size'] = True
+if args.cam_index:
+    prm['camera_device_index'] = args.cam_index
 
 # Ejecutar subprogramas dando los parámetros, parámetros por defecto y
 # argumentos de terminal
