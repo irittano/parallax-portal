@@ -40,6 +40,8 @@ Herramientas:
 
 - https://christopherchudzicki.github.io/MathBox-Demos/parametric_curves_3D.html
 
+- https://www.cs.utexas.edu/~teammco/misc/kalman_filter/
+
 ## Dependencias Python
 
 Usar Pipenv:
@@ -179,9 +181,6 @@ make
   se vaya centrando. Filtrar un poco la ubicación de la cámara con Kalman o al
   menos un promedio de las últimas 5 posiciones metele
 
-- Hacer andar parallax con la escena 3d. Hacer la interfaz facil de usar en
-  scene_3d
-
 - Hacer que scene2d reciba la posición de la cara en unidades adimensionales (ni
   pixeles ni cm) y agregar un prm que sea la sensibilidad
 
@@ -199,7 +198,7 @@ make
   acercarse para ver el efecto, una persona a la vez"
 
 - Hacer configurable en prm la ubicación de la camara respecto al centro de la
-  pantalla. 
+  pantalla.
 
 - En parallax calcular posicion en cm a partir de posicion en pixeles y del f
   de la camara que tambien tiene que ser configurable
