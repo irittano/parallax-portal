@@ -117,6 +117,8 @@ class Video:
                     return
                 if event.type == KEYUP and event.key == K_ESCAPE:
                     return
+                if event.type == KEYUP and event.key == K_q:
+                    return
                 if event.type == KEYDOWN:
                     if event.key == K_r:
                         raise RequestRestartException
