@@ -59,7 +59,20 @@ class FaceDetector():
                 left_eye = (int(x+0.30*w), int(y+0.37*h))
                 right_eye = (int(x+0.70*w), int(y+0.37*h))
                 eyes_center = (int(x+0.5*w), int(y+0.37*h))
-                return eyes_center, w, h
+
+                normRightEye = (right_eye[0] - self.cam_width/2)/prm["camera_f"]
+                normLeftEye = (left_eye[0] - self.cam_width/2)/prm["camera_f"]
+                normCenterX = (eyes_center[0] - self.cam_width/2)/prm["camera_f"]
+                normCenterY = (eyes_center[1] - self.cam_height/2)/prm["camera_f"]
+
+                # get space coordinates
+                tempZ = prm["eyes_gap"]/(normRightEye - normLeftEye)
+                #El menos de tempX no deberia estar, pero esta culpa de que esta
+                #invertida la posición en X
+                tempX = -normCenterX*tempZ
+                # Suponiendo webcam ubicada arriba a 1cm del borde superior
+                tempY = -normCenterY*tempZ + prm["distance_camera_screen"]
+                return (tempX, tempY), w, h
 
         else:
             if len(self.faces) == 0:
@@ -77,7 +90,6 @@ class FaceDetector():
                 face = cv2.rectangle(frame,(x, y),(x+a,y+h),(255,0,0),2)
                 cv2.circle(frame, left_eye, int(0.05*a), (255,255,255), 2)
                 cv2.circle(frame, right_eye, int(0.05*a), (255,255,255), 2)
-
                 return frame
 
     def __del__(self):
