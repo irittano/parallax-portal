@@ -103,7 +103,7 @@ class Parameters:
             },
             'camera_f': {
                 'descr': 'Parámetro f de la cámara',
-                'val': 500, 'min': 1, 'max': 1000, 'step': 2,
+                'val': 400, 'min': 1, 'max': 1000, 'step': 2,
             },
             'distance_camera_screen': {
                 'descr': 'Distancia de la posición de la camara al centro de la pantalla en cm',
