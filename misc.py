@@ -87,6 +87,8 @@ class PositionFilter:
             [   0,   0,   0,   0,   0,   0],
         ])
 
+        self.I = np.identity(6)
+
         self.c = np.array([0, 0, 0, 0, 0, 0])
         self.x = np.array([0, 0, 0, 0, 0, 0])
 
@@ -104,24 +106,25 @@ class PositionFilter:
             self.last_pos = pos
             return pos
 
+
         # Calcular velocidades y crear vector de medición
         velocity = (pos - self.last_pos) / delta_t
         m = np.append(pos, velocity)
 
         # Paso de predicción
 
-        self.x = (self.A * self.x) + (self.B * self.c)
-        self.P = (self.A * self.P * self.A.transpose()) + self.Q
+        self.x = (self.A @ self.x) + (self.B @ self.c)
+        self.P = (self.A @ self.P @ self.A.T) + self.Q
 
         # Paso de corrección
 
-        S = (self.H * self.P * self.H.transpose()) + self.R
-        K = self.P * self.H.transpose() * np.linalg.inv(S)
-        y = m - (self.H * self.x)
-        self.x = self.x + (K * y)
-        P = (self.I - (K * self.H)) * self.P
+        S = (self.H @ self.P @ self.H.T) + self.R
+        K = (self.P @ self.H.T) @ np.linalg.inv(S)
+        y = m - (self.H @ self.x)
+        self.x = self.x + (K @ y)
+        P = (self.I - (K @ self.H)) @ self.P
 
         self.last_pos = pos
 
-        return self.x
 
+        return self.x[:3]

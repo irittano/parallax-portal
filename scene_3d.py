@@ -576,9 +576,7 @@ def demo():
     def loop(screen, delta_t, screen_w, screen_h):
         screen_s = np.array((screen_w, screen_h))
         cam_pos = np.array(get_cam_from_mouse(screen_s))
-        print(cam_pos)
         cam_pos = pos_filter.filter(delta_t, cam_pos)
-        print(cam_pos)
         scene.loop(delta_t, cam_pos)
 
     v.start_loop(loop)
