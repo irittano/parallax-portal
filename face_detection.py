@@ -72,8 +72,11 @@ class FaceDetector():
                 tempX = -normCenterX*tempZ
                 # Suponiendo webcam ubicada arriba a 1cm del borde superior
                 tempY = -normCenterY*tempZ + prm["distance_camera_screen"]
-                return (tempX, tempY), w, h
-
+                #print(normCenterX, normCenterY)
+                #print(normLeftEye, normRightEye)
+                print(left_eye, right_eye)
+                #return (tempX, tempY), w, h
+                return (-normCenterX, normCenterY), w, h
         else:
             if len(self.faces) == 0:
                 return frame
@@ -90,6 +93,7 @@ class FaceDetector():
                 face = cv2.rectangle(frame,(x, y),(x+a,y+h),(255,0,0),2)
                 cv2.circle(frame, left_eye, int(0.05*a), (255,255,255), 2)
                 cv2.circle(frame, right_eye, int(0.05*a), (255,255,255), 2)
+                print(left_eye, right_eye)
                 return frame
 
     def __del__(self):
@@ -104,6 +108,7 @@ def demo():
     while True:
 
         frame = face_detector.face_detection(modo = True)
+
         cv2.imshow('Video', cv2.flip(frame,1))
 
         if cv2.waitKey(1) & 0xFF == ord('q'):

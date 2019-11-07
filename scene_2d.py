@@ -57,8 +57,10 @@ class Image:
         #Toma el cursor de pygame y las dimensiones de la pantalla en forma
         #de np.array
         centered_position = window * self.draw_pos - np.array(self.scaled_img.get_rect().size) / 2
-        position = centered_position + self.move_ratio * (mouse - window / 2) #es position + o -?
+        #norm_pos = (int(mouse[0] * (window[0] / 2)), int(mouse[1] * (window[1] /2)))
 
+        position = centered_position + self.move_ratio * (mouse * window )#es position + o -?
+        #print(window)
         screen.blit(self.scaled_img, position)
 
         if (self.x_threshold):
@@ -104,6 +106,8 @@ def demo():
 
         screen.fill(COLOR_BLACK)
         for sprite in sprites:
-            sprite.draw_image(pygame.mouse.get_pos(), window_s, screen)
+            mouse = pygame.mouse.get_pos()
+            pos = (mouse[0]-window_w/2)/window_w, (mouse[1]-window_h/2)/window_h
+            sprite.draw_image(np.array(pos), window_s, screen)
 
     v.start_loop(loop)
