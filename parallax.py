@@ -53,9 +53,9 @@ def main():
             PREVIOUS_FACE = eyes_center
             for sprite in sprites:
                 # TODO: Cambiar 4 por factor configurable pero dentro de scene_2d, no aca
-                sprite.draw_image(np.array(eyes_center), window_s, screen)
+                sprite.draw_image(np.array(eyes_center), window_s, screen, delta_t)
         else:
             if PREVIOUS_FACE != None:
                 for sprite in sprites:
-                    sprite.draw_image(PREVIOUS_FACE, window_s, screen)
+                    sprite.draw_image(PREVIOUS_FACE, window_s, screen, delta_t)
     v.start_loop(loop)
