@@ -19,8 +19,9 @@ class FaceDetector():
     def face_detection(self, modo = False):
 
         ret, frame = self.video_capture.read()
-        #print(self.faces)
-        #if len(self.faces) > 0:
+        #El flip es porque estaba mal el eje de coordenadas
+        frame = cv2.flip(frame,1)
+
         if len(self.faces) > 0:
 
             face = self.faces[0]
@@ -38,7 +39,6 @@ class FaceDetector():
                 scaleFactor=1.2,
                 minNeighbors=15,
                 minSize=(50, 50),
-                #flags=cv2.cv.CV_HAAR_SCALE_IMAGE
             )
             if len(self.faces) > 0:
                 self.faces[0][0] += x1
@@ -50,7 +50,6 @@ class FaceDetector():
                 scaleFactor=1.2,
                 minNeighbors=15,
                 minSize=(50, 50),
-                #flags=cv2.cv.CV_HAAR_SCALE_IMAGE
             )
 
         if modo == False:
@@ -65,18 +64,14 @@ class FaceDetector():
                 normCenterX = (eyes_center[0] - self.cam_width/2)/prm["camera_f"]
                 normCenterY = (eyes_center[1] - self.cam_height/2)/prm["camera_f"]
 
-                # get space coordinates
+                # Obtener coodenadas espaciales
                 tempZ = prm["eyes_gap"]/(normRightEye - normLeftEye)
-                #El menos de tempX no deberia estar, pero esta culpa de que esta
-                #invertida la posición en X
-                tempX = -normCenterX*tempZ
+                tempX = normCenterX*tempZ
                 # Suponiendo webcam ubicada arriba a 1cm del borde superior
                 tempY = -normCenterY*tempZ + prm["distance_camera_screen"]
-                #print(normCenterX, normCenterY)
-                #print(normLeftEye, normRightEye)
-                print(left_eye, right_eye)
-                #return (tempX, tempY), w, h
-                return (-normCenterX, normCenterY), w, h
+                print(normCenterX, normCenterY)
+
+                return (normCenterX, normCenterY), w, h
         else:
             if len(self.faces) == 0:
                 return frame
@@ -108,7 +103,6 @@ def demo():
     while True:
 
         frame = face_detector.face_detection(modo = True)
-
         cv2.imshow('Video', cv2.flip(frame,1))
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
