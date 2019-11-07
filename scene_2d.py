@@ -39,12 +39,14 @@ class Image:
         self.scroll_path = scroll_path
         self.x_threshold = x_threshold
         self.scroll_pos = scroll_pos
+        self.alpha = 0
 
         if (scroll_path):
             scroll = pygame.image.load("./res/scroll.png").convert_alpha()
             scroll_w = window[0] * 0.15
             scroll_h = ( scroll_w / scroll.get_rect().size[0] ) * scroll.get_rect().size[1]
             self.scaled_scroll = pygame.transform.scale(scroll, (int(scroll_w),int(scroll_h)))
+            self.scaled_scroll.set_alpha(0)
         else:
             pass
 
@@ -53,22 +55,39 @@ class Image:
         h = ( w / image.get_rect().size[0] ) * image.get_rect().size[1]
         self.scaled_img = pygame.transform.scale(image, (int(w), int(h)))
 
-    def draw_image(self, mouse, window, screen):
+    def draw_image(self, mouse, window, screen, delta_t):
         #Toma el cursor de pygame y las dimensiones de la pantalla en forma
         #de np.array
-        centered_position = window * self.draw_pos - np.array(self.scaled_img.get_rect().size) / 2
-        position = centered_position + self.move_ratio * (mouse - window / 2) #es position + o -?
+        centered_pos = window * self.draw_pos - np.array(self.scaled_img.get_rect().size) / 2
+        pos = centered_pos + self.move_ratio * (mouse - window / 2) #es pos + o -?
 
-        screen.blit(self.scaled_img, position)
+        screen.blit(self.scaled_img, pos)
 
         if (self.x_threshold):
-            if ( self.x_threshold[0] * window[0] < mouse[0] < self.x_threshold[1] * window[0] ):
-                centered_position = window * self.scroll_pos - np.array(self.scaled_scroll.get_rect().size) / 2
-                position = centered_position + self.move_ratio * (mouse - window / 2)
+            centered_scroll_pos = window * self.scroll_pos - np.array(self.scaled_scroll.get_rect().size) / 2
+            scroll_pos = centered_scroll_pos + self.move_ratio * (mouse - window / 2)
 
-                screen.blit(self.scaled_scroll, position)
+            screen.blit(self.scaled_scroll, scroll_pos)
+            alpha_per_sec = 180
+            if ( self.x_threshold[0] * window[0] < mouse[0] < self.x_threshold[1] * window[0] ):
+
+                self.alpha += alpha_per_sec * delta_t
+                self.scaled_scroll.set_alpha(self.alpha)
+                if self.alpha > 255:
+                    self.alpha = 255
+
+                screen.blit(self.scaled_scroll, scroll_pos)
+            else:
+                self.alpha-= alpha_per_sec * delta_t
+                self.scaled_scroll.set_alpha(self.alpha)
+                if self.alpha < 0:
+                    self.alpha = 0
+                screen.blit(self.scaled_scroll, scroll_pos)
+
+
         else:
             pass
+
 
 def demo():
     print("Entrado a escena 2D")
@@ -78,7 +97,6 @@ def demo():
     v.set_mode_2d()
 
     window_s = np.array(v.screen_size)
-
 
     sprites = [ Image("./res/casa_tucuman_16_9.jpg", 0.5, 1.3, 0.55, window_s),
                 Image("./res/moreno.png", (1.08, 0.8), 0.15, 0.45, window_s),
@@ -103,7 +121,8 @@ def demo():
     def loop(screen, delta_t, window_w, window_h):
 
         screen.fill(COLOR_BLACK)
+
         for sprite in sprites:
-            sprite.draw_image(pygame.mouse.get_pos(), window_s, screen)
+            sprite.draw_image(pygame.mouse.get_pos(), window_s, screen, delta_t)
 
     v.start_loop(loop)
