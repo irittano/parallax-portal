@@ -62,6 +62,11 @@ class Parameters:
                 'val': True,
             },
 
+            'scene_2d_sensibility': {
+                'descr': 'Mientras mayor es, más se mueven las cosas en scene_2d',
+                'val': 1, 'min': 0.2, 'max': 3, 'step': 0.1,
+            },
+
             'scene_3d_perspective': {
                 'descr': ('Si usar gluPerspective para pruebas en lugar de '
                           'glFrustum'),

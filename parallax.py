@@ -57,5 +57,5 @@ def main():
         else:
             if PREVIOUS_FACE != None:
                 for sprite in sprites:
-                    sprite.draw_image(PREVIOUS_FACE, window_s, screen, delta_t)
+                    sprite.draw_image(np.array(PREVIOUS_FACE), window_s, screen, delta_t)
     v.start_loop(loop)

@@ -46,7 +46,7 @@ class Image:
             scroll_w = window[0] * 0.15
             scroll_h = ( scroll_w / scroll.get_rect().size[0] ) * scroll.get_rect().size[1]
             self.scaled_scroll = pygame.transform.scale(scroll, (int(scroll_w),int(scroll_h)))
-            self.scaled_scroll.set_alpha(0)
+            self.scaled_scroll.set_alpha(255)
         else:
             pass
 
@@ -55,37 +55,46 @@ class Image:
         h = ( w / image.get_rect().size[0] ) * image.get_rect().size[1]
         self.scaled_img = pygame.transform.scale(image, (int(w), int(h)))
 
-    def draw_image(self, mouse, window, screen, delta_t):
+    def draw_image(self, norm_pos, window, screen, delta_t):
+        norm_pos = norm_pos * prm['scene_2d_sensibility'] 
+
         #Toma el cursor de pygame y las dimensiones de la pantalla en forma
         #de np.array
-        centered_position = window * self.draw_pos - np.array(self.scaled_img.get_rect().size) / 2
-        #norm_pos = (int(mouse[0] * (window[0] / 2)), int(mouse[1] * (window[1] /2)))
 
-        position = centered_position + self.move_ratio * (mouse * window )#es position + o -?
-        #print(window)
+        # Posicion donde se dubjaria el procer en píxeles si no hubiera
+        # movimiento
+        centered_position = window * self.draw_pos - np.array(self.scaled_img.get_rect().size) / 2
+
+        # Posicion donde se dibujará al procer en pixeles
+        position = centered_position + self.move_ratio * norm_pos * window #es position + o -?
+
         screen.blit(self.scaled_img, position)
 
         if (self.x_threshold):
+            # Posicion donde se dubjaria el scroll en píxeles si no hubiera
+            # movimiento
             centered_scroll_pos = window * self.scroll_pos - np.array(self.scaled_scroll.get_rect().size) / 2
-            scroll_pos = centered_scroll_pos + self.move_ratio * (mouse - window / 2)
+
+            # Posicion donde se dibujará al procer en pixeles
+            scroll_pos = centered_scroll_pos + self.move_ratio * norm_pos * window
 
             screen.blit(self.scaled_scroll, scroll_pos)
-            alpha_per_sec = 180
-            if ( self.x_threshold[0] * window[0] < mouse[0] < self.x_threshold[1] * window[0] ):
+            alpha_per_sec = 300
+
+            if ( self.x_threshold[0] < norm_pos[0] + 0.5 < self.x_threshold[1]):
 
                 self.alpha += alpha_per_sec * delta_t
                 self.scaled_scroll.set_alpha(self.alpha)
                 if self.alpha > 255:
                     self.alpha = 255
-
-                screen.blit(self.scaled_scroll, scroll_pos)
             else:
                 self.alpha-= alpha_per_sec * delta_t
                 self.scaled_scroll.set_alpha(self.alpha)
                 if self.alpha < 0:
                     self.alpha = 0
-                screen.blit(self.scaled_scroll, scroll_pos)
 
+
+            screen.blit(self.scaled_scroll, scroll_pos)
 
         else:
             pass
