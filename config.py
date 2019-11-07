@@ -112,7 +112,11 @@ class Parameters:
             'eyes_gap': {
                 'descr': 'Distancia entre los ojos en cm',
                 'val': 6.5, 'min': 5, 'max': 8, 'step': 0.1,
-            }
+            },
+            'parallax_mode': {
+                'descr': 'Cambiar entre modo 2D y 3D',
+                'val': True,
+            },
         }
 
     def __getitem__(self, key):
