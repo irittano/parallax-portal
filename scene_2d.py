@@ -13,27 +13,45 @@ COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
 
 class Image:
-    '''
-    Carga una imagen y le da los valores relevantes para el dibujado
-    path = STRING relativo al proyecto, imagenes se encuentran en ./res/.jpg
-    draw_pos = TUPLE relativo al tamaño de la pantalla
-    scaling_factor = FLOAT ancho de la imagen, mantiene relacion w:h
-    move_ratio = FLOAT factor de movimiento de la imagen
-    scroll_path = STRING relativo al proyecto, imagen de descripcion del procer
-    x_threshold = TUPLE (min,max) num entre 0-1 porcentaje de la pantalla
-    scroll_pos = TUPLE relativo al tamaño de la pantalla, similar a draw_pos
-    '''
 
     def __init__(
         self,
         path,
-        draw_pos,
+        img_pos,
         scaling_factor,
         move_ratio,
-        window, scroll_path = None, x_threshold = None, scroll_pos = None
+        window,
+        scroll_path = None,
+        x_threshold = None,
+        scroll_pos = None
     ):
+        '''
+        Carga una imagen y le da los valores relevantes para el dibujado
+
+        Representa tanto a la imagen del fondo como a de los próceres que además
+        tienen un "scroll" que es otra arriba que viene a ser una descripción
+
+        Argumentos:
+
+        - path (string): Ruta a la imagen relativo al proyecto, generalmente es
+          "./res/*.jpg"
+
+        - img_pos (tuple): Posición de dibujado, relativo al tamaño de la
+          pantalla
+
+        - scaling_factor = FLOAT ancho de la imagen, mantiene relacion w:h
+
+        - move_ratio = FLOAT factor de movimiento de la imagen
+
+        - scroll_path = STRING relativo al proyecto, imagen de descripcion del procer
+
+        - x_threshold = TUPLE (min,max) num entre 0-1 porcentaje de la pantalla
+
+        - scroll_pos = TUPLE relativo al tamaño de la pantalla, similar a
+          img_pos
+        '''
         self.path = path
-        self.draw_pos = draw_pos
+        self.img_pos = img_pos
         self.scaling_factor = scaling_factor
         self.move_ratio = move_ratio
         self.scroll_path = scroll_path
@@ -56,14 +74,14 @@ class Image:
         self.scaled_img = pygame.transform.scale(image, (int(w), int(h)))
 
     def draw_image(self, norm_pos, window, screen, delta_t):
-        norm_pos = norm_pos * prm['scene_2d_sensibility'] 
+        norm_pos = norm_pos * prm['scene_2d_sensibility']
 
         #Toma el cursor de pygame y las dimensiones de la pantalla en forma
         #de np.array
 
         # Posicion donde se dubjaria el procer en píxeles si no hubiera
         # movimiento
-        centered_position = window * self.draw_pos - np.array(self.scaled_img.get_rect().size) / 2
+        centered_position = window * self.img_pos - np.array(self.scaled_img.get_rect().size) / 2
 
         # Posicion donde se dibujará al procer en pixeles
         position = centered_position + self.move_ratio * norm_pos * window #es position + o -?
@@ -109,25 +127,28 @@ def demo():
 
     window_s = np.array(v.screen_size)
 
-    sprites = [ Image("./res/casa_tucuman_16_9.jpg", 0.5, 1.3, 0.55, window_s),
-                Image("./res/moreno.png", (1.08, 0.8), 0.15, 0.45, window_s),
-                Image("./res/paso.png", (1, 0.8), 0.2, 0.45, window_s,
-                "./res/scroll.png", (2/15,3/15),(1.025, 0.3)),
-                Image("./res/larrea.png", (-0.05, 0.85), 0.3, 0.45, window_s,
-                "./res/scroll.png", (13/15,14/15),(-0.05, 0.35)),
-                Image("./res/matheu.png", (0.08, 0.8), 0.3, 0.4, window_s,
-                "./res/scroll.png", (12/15,13/15),(0.08, 0.3)),
-                Image("./res/alberti.png", (0.85, 0.8), 0.3, 0.35, window_s,
-                "./res/scroll.png", (3/15,4/15),(0.85, 0.3)),
-                Image("./res/azcuenaga.png", (0.2, 0.8), 0.3, 0.35, window_s,
-                "./res/scroll.png", (11/15,12/15),(0.2, 0.3)),
-                Image("./res/belgrano.png", (0.7, 0.75), 0.3, 0.3, window_s,
-                "./res/scroll.png", (4/15,5/15),(0.7, 0.25)),
-                Image("./res/castelli.png", (0.3, 0.75), 0.3, 0.25, window_s,
-                "./res/scroll.png", (10/15,11/15),(0.3, 0.25)),
-                Image("./res/saavedra.png", (0.5, 0.9), 0.5, 0.2, window_s,
-                "./res/scroll.png", (7/15,9/15),(0.45, 0.2)),
-            ]
+    sprites = [
+        Image(
+            "./res/casa_tucuman_16_9.jpg", 0.5, 1.3, 0.55, window_s
+        ),
+        Image("./res/moreno.png", (1.08, 0.8), 0.15, 0.45, window_s),
+        Image("./res/paso.png", (1, 0.8), 0.2, 0.45, window_s,
+        "./res/scroll.png", (2/15,3/15),(1.025, 0.3)),
+        Image("./res/larrea.png", (-0.05, 0.85), 0.3, 0.45, window_s,
+        "./res/scroll.png", (13/15,14/15),(-0.05, 0.35)),
+        Image("./res/matheu.png", (0.08, 0.8), 0.3, 0.4, window_s,
+        "./res/scroll.png", (12/15,13/15),(0.08, 0.3)),
+        Image("./res/alberti.png", (0.85, 0.8), 0.3, 0.35, window_s,
+        "./res/scroll.png", (3/15,4/15),(0.85, 0.3)),
+        Image("./res/azcuenaga.png", (0.2, 0.8), 0.3, 0.35, window_s,
+        "./res/scroll.png", (11/15,12/15),(0.2, 0.3)),
+        Image("./res/belgrano.png", (0.7, 0.75), 0.3, 0.3, window_s,
+        "./res/scroll.png", (4/15,5/15),(0.7, 0.25)),
+        Image("./res/castelli.png", (0.3, 0.75), 0.3, 0.25, window_s,
+        "./res/scroll.png", (10/15,11/15),(0.3, 0.25)),
+        Image("./res/saavedra.png", (0.5, 0.9), 0.5, 0.2, window_s,
+        "./res/scroll.png", (7/15,9/15),(0.45, 0.2)),
+    ]
 
     def loop(screen, delta_t, window_w, window_h):
 
