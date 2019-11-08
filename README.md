@@ -191,9 +191,6 @@ make
 
 - Documentar de que es importante que haya luz de frente
 
-- Terminar de hacer lo del scroll, con transicion de transparencia, o de ultima
-  ni hacerlo
-
 - Si va al museo, poner un mensaje que diga algo de "No hay caras detectadas,
   acercarse para ver el efecto, una persona a la vez"
 

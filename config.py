@@ -62,6 +62,11 @@ class Parameters:
                 'val': True,
             },
 
+            'scene_2d_sensibility': {
+                'descr': 'Mientras mayor es, más se mueven las cosas en scene_2d',
+                'val': 1, 'min': 0.2, 'max': 3, 'step': 0.1,
+            },
+
             'scene_3d_perspective': {
                 'descr': ('Si usar gluPerspective para pruebas en lugar de '
                           'glFrustum'),
@@ -101,6 +106,18 @@ class Parameters:
                 'descr': 'Algo asi como DPI pero en centimetros',
                 'val': 44, 'min': 10, 'max': 200, 'step': 0.5,
             },
+            'camera_f': {
+                'descr': 'Parámetro f de la cámara',
+                'val': 400, 'min': 1, 'max': 1000, 'step': 2,
+            },
+            'distance_camera_screen': {
+                'descr': 'Distancia de la posición de la camara al centro de la pantalla en cm',
+                'val': 10, 'min': 1, 'max': 100, 'step': 1,
+            },
+            'eyes_gap': {
+                'descr': 'Distancia entre los ojos en cm',
+                'val': 6.5, 'min': 5, 'max': 8, 'step': 0.1,
+            }
         }
 
     def __getitem__(self, key):

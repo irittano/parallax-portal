@@ -261,9 +261,9 @@ cv::Mat detectEyes(cv::Mat image)
 
         //-- get space coordinates
         float tempZ = eyesGap/(normRightEye-normLeftEye);
-        float tempX = normCenterX*glCamZ;
+        float tempX = normCenterX*tempZ;
         // Suponiendo webcam ubicada arriba a 1cm del borde superior
-        float tempY = -normCenterY*glCamZ + cy/2 + 1;
+        float tempY = -normCenterY*glCamZ + prm;
 
         //-- update cam coordinates (smoothing)
         glCamZ = (glCamZ*0.5) + (tempZ*0.5);
@@ -647,4 +647,3 @@ void onIdle()
         (*capture) >> frame;
     }
 }
-
