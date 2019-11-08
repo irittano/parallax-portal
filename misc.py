@@ -27,34 +27,19 @@ class PositionFilter:
 
         Basado en https://www.cs.utexas.edu/~teammco/misc/kalman_filter/
 
+        Otra explicación:
+        https://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/
+
         Variables en minúscula son vectores, en mayúscula son matrices
+
+        No tenemos vector de control que se le suele llamar c, por lo tanto
+        tampoco usamos matriz B
         '''
 
-        # Vector de ultima posición, usado para calcular velocidades
-        self.last_pos = None
-
-        self.A = np.array([
-            [   1,   0,   0, 0.2,   0,   0],
-            [   0,   1,   0,   0, 0.2,   0],
-            [   0,   0,   1,   0,   0, 0.2],
-            [   0,   0,   0,   1,   0,   0],
-            [   0,   0,   0,   0,   1,   0],
-            [   0,   0,   0,   0,   0,   1],
-        ])
-
-        self.B = np.array([
-            [   1,   0,   0,   0,   0,   0],
-            [   0,   1,   0,   0,   0,   0],
-            [   0,   0,   1,   0,   0,   0],
-            [   0,   0,   0,   1,   0,   0],
-            [   0,   0,   0,   0,   1,   0],
-            [   0,   0,   0,   0,   0,   1],
-        ])
-
         self.H = np.array([
-            [   1,   0,   0,   1,   0,   0],
-            [   0,   1,   0,   0,   1,   0],
-            [   0,   0,   1,   0,   0,   1],
+            [   1,   0,   0,   0.1,   0,   0],
+            [   0,   1,   0,   0,   0.1,   0],
+            [   0,   0,   1,   0,   0,   0.1],
             [   0,   0,   0,   0,   0,   0],
             [   0,   0,   0,   0,   0,   0],
             [   0,   0,   0,   0,   0,   0],
@@ -89,7 +74,6 @@ class PositionFilter:
 
         self.I = np.identity(6)
 
-        self.c = np.array([0, 0, 0, 0, 0, 0])
         self.x = np.array([0, 0, 0, 0, 0, 0])
 
     def filter(self, delta_t, pos):
@@ -100,31 +84,48 @@ class PositionFilter:
         posicion: [X, Y, Z]
         '''
 
-        if self.last_pos is None:
-            # No hacer nada, devolver el vector recibido y guardar la posición
-            # para la próxima
-            self.last_pos = pos
-            return pos
+        # Matrix de predicción, se usa para decir que en la predicción
+        # nuevo_x = A * viejo_x
+        # Las tres primeras filas dicen que la nueva posición es igual a la
+        # anterior más delta_t por velocidad
+        # Las otras tres dicen que la nueva velocidad es igual a la anterior
+        # menos una fricción por delta_t
+        self.A = np.array([
+            [   1,   0,   0, delta_t,   0,   0],
+            [   0,   1,   0,   0, delta_t,   0],
+            [   0,   0,   1,   0,   0, delta_t],
+            [   0,   0,   0,   1,   0,   0],
+            [   0,   0,   0,   0,   1,   0],
+            [   0,   0,   0,   0,   0,   1],
+        ])
 
 
         # Calcular velocidades y crear vector de medición
-        velocity = (pos - self.last_pos) / delta_t
-        m = np.append(pos, velocity)
+        vel = (pos - self.x[:3]) / delta_t
+        m = np.append(pos, self.x[3:])
 
         # Paso de predicción
 
-        self.x = (self.A @ self.x) + (self.B @ self.c)
-        self.P = (self.A @ self.P @ self.A.T) + self.Q
+        x = (self.A @ self.x)
+        P = (self.A @ self.P @ self.A.T) + self.Q
 
         # Paso de corrección
 
         S = (self.H @ self.P @ self.H.T) + self.R
         K = (self.P @ self.H.T) @ np.linalg.inv(S)
         y = m - (self.H @ self.x)
-        self.x = self.x + (K @ y)
-        P = (self.I - (K @ self.H)) @ self.P
 
-        self.last_pos = pos
+        cur_x = x + (K @ y)
+        cur_P = (self.I - (K @ self.H)) @ P
 
+        self.x = cur_x
+        self.P = cur_P
 
+        print(self.x)
+
+        #  pred_x = self.x
+        #  for i in range(10):
+            #  pred_x = (self.A @ pred_x)
+
+        #  return pred_x[:3]
         return self.x[:3]
