@@ -145,9 +145,9 @@ make
 ./bin/screenReality
 ```
 
-## Detalles C++
+## Detalles
 
-- El parametro `pixelNbrPerCm` es el pixeles por centimetro del monitor y hay
+- El parametro `pixel_per_cm` es el pixeles por centimetro del monitor y hay
   que ajustarlo
 
 - Habia un error en el programa original en donde `cx` y `cy` eran el doble de
@@ -161,6 +161,11 @@ make
 - Ayuda mucho poner una caja para continuar el efecto fuera de la pantalla
 
 - Ayuda mucho cerrar un ojo
+
+- Es importantísimo que haya suficiente luz iluminando la cara de la persona.
+  Tanto para la detección como para la tasa de refresco. Por ejemplo mi webcam
+  funciona a 30fps pero noté que en ambientes no tan oscuros devuelve imágenes
+  a 15fps
 
 ## Atajos de teclado C++
 

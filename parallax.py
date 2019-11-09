@@ -4,58 +4,115 @@ Punto de entrada del programa que integra todo
 import numpy as np
 import pygame
 import cv2
+
+import queue
+import threading
+
 import video
 import scene_3d
 import scene_2d
-import face_detection
+import face_detection as fd
 from config import prm
 
 COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
-PREVIOUS_FACE = None
 
 def main():
 
-    face_detector = face_detection.FaceDetector()
+    # Inicializar video para mostrado en pantalla
     v = video.Video()
     v.set_mode_2d()
+    screen_s = np.array(v.screen_size)
 
-    window_s = np.array(v.screen_size)
+    # Inicializar webcam
+    video_capture = cv2.VideoCapture(prm["camera_device_index"])
+    cam_width = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+    cam_height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    cam_size = np.array((cam_width, cam_height))
 
-    sprites = [ scene_2d.Image("./res/casa_tucuman_16_9.jpg", 0.5, 1.3, 0.55, window_s),
-                scene_2d.Image("./res/moreno.png", (1.08, 0.8), 0.15, 0.45, window_s),
-                scene_2d.Image("./res/paso.png", (1, 0.8), 0.2, 0.45, window_s,
-                "./res/scroll.png", (2/15,3/15),(1.025, 0.3)),
-                scene_2d.Image("./res/larrea.png", (-0.05, 0.85), 0.3, 0.45, window_s,
-                "./res/scroll.png", (13/15,14/15),(-0.05, 0.35)),
-                scene_2d.Image("./res/matheu.png", (0.08, 0.8), 0.3, 0.4, window_s,
-                "./res/scroll.png", (12/15,13/15),(0.08, 0.3)),
-                scene_2d.Image("./res/alberti.png", (0.85, 0.8), 0.3, 0.35, window_s,
-                "./res/scroll.png", (3/15,4/15),(0.85, 0.3)),
-                scene_2d.Image("./res/azcuenaga.png", (0.2, 0.8), 0.3, 0.35, window_s,
-                "./res/scroll.png", (11/15,12/15),(0.2, 0.3)),
-                scene_2d.Image("./res/belgrano.png", (0.7, 0.75), 0.3, 0.3, window_s,
-                "./res/scroll.png", (4/15,5/15),(0.7, 0.25)),
-                scene_2d.Image("./res/castelli.png", (0.3, 0.75), 0.3, 0.25, window_s,
-                "./res/scroll.png", (10/15,11/15),(0.3, 0.25)),
-                scene_2d.Image("./res/saavedra.png", (0.5, 0.9), 0.5, 0.2, window_s,
-                "./res/scroll.png", (7/15,9/15),(0.45, 0.2)),
-            ]
+    # Inicializar detector de cara
+    face_detector = fd.FaceDetector()
 
-    def loop(screen, delta_t, window_w, window_h):
+    # Crear imagenes a mostrar
+    images = scene_2d.load_images(screen_s)
 
-        face = face_detector.face_detection()
-        screen.fill(COLOR_BLACK)
-        if face != None:
+    # Cola que permite comunicación entre threads
+    # Si está vacía: Significa que el thread de detección no llegó a producir un
+    # resultado, el thread principal va a intentar predecir la posición de la
+    # cara
+    # Si tiene un tuple: Tiene la cara encontrada en el último frame por el
+    # thread de detección, el thread principal va a tomarlo y vaciar la cola
+    # Si tiene un None: Significa que en el último frame no había cara, el
+    # thread principal va a vaciar la cola
+    face_queue = queue.Queue(maxsize=1)
 
-            eyes_center, w, h = face
-            global PREVIOUS_FACE
-            PREVIOUS_FACE = eyes_center
-            for sprite in sprites:
-                # TODO: Cambiar 4 por factor configurable pero dentro de scene_2d, no aca
-                sprite.draw_image(np.array(eyes_center), window_s, screen, delta_t)
-        else:
-            if PREVIOUS_FACE != None:
-                for sprite in sprites:
-                    sprite.draw_image(np.array(PREVIOUS_FACE), window_s, screen, delta_t)
-    v.start_loop(loop)
+    def detection_thread(stop_event, face_queue):
+        while not stop_event.is_set():
+
+            # Obtener frame de video
+            _, cam_frame = video_capture.read()
+
+            # No se bien por que pero hay que espejar la imagen para que las
+            # coordenadas sean las que esperamos
+            cam_frame = cv2.flip(cam_frame, 1)
+
+            # Detectar cara
+            face_rect = face_detector.detect(cam_frame)
+
+            # Tomar desde la cola para limpiarla en el caso que el thread
+            # principal vaya lento y todavía no haya tomado el resultado
+            # anterior
+            try:
+                face_rect = face_queue.get_nowait()
+            except queue.Empty:
+                pass
+
+            # Colocar nueva detección en la cola
+            try:
+                face_queue.put_nowait(face_rect)
+            except queue.Full:
+                # Nunca debería pasar
+                print("Error: Detection queue full")
+
+
+    def main_thread(face_queue):
+
+        def loop(screen, delta_t, screen_w, screen_h):
+
+            # Limpiar pantalla
+            screen.fill(COLOR_BLACK)
+
+            # Ver si se procesó un frame de video
+            try:
+                face_rect = face_queue.get_nowait()
+
+                if face_rect is not None:
+                    eyes_center, eyes_distance = fd.face_rect_to_norm(cam_size, face_rect)
+                    for image in images:
+                        image.draw(eyes_center, screen_s, screen, delta_t)
+                else:
+                    # TODO: Predecir
+                    pass
+
+            except queue.Empty:
+                # TODO: Predecir
+                pass
+
+        v.start_loop(loop)
+
+    # Usado para indicar al thread de detección que debe parar
+    stop_event = threading.Event()
+
+    # Iniciar threads
+    main = threading.Thread(target=main_thread,
+            args=(face_queue,))
+    detect = threading.Thread(target=detection_thread,
+            args=(stop_event,face_queue))
+    main.start()
+    detect.start()
+
+    main.join() # Esperar a que el thread termine (se intente cerrar el programa)
+    stop_event.set() # Indicar al thread de detección que debe parar
+    detect.join() # Esperar a que el thread de detección termine
+
+    video_capture.release()
