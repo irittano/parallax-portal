@@ -66,6 +66,11 @@ class Parameters:
                 'descr': 'Mientras mayor es, más se mueven las cosas en scene_2d',
                 'val': 1, 'min': 0.2, 'max': 3, 'step': 0.1,
             },
+            'scene_2d_alpha_per_sec': {
+                'descr': ('En cuánto aumentar o disminuir el alpha de un cartel'
+                          'por segundo. El alpha va de 0 a 255'),
+                'val': 300, 'min': 50, 'max': 2000, 'step': 10,
+            },
 
             'scene_3d_perspective': {
                 'descr': ('Si usar gluPerspective para pruebas en lugar de '
