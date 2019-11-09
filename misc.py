@@ -42,9 +42,9 @@ class PositionFilter:
         '''
 
         self.H = np.array([
-            [   1,   0,   0,   0.1,   0,   0],
-            [   0,   1,   0,   0,   0.1,   0],
-            [   0,   0,   1,   0,   0,   0.1],
+            [   1,   0,   0, 0.1,   0,   0],
+            [   0,   1,   0,   0, 0.1,   0],
+            [   0,   0,   1,   0,   0, 0.1],
             [   0,   0,   0,   0,   0,   0],
             [   0,   0,   0,   0,   0,   0],
             [   0,   0,   0,   0,   0,   0],
@@ -60,12 +60,12 @@ class PositionFilter:
         ])
 
         self.R = np.array([
-            [ 0.1,   0,   0,   0,   0,   0],
-            [   0, 0.1,   0,   0,   0,   0],
-            [   0,   0, 0.1,   0,   0,   0],
-            [   0,   0,   0, 0.1,   0,   0],
-            [   0,   0,   0,   0, 0.1,   0],
-            [   0,   0,   0,   0,   0, 0.1],
+            [ 0.2,   0,   0,   0,   0,   0],
+            [   0, 0.2,   0,   0,   0,   0],
+            [   0,   0, 0.2,   0,   0,   0],
+            [   0,   0,   0, 0.2,   0,   0],
+            [   0,   0,   0,   0, 0.2,   0],
+            [   0,   0,   0,   0,   0, 0.2],
         ])
 
         self.P = np.array([
@@ -111,8 +111,8 @@ class PositionFilter:
 
         # Paso de predicción
 
-        x = (self.A @ self.x)
-        P = (self.A @ self.P @ self.A.T) + self.Q
+        self.x = (self.A @ self.x)
+        self.P = (self.A @ self.P @ self.A.T) + self.Q
 
         # Paso de corrección
 
@@ -120,17 +120,30 @@ class PositionFilter:
         K = (self.P @ self.H.T) @ np.linalg.inv(S)
         y = m - (self.H @ self.x)
 
-        cur_x = x + (K @ y)
-        cur_P = (self.I - (K @ self.H)) @ P
-
-        self.x = cur_x
-        self.P = cur_P
-
-        print(self.x)
+        self.x = self.x + (K @ y)
+        self.P = (self.I - (K @ self.H)) @ self.P
 
         #  pred_x = self.x
-        #  for i in range(10):
+        #  for i in range(2):
             #  pred_x = (self.A @ pred_x)
+
+        #  return pred_x[:3]
+        return self.x[:3]
+
+    def predict(self, delta_t):
+        dt = delta_t
+        self.A = np.array([
+            [  1,  0,  0, dt,  0,  0],
+            [  0,  1,  0,  0, dt,  0],
+            [  0,  0,  1,  0,  0, dt],
+            [  0,  0,  0,  1,  0,  0],
+            [  0,  0,  0,  0,  1,  0],
+            [  0,  0,  0,  0,  0,  1],
+        ])
+        # Paso de predicción
+
+        self.x = (self.A @ self.x)
+        self.P = (self.A @ self.P @ self.A.T) + self.Q
 
         #  return pred_x[:3]
         return self.x[:3]

@@ -12,6 +12,7 @@ import video
 import scene_3d
 import scene_2d
 import face_detection as fd
+import misc
 from config import prm
 
 COLOR_BLACK = (0, 0, 0)
@@ -32,6 +33,9 @@ def main():
 
     # Inicializar detector de cara
     face_detector = fd.FaceDetector()
+
+    # Inicializar filtro
+    pos_filter = misc.PositionFilter()
 
     # Crear imagenes a mostrar
     images = scene_2d.load_images(screen_s)
@@ -77,6 +81,13 @@ def main():
 
     def main_thread(face_queue):
 
+        def draw_scene_2d(pos, delta_t, screen, screen_s):
+            eyes_center = pos[:2]
+
+            for image in images:
+                image.draw(eyes_center, screen_s, screen, delta_t)
+
+
         def loop(screen, delta_t, screen_w, screen_h):
 
             # Limpiar pantalla
@@ -88,15 +99,16 @@ def main():
 
                 if face_rect is not None:
                     eyes_center, eyes_distance = fd.face_rect_to_norm(cam_size, face_rect)
-                    for image in images:
-                        image.draw(eyes_center, screen_s, screen, delta_t)
+                    pos = pos_filter.filter(delta_t,
+                            np.array((eyes_center[0], eyes_center[1], 0)))
+                    draw_scene_2d(pos, delta_t, screen, screen_s)
                 else:
-                    # TODO: Predecir
-                    pass
+                    pos = pos_filter.predict(delta_t)
+                    draw_scene_2d(pos, delta_t, screen, screen_s)
 
             except queue.Empty:
-                # TODO: Predecir
-                pass
+                pos = pos_filter.predict(delta_t)
+                draw_scene_2d(pos, delta_t, screen, screen_s)
 
         v.start_loop(loop)
 
