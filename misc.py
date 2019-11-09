@@ -34,6 +34,11 @@ class PositionFilter:
 
         No tenemos vector de control que se le suele llamar c, por lo tanto
         tampoco usamos matriz B
+
+        TODO: Sacar?
+        Es importante dar los FPS esperados ya que se usará para calcular
+        velocidades y ese tipo de cosas. Es necesario especificarlo porque se
+        utiliza ese valor para las predicciones.
         '''
 
         self.H = np.array([
@@ -90,15 +95,15 @@ class PositionFilter:
         # anterior más delta_t por velocidad
         # Las otras tres dicen que la nueva velocidad es igual a la anterior
         # menos una fricción por delta_t
+        dt = delta_t
         self.A = np.array([
-            [   1,   0,   0, delta_t,   0,   0],
-            [   0,   1,   0,   0, delta_t,   0],
-            [   0,   0,   1,   0,   0, delta_t],
-            [   0,   0,   0,   1,   0,   0],
-            [   0,   0,   0,   0,   1,   0],
-            [   0,   0,   0,   0,   0,   1],
+            [  1,  0,  0, dt,  0,  0],
+            [  0,  1,  0,  0, dt,  0],
+            [  0,  0,  1,  0,  0, dt],
+            [  0,  0,  0,  1,  0,  0],
+            [  0,  0,  0,  0,  1,  0],
+            [  0,  0,  0,  0,  0,  1],
         ])
-
 
         # Calcular velocidades y crear vector de medición
         vel = (pos - self.x[:3]) / delta_t
