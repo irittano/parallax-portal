@@ -212,7 +212,7 @@ class Video:
             "restart with the R key", (10, 60))
 
         y = 100
-        step = 30
+        step = 20
         for index, key in enumerate(prm):
 
             text = "{}: {}".format(key, prm[key])

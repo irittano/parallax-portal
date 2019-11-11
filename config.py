@@ -33,6 +33,10 @@ class Parameters:
         '''
 
         self.parameters = {
+            'camera_device_index': {
+                'descr': 'Numero de camara a usar para la deteccion de caras',
+                'val': 0, 'min': 0, 'max': 4, 'step': 1,
+            },
             'face_detection_min_size': {
                 'descr': 'Tamaño minimo de cara detectada',
                 'val': 50, 'min': 5, 'max': 1000, 'step': 1,
@@ -47,9 +51,42 @@ class Parameters:
                           'paso de la deteccion'),
                 'val': 1.2, 'min': 1.05, 'max': 2, 'step': 0.05,
             },
-            'camera_device_index': {
-                'descr': 'Numero de camara a usar para la deteccion de caras',
-                'val': 0, 'min': 0, 'max': 4, 'step': 1,
+            'px_per_cm': {
+                'descr': 'Algo asi como DPI pero en centimetros',
+                'val': 44, 'min': 10, 'max': 200, 'step': 0.5,
+            },
+            'camera_f': {
+                'descr': 'Parámetro f de la cámara',
+                'val': 400, 'min': 1, 'max': 1000, 'step': 2,
+            },
+            'distance_camera_screen': {
+                'descr': 'Distancia de la posición de la camara al centro de la pantalla en cm',
+                'val': 10, 'min': 1, 'max': 100, 'step': 1,
+            },
+            'eyes_gap': {
+                'descr': 'Distancia entre los ojos en cm',
+                'val': 6.5, 'min': 5, 'max': 8, 'step': 0.1,
+            },
+
+            'filter_enabled': {
+                'descr': 'Si el filtro de Kalman está habilitado o no',
+                'val': True,
+            },
+            'filter_h': {
+                'descr': 'Valor usado en matriz H de Kalman',
+                'val': 0.01, 'min': 0.001, 'max': 5, 'step': 0.001,
+            },
+            'filter_q': {
+                'descr': 'Valor usado en matriz Q de Kalman',
+                'val': 0.1, 'min': 0.001, 'max': 5, 'step': 0.001,
+            },
+            'filter_r': {
+                'descr': 'Valor usado en matriz R de Kalman',
+                'val': 0.2, 'min': 0.0001, 'max': 0.5, 'step': 0.0001,
+            },
+            'filter_a': {
+                'descr': 'Valor usado en matriz A de Kalman',
+                'val': 0.95, 'min': 0.7, 'max': 1, 'step': 0.0001,
             },
 
             'video_show_fps': {
@@ -107,22 +144,6 @@ class Parameters:
                 'descr': 'Alto de pantalla a usar si no es automático',
                 'val': 1080, 'min': 100, 'max': 10000, 'step': 10,
             },
-            'px_per_cm': {
-                'descr': 'Algo asi como DPI pero en centimetros',
-                'val': 44, 'min': 10, 'max': 200, 'step': 0.5,
-            },
-            'camera_f': {
-                'descr': 'Parámetro f de la cámara',
-                'val': 400, 'min': 1, 'max': 1000, 'step': 2,
-            },
-            'distance_camera_screen': {
-                'descr': 'Distancia de la posición de la camara al centro de la pantalla en cm',
-                'val': 10, 'min': 1, 'max': 100, 'step': 1,
-            },
-            'eyes_gap': {
-                'descr': 'Distancia entre los ojos en cm',
-                'val': 6.5, 'min': 5, 'max': 8, 'step': 0.1,
-            }
         }
 
     def __getitem__(self, key):

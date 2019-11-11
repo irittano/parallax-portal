@@ -13,6 +13,7 @@ import scene_3d
 import scene_2d
 import face_detection as fd
 import misc
+from misc import RequestRestartException
 from config import prm
 
 COLOR_BLACK = (0, 0, 0)
@@ -44,7 +45,7 @@ def main():
     # Si está vacía: Significa que el thread de detección no llegó a producir un
     # resultado, el thread principal va a intentar predecir la posición de la
     # cara
-    # Si tiene un tuple: Tiene la cara encontrada en el último frame por el
+    # Si tiene un tuple: Contiene la cara encontrada en el último frame por el
     # thread de detección, el thread principal va a tomarlo y vaciar la cola
     # Si tiene un None: Significa que en el último frame no había cara, el
     # thread principal va a vaciar la cola
@@ -76,10 +77,10 @@ def main():
                 face_queue.put_nowait(face_rect)
             except queue.Full:
                 # Nunca debería pasar
-                print("Error: Detection queue full")
+                print("Error: Queue de detección llena")
 
 
-    def main_thread(face_queue):
+    def main_thread(request_restart_event, face_queue):
 
         def draw_scene_2d(pos, delta_t, screen, screen_s):
             eyes_center = pos[:2]
@@ -110,14 +111,19 @@ def main():
                 pos = pos_filter.predict(delta_t)
                 draw_scene_2d(pos, delta_t, screen, screen_s)
 
-        v.start_loop(loop)
+        try:
+            v.start_loop(loop)
+        except RequestRestartException:
+            request_restart_event.set()
 
     # Usado para indicar al thread de detección que debe parar
     stop_event = threading.Event()
+    # Usado para que el thread principal solicite reinicio
+    request_restart_event = threading.Event()
 
     # Iniciar threads
     main = threading.Thread(target=main_thread,
-            args=(face_queue,))
+            args=(request_restart_event, face_queue))
     detect = threading.Thread(target=detection_thread,
             args=(stop_event,face_queue))
     main.start()
@@ -128,3 +134,6 @@ def main():
     detect.join() # Esperar a que el thread de detección termine
 
     video_capture.release()
+
+    if request_restart_event.is_set():
+        raise RequestRestartException
