@@ -21,25 +21,11 @@ COLOR_WHITE = (255, 255, 255)
 
 def main():
 
-    # Inicializar video para mostrado en pantalla
-    v = video.Video()
-    v.set_mode_2d()
-    screen_s = np.array(v.screen_size)
-
     # Inicializar webcam
     video_capture = cv2.VideoCapture(prm["camera_device_index"])
     cam_width = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
     cam_height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
     cam_size = np.array((cam_width, cam_height))
-
-    # Inicializar detector de cara
-    face_detector = fd.FaceDetector()
-
-    # Inicializar filtro
-    pos_filter = misc.PositionFilter()
-
-    # Crear imagenes a mostrar
-    images = scene_2d.load_images(screen_s)
 
     # Cola que permite comunicación entre threads
     # Si está vacía: Significa que el thread de detección no llegó a producir un
@@ -52,6 +38,10 @@ def main():
     face_queue = queue.Queue(maxsize=1)
 
     def detection_thread(stop_event, face_queue):
+
+        # Inicializar detector de cara
+        face_detector = fd.FaceDetector()
+
         while not stop_event.is_set():
 
             # Obtener frame de video
@@ -79,8 +69,18 @@ def main():
                 # Nunca debería pasar
                 print("Error: Queue de detección llena")
 
-
     def main_thread(request_restart_event, face_queue):
+
+        # Inicializar video para mostrado en pantalla
+        v = video.Video()
+        v.set_mode_2d()
+        screen_s = np.array(v.screen_size)
+
+        # Crear imagenes a mostrar
+        images = scene_2d.load_images(screen_s)
+
+        # Inicializar filtro
+        pos_filter = misc.PositionFilter()
 
         def draw_scene_2d(pos, delta_t, screen, screen_s):
             eyes_center = pos[:2]
@@ -131,7 +131,7 @@ def main():
 
     main.join() # Esperar a que el thread termine (se intente cerrar el programa)
     stop_event.set() # Indicar al thread de detección que debe parar
-    detect.join() # Esperar a que el thread de detección termine
+    detect.join() # Esperar a que el thread de detección termine}
 
     video_capture.release()
 
