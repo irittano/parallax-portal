@@ -8,102 +8,183 @@ from config import prm
 class FaceDetector():
 
     def __init__(self):
+        '''
+        Inicializa la cámara y la detección
 
-        self.video_capture = cv2.VideoCapture(prm["camera_device_index"])
-        cascPath = "res/haarcascade_frontalface_alt.xml"
-        self.faceCascade = cv2.CascadeClassifier(cascPath)
-        self.cam_width = self.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
-        self.cam_height = self.video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        self.faces = []
+        Devuelve tuple con tamaño de cámara en píxeles
+        '''
 
-    def face_detection(self, modo = False):
+        cascade_path = "res/haarcascade_frontalface_alt.xml"
+        self.faceCascade = cv2.CascadeClassifier(cascade_path)
 
-        ret, frame = self.video_capture.read()
-        #El flip es porque estaba mal el eje de coordenadas
-        frame = cv2.flip(frame,1)
+        # Cara encontrada en el frame anterior
+        self.face = None
 
-        if len(self.faces) > 0:
+    def detect(self, frame):
+        '''
+        Capturar imagen de webcam y detectar caras
 
-            face = self.faces[0]
+        Devuelve rectángulo de OpenCV con parámetros de cara detectada o None si
+        no se encontró ninguna cara
 
+        Las unidades devueltas son en píxeles
+        '''
+
+        # Convertir imagen a grises
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        frame_height, frame_width = frame.shape
+
+        # Si en el frame anterior se encontraron caras
+        if self.face is not None:
+
+            face = self.face
+            # Recortar imagen a las proximidades de la cara
             x1 = max(int(face[0]-face[2]*0.2), 0)
             y1 = max(int(face[1]-face[3]*0.2), 0)
-            x2 = min(int(face[0]+face[2]*1.2), int(self.cam_width))
-            y2 = min(int(face[1]+face[3]*1.2), int(self.cam_height))
+            x2 = min(int(face[0]+face[2]*1.2), int(frame_width))
+            y2 = min(int(face[1]+face[3]*1.2), int(frame_height))
             width = x2-x1
             height = y2-y1
             crop_img = frame[y1:y1+height, x1:x1+width]
 
-            self.faces = self.faceCascade.detectMultiScale(
+            # Buscar caras sólo en la imagen recortada
+            faces = self.faceCascade.detectMultiScale(
                 crop_img,
-                scaleFactor=1.2,
-                minNeighbors=15,
-                minSize=(50, 50),
-            )
-            if len(self.faces) > 0:
-                self.faces[0][0] += x1
-                self.faces[0][1] += y1
-
-        else:
-            self.faces = self.faceCascade.detectMultiScale(
-                frame,
-                scaleFactor=1.2,
-                minNeighbors=15,
-                minSize=(50, 50),
+                scaleFactor=prm['face_detection_scale_factor'],
+                minNeighbors=prm['face_detection_min_neighbors'],
+                minSize=(
+                    prm['face_detection_min_size'],
+                    prm['face_detection_min_size']
+                ),
             )
 
-        if modo == False:
-
-            for (x, y, w, h) in self.faces:
-                left_eye = (int(x+0.30*w), int(y+0.37*h))
-                right_eye = (int(x+0.70*w), int(y+0.37*h))
-                eyes_center = (int(x+0.5*w), int(y+0.37*h))
-
-                normRightEye = (right_eye[0] - self.cam_width/2)/prm["camera_f"]
-                normLeftEye = (left_eye[0] - self.cam_width/2)/prm["camera_f"]
-                normCenterX = (eyes_center[0] - self.cam_width/2)/prm["camera_f"]
-                normCenterY = (eyes_center[1] - self.cam_height/2)/prm["camera_f"]
-
-                # Obtener coodenadas espaciales
-                tempZ = prm["eyes_gap"]/(normRightEye - normLeftEye)
-                tempX = normCenterX*tempZ
-                # Suponiendo webcam ubicada arriba a 1cm del borde superior
-                tempY = -normCenterY*tempZ + prm["distance_camera_screen"]
-                print(normCenterX, normCenterY)
-
-                return (normCenterX, normCenterY), w, h
-        else:
-            if len(self.faces) == 0:
-                return frame
-
+            # La cara encontrada tiene coordenadas respecto a la imagen
+            # recortada, entonces convertimos a las coordenadas que tendría la
+            # cara en la imagen completa
+            if len(faces) > 0:
+                self.face = faces[0]
+                self.face[0] += x1
+                self.face[1] += y1
             else:
-                face = self.faces[0]
-                x = int(face[0])
-                y = int(face[1])
-                a = int(face[2])
-                h = int(face[3])
-                left_eye =(int(x+0.3*a) , int(y+0.37*h))
-                right_eye = (int(x+0.7*a), int(y+0.37*h))
+                self.face = None
 
-                face = cv2.rectangle(frame,(x, y),(x+a,y+h),(255,0,0),2)
-                cv2.circle(frame, left_eye, int(0.05*a), (255,255,255), 2)
-                cv2.circle(frame, right_eye, int(0.05*a), (255,255,255), 2)
-                print(left_eye, right_eye)
-                return frame
+        # En el frame anterior no se encontró ninguna cara
+        else:
+            # Buscar caras en la imagen completa
+            faces = self.faceCascade.detectMultiScale(
+                frame,
+                scaleFactor=prm['face_detection_scale_factor'],
+                minNeighbors=prm['face_detection_min_neighbors'],
+                minSize=(
+                    prm['face_detection_min_size'],
+                    prm['face_detection_min_size']
+                ),
+            )
 
-    def __del__(self):
+            if len(faces) > 0:
+                self.face = faces[0]
+            else:
+                self.face = None
 
-        self.video_capture.release()
-        cv2.destroyAllWindows()
+        return self.face
+
+def face_rect_to_norm(cam_size, face_rect):
+    '''
+    Convertir rectángulo de cara en píxeles a posición normalizada de cara
+
+    Devuelve un tuple con la posición normalizada de la cara y la distancia
+    normalizada entre los ojos
+    '''
+
+    x, y, w, h = face_rect
+    cam_size = np.array(cam_size)
+
+    # Distancia entre ojos aproximada en píxeles
+    eyes_distance = 0.4 * w
+    # Coordenadas en píxeles de punto medio entre los dos ojos
+    center = np.array((
+        int(x + 0.5 * w),
+        int(y + 0.37 * h)
+    ))
+
+    # Convertir a unidades normalizadas usando el parámetro f de cámara
+    norm_eyes_distance = eyes_distance / prm["camera_f"]
+    norm_center = (center - cam_size / 2) / prm["camera_f"]
+
+    return norm_center, norm_eyes_distance
+
+def face_rect_to_cm(cam_size, face_rect):
+    '''
+    Convertir rectángulo de cara en píxeles a posición real tridimensional de la
+    cara
+
+    Devuelve un np.ndarray con coordenadas (X, Y, Z) en cm, siendo Z siempre
+    positivo
+    '''
+
+    norm_center, norm_eyes_distance = face_rect_to_norm(cam_size, face_rect)
+
+    z = prm['eyes_gap'] / norm_eyes_distance,
+    x = norm_center[0] * z
+    y = -norm_center[1] * z + prm["distance_camera_screen"]
+
+    return np.array((x, y, z))
+
+def face_rect_draw(frame, face_rect):
+    '''
+    Dibujar rectangulo de cara sobre frame de OpenCV
+    '''
+    x, y, w, h = face_rect
+    left_eye =(int(x+0.3*w) , int(y+0.37*h))
+    right_eye = (int(x+0.7*w), int(y+0.37*h))
+
+    face = cv2.rectangle(frame,(x, y),(x+w,y+h),(255,0,0),2)
+    cv2.circle(frame, left_eye, int(0.05*w), (255,255,255), 2)
+    cv2.circle(frame, right_eye, int(0.05*w), (255,255,255), 2)
+    return frame
 
 def demo():
 
+    # Inicializar video para mostrado en pantalla
+    v = video.Video()
+    v.set_mode_2d()
+
+    # Inicializar webcam
+    video_capture = cv2.VideoCapture(prm["camera_device_index"])
+    cam_width = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+    cam_height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+
+    # Inicializar detector de cara
     face_detector = FaceDetector()
 
-    while True:
+    def loop(screen, delta_t, window_w, window_h):
 
-        frame = face_detector.face_detection(modo = True)
-        cv2.imshow('Video', cv2.flip(frame,1))
+        # Obtener frame de video
+        _, cam_frame = video_capture.read()
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+        # No se bien por que pero hay que espejar la imagen para que las
+        # coordenadas sean las que esperamos
+        cam_frame = cv2.flip(cam_frame, 1)
+
+        # Detectar caras
+        face_rect = face_detector.detect(cam_frame)
+
+        # Dibujar rectangulos sobre caras
+        if face_rect is not None:
+            face_rect_draw(cam_frame, face_rect)
+
+        # Convertir color, necesario para dibujado en pygame
+        cam_frame = cv2.cvtColor(cam_frame, cv2.COLOR_BGR2RGB)
+
+        # Intercambiar filas por columnas de la imagen, necesario para dibujado
+        # en pygame
+        cam_frame = cam_frame.swapaxes(0,1)
+
+        # Dibujar en pantalla de pygame
+        surf = pygame.surfarray.make_surface(cam_frame)
+        surf = pygame.transform.scale(surf, (window_w, window_h))
+        screen.blit(surf, (0, 0))
+
+    v.start_loop(loop)
+
+    video_capture.release()

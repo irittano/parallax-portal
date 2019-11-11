@@ -141,9 +141,18 @@ class Video:
                         if event.key == K_LEFT:
                             prm.decrement(prm.index(selected))
 
+            # Limitar FPS a 60
+            # clock.tick_busy_loop() consume 100% del CPU, de lo contrario usar
+            # clock.tick() que es menos preciso pero no consume CPU
+            fps_limit = 60
+
+            if self.mode == "3d":
+                # No es necesario porque el modo 3D usa vsync
+                fps_limit = 0
+            delta_t = clock.tick_busy_loop(fps_limit) / 1000
+
             # Tiempo pasado desde ultimo frame en segundos, si es cero le pongo
             # un valor chico para no tener problemas con divisiones por cero
-            delta_t = clock.tick() / 1000
             if delta_t == 0:
                 delta_t = 1e-9
 
@@ -203,7 +212,7 @@ class Video:
             "restart with the R key", (10, 60))
 
         y = 100
-        step = 30
+        step = 20
         for index, key in enumerate(prm):
 
             text = "{}: {}".format(key, prm[key])

@@ -88,5 +88,6 @@ while True:
         # pedido un reinicio
         break
 
+    # Excepción lanzada por el programa para requerir un reinicio
     except RequestRestartException:
-        print("Restarting (leaving parameters untouched)")
+        print("Reiniciando (manteniendo las modificaciones de parámetros)")

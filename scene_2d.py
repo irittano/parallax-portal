@@ -13,83 +13,240 @@ COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
 
 class Image:
-    '''
-    Carga una imagen y le da los valores relevantes para el dibujado
-    path = STRING relativo al proyecto, imagenes se encuentran en ./res/.jpg
-    draw_pos = TUPLE relativo al tamaño de la pantalla
-    scaling_factor = FLOAT ancho de la imagen, mantiene relacion w:h
-    move_ratio = FLOAT factor de movimiento de la imagen
-    scroll_path = STRING relativo al proyecto, imagen de descripcion del procer
-    x_threshold = TUPLE (min,max) num entre 0-1 porcentaje de la pantalla
-    scroll_pos = TUPLE relativo al tamaño de la pantalla, similar a draw_pos
-    '''
 
     def __init__(
         self,
         path,
-        draw_pos,
+        img_pos,
         scaling_factor,
         move_ratio,
-        window, scroll_path = None, x_threshold = None, scroll_pos = None
+        window_s,
+        scroll_path = None,
+        x_threshold = None,
+        scroll_pos = None
     ):
+        '''
+        Carga una imagen y le da los valores relevantes para el dibujado
+
+        Representa a por ejemplo un prócer que consiste de una imagen de si
+        mismo pero además contiene un 'scroll' que es otra imagen arriba que
+        viene a ser un cartel con una descripción
+
+        Los últimos argumentos son opcionales ya que pueden haber instancias que
+        no tienen cartel o 'scroll', por ejemplo la imagen de fondo
+
+        Argumentos:
+
+        - path (string): Ruta a la imagen relativo al proyecto, generalmente es
+          './res/*.jpg'
+
+        - img_pos (tuple): Posición de dibujado, relativo al tamaño de la
+          pantalla
+
+        - scaling_factor (float): Ancho de la imagen, en relación con el ancho
+          de la pantalla. Normalmente un número menor a 1. Se utiliza para
+          escalar la imagen antes de dibujar, el escalado mantendrá la relación
+          de aspecto de la imagen original
+
+        - move_ratio (float): Factor de movimiento de la imagen en relación a la
+          posición de la cabeza. A mayor factor da sensación de mayor
+          profundidad
+
+        - scroll_path (string): Ruta a la imagen de cartel a poner sobre la
+          cabeza, relativo al proyecto, generalmente es './res/*.jpg'
+
+        - x_threshold (tuple): Tuple con (min, max), en donde cada número está
+          entre 0 y 1. Indica el intervalo en el eje X en donde tiene que estar
+          ubicada la posición de la cara detectada para mostrar el scroll o
+          cartel sobre la cabeza de este procer
+
+        - scroll_pos (tuple): Posición de dibujado de scroll o cartel sobre la
+          cabeza, similar a img_pos.
+        '''
+
         self.path = path
-        self.draw_pos = draw_pos
+        self.img_pos = img_pos
         self.scaling_factor = scaling_factor
         self.move_ratio = move_ratio
         self.scroll_path = scroll_path
         self.x_threshold = x_threshold
         self.scroll_pos = scroll_pos
-        self.alpha = 0
-
-        if (scroll_path):
-            scroll = pygame.image.load("./res/scroll.png").convert_alpha()
-            scroll_w = window[0] * 0.15
-            scroll_h = ( scroll_w / scroll.get_rect().size[0] ) * scroll.get_rect().size[1]
-            self.scaled_scroll = pygame.transform.scale(scroll, (int(scroll_w),int(scroll_h)))
-            self.scaled_scroll.set_alpha(0)
-        else:
-            pass
+        self.scroll_alpha = 0
 
         image = pygame.image.load(path).convert_alpha()
-        w = window[0] * scaling_factor
-        h = ( w / image.get_rect().size[0] ) * image.get_rect().size[1]
-        self.scaled_img = pygame.transform.scale(image, (int(w), int(h)))
+        _, _, img_w, img_h= image.get_rect()
 
-    def draw_image(self, mouse, window, screen, delta_t):
-        #Toma el cursor de pygame y las dimensiones de la pantalla en forma
-        #de np.array
-        centered_position = window * self.draw_pos - np.array(self.scaled_img.get_rect().size) / 2
-        #norm_pos = (int(mouse[0] * (window[0] / 2)), int(mouse[1] * (window[1] /2)))
+        # Nuevo tamaño en píxeles
+        width = int(window_s[0] * scaling_factor)
+        height = int((width / img_w) * img_h)
+        self.scaled_img = pygame.transform.scale(image, (width, height))
+        self.scaled_img_size = np.array(self.scaled_img.get_rect().size)
 
-        position = centered_position + self.move_ratio * (mouse * window )#es position + o -?
-        #print(window)
-        screen.blit(self.scaled_img, position)
+        # En el caso que incluya un scroll
+        if (scroll_path):
+            scroll_img = pygame.image.load(scroll_path).convert_alpha()
+            _, _, img_w, img_h = scroll_img.get_rect()
 
+            # Nuevo tamaño en píxeles
+            scroll_w = int(window_s[0] * 0.15)
+            scroll_h = int((scroll_w / img_w) * img_h)
+            self.scaled_scroll = pygame.transform.scale(scroll_img, (scroll_w, scroll_h))
+            self.scaled_scroll_size = np.array(self.scaled_scroll.get_rect().size)
+
+    def draw(self, face_pos, window_s, screen, delta_t):
+        '''
+        Dibuja la imagen en una posición que depende de la posición de la cara
+
+        Toma como argumento la posición normalizada de la cara (aproximadamente
+        entre -1 y 1) y la usa para mover levemente la posicón original de la
+        imagen y dar efecto de paralaje
+
+        Dar posición y tamaño de pantalla como np.ndarray
+        '''
+        # Multiplicar posición de cabeza por una cierta sensibilidad, mientras
+        # mayor es la sensibilidad da la sensación que las imagenes están a
+        # mayor profundidad
+        face_pos = face_pos * prm['scene_2d_sensibility']
+
+        # Posicion donde se dibujaria la imagen en píxeles si no hubiera
+        # movimiento
+        centered_pos = window_s * self.img_pos - self.scaled_img_size / 2
+
+        # Posición donde se dibujará la imagen en pixeles
+        pos = centered_pos + self.move_ratio * face_pos * window_s
+
+        # Dibujar imagen
+        screen.blit(self.scaled_img, pos)
+
+        # En el caso que incluya un scroll
         if (self.x_threshold):
-            centered_scroll_pos = window * self.scroll_pos - np.array(self.scaled_scroll.get_rect().size) / 2
-            scroll_pos = centered_scroll_pos + self.move_ratio * (mouse - window / 2)
+            # Posicion donde se dibujaria el scroll en píxeles si no hubiera
+            # movimiento
+            centered_scroll_pos = window_s * self.scroll_pos - self.scaled_scroll_size / 2
 
-            screen.blit(self.scaled_scroll, scroll_pos)
-            alpha_per_sec = 180
-            if ( self.x_threshold[0] * window[0] < mouse[0] < self.x_threshold[1] * window[0] ):
+            # Posicion donde se dibujará al scroll en pixeles
+            scroll_pos = centered_scroll_pos + self.move_ratio * face_pos * window_s
 
-                self.alpha += alpha_per_sec * delta_t
-                self.scaled_scroll.set_alpha(self.alpha)
-                if self.alpha > 255:
-                    self.alpha = 255
-
-                screen.blit(self.scaled_scroll, scroll_pos)
+            # Disminuir o aumentar alpha del scroll dependiendo si se está
+            # dentro de los límites o no.
+            alpha_per_sec = prm['scene_2d_alpha_per_sec']
+            # Convertir posición normalizada (entre -1 y 1) a valores utilizados
+            # para los límites (entre 0 y 1). Esto es algo aproximado a ojo
+            x_pos = face_pos[0] + 0.5
+            if (self.x_threshold[0] < x_pos < self.x_threshold[1]):
+                self.scroll_alpha += alpha_per_sec * delta_t
+                self.scaled_scroll.set_alpha(self.scroll_alpha)
+                if self.scroll_alpha > 255:
+                    self.scroll_alpha = 255
             else:
-                self.alpha-= alpha_per_sec * delta_t
-                self.scaled_scroll.set_alpha(self.alpha)
-                if self.alpha < 0:
-                    self.alpha = 0
-                screen.blit(self.scaled_scroll, scroll_pos)
+                self.scroll_alpha -= alpha_per_sec * delta_t
+                self.scaled_scroll.set_alpha(self.scroll_alpha)
+                if self.scroll_alpha < 0:
+                    self.scroll_alpha = 0
 
+            # Dibujar scroll
+            screen.blit(self.scaled_scroll, scroll_pos)
 
-        else:
-            pass
-
+def load_images(window_s):
+    '''
+    Cargar imágenes de la escena en una lista
+    '''
+    return [
+        Image(
+            "./res/casa_tucuman.jpg",
+            img_pos=(0.5, 0.65),
+            scaling_factor=1.9,
+            move_ratio=0.55,
+            window_s=window_s
+        ),
+        Image(
+            "./res/moreno.png",
+            img_pos=(1.08, 0.8),
+            scaling_factor=0.15,
+            move_ratio=0.45,
+            window_s=window_s
+        ),
+        Image(
+            "./res/paso.png",
+            img_pos=(1, 0.8),
+            scaling_factor=0.2,
+            move_ratio=0.45,
+            window_s=window_s,
+            scroll_path="./res/scroll_paso.png",
+            x_threshold=(2/15, 3/15),
+            scroll_pos=(1.025, 0.3)
+        ),
+        Image(
+            "./res/larrea.png",
+            img_pos=(-0.05, 0.85),
+            scaling_factor=0.3,
+            move_ratio=0.45,
+            window_s=window_s,
+            scroll_path="./res/scroll_larrea.png",
+            x_threshold=(13/15, 14/15),
+            scroll_pos=(-0.05, 0.35)
+        ),
+        Image(
+            "./res/matheu.png",
+            img_pos=(0.08, 0.8),
+            scaling_factor=0.3,
+            move_ratio=0.4,
+            window_s=window_s,
+            scroll_path="./res/scroll_matheu.png",
+            x_threshold=(12/15, 13/15),
+            scroll_pos=(0.08, 0.3)
+        ),
+        Image(
+            "./res/alberti.png",
+            img_pos=(0.85, 0.8),
+            scaling_factor=0.3,
+            move_ratio=0.35,
+            window_s=window_s,
+            scroll_path="./res/scroll_alberti.png",
+            x_threshold=(3/15, 4/15),
+            scroll_pos=(0.85, 0.3)
+        ),
+        Image(
+            "./res/azcuenaga.png",
+            img_pos=(0.2, 0.8),
+            scaling_factor=0.3,
+            move_ratio=0.35,
+            window_s=window_s,
+            scroll_path="./res/scroll_azcuenaga.png",
+            x_threshold=(11/15, 12/15),
+            scroll_pos=(0.2, 0.3)
+        ),
+        Image(
+            "./res/belgrano.png",
+            img_pos=(0.7, 0.75),
+            scaling_factor=0.3,
+            move_ratio=0.3,
+            window_s=window_s,
+            scroll_path="./res/scroll_belgrano.png",
+            x_threshold=(4/15, 5/15),
+            scroll_pos=(0.7, 0.25)
+        ),
+        Image(
+            "./res/castelli.png",
+            img_pos=(0.3, 0.75),
+            scaling_factor=0.3,
+            move_ratio=0.25,
+            window_s=window_s,
+            scroll_path="./res/scroll_castelli.png",
+            x_threshold=(10/15, 11/15),
+            scroll_pos=(0.3, 0.25)
+        ),
+        Image(
+            "./res/saavedra.png",
+            img_pos=(0.5, 0.9),
+            scaling_factor=0.5,
+            move_ratio=0.2,
+            window_s=window_s,
+            scroll_path="./res/scroll_saavedra.png",
+            x_threshold=(7/15, 9/15),
+            scroll_pos=(0.45, 0.2)
+        ),
+    ]
 
 def demo():
     print("Entrado a escena 2D")
@@ -100,33 +257,17 @@ def demo():
 
     window_s = np.array(v.screen_size)
 
-    sprites = [ Image("./res/casa_tucuman_16_9.jpg", 0.5, 1.3, 0.55, window_s),
-                Image("./res/moreno.png", (1.08, 0.8), 0.15, 0.45, window_s),
-                Image("./res/paso.png", (1, 0.8), 0.2, 0.45, window_s,
-                "./res/scroll.png", (2/15,3/15),(1.025, 0.3)),
-                Image("./res/larrea.png", (-0.05, 0.85), 0.3, 0.45, window_s,
-                "./res/scroll.png", (13/15,14/15),(-0.05, 0.35)),
-                Image("./res/matheu.png", (0.08, 0.8), 0.3, 0.4, window_s,
-                "./res/scroll.png", (12/15,13/15),(0.08, 0.3)),
-                Image("./res/alberti.png", (0.85, 0.8), 0.3, 0.35, window_s,
-                "./res/scroll.png", (3/15,4/15),(0.85, 0.3)),
-                Image("./res/azcuenaga.png", (0.2, 0.8), 0.3, 0.35, window_s,
-                "./res/scroll.png", (11/15,12/15),(0.2, 0.3)),
-                Image("./res/belgrano.png", (0.7, 0.75), 0.3, 0.3, window_s,
-                "./res/scroll.png", (4/15,5/15),(0.7, 0.25)),
-                Image("./res/castelli.png", (0.3, 0.75), 0.3, 0.25, window_s,
-                "./res/scroll.png", (10/15,11/15),(0.3, 0.25)),
-                Image("./res/saavedra.png", (0.5, 0.9), 0.5, 0.2, window_s,
-                "./res/scroll.png", (7/15,9/15),(0.45, 0.2)),
-            ]
+    images = load_images(window_s)
 
     def loop(screen, delta_t, window_w, window_h):
 
         screen.fill(COLOR_BLACK)
 
-        for sprite in sprites:
-            mouse = pygame.mouse.get_pos()
-            pos = (mouse[0]-window_w/2)/window_w, (mouse[1]-window_h/2)/window_h
-            sprite.draw_image(np.array(pos), window_s, screen, delta_t)
+        # Simular posición normalizada de cara a partir del mouse
+        mouse = np.array(pygame.mouse.get_pos())
+        face_pos = (mouse - window_s / 2) / window_s
+
+        for image in images:
+            image.draw(face_pos, window_s, screen, delta_t)
 
     v.start_loop(loop)

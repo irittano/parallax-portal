@@ -40,6 +40,8 @@ Herramientas:
 
 - https://christopherchudzicki.github.io/MathBox-Demos/parametric_curves_3D.html
 
+- https://www.cs.utexas.edu/~teammco/misc/kalman_filter/
+
 ## Dependencias Python
 
 Usar Pipenv:
@@ -103,7 +105,10 @@ integre todo
 
 - Estampillas: Dominio público: https://commons.wikimedia.org/wiki/Stamps_of_Argentina
 
-- `casa_tucuman.jpg`: Fulviusbsas [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)]
+- `casa_tucuman.jpg`: Modificación (filtrado) de
+  https://www.flickr.com/photos/culturaargentina/27472263894/in/photostream/
+  Secretaría de Cultura de la Nación Attribution-ShareAlike 2.0 Generic
+  (CC BY-SA 2.0)
 
 - `belgrano.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Retrato_del_Gral._Manuel_Belgrano_-_Atribu%C3%ADdo_a_Francois_Casimir_Carbonnier.jpg
 
@@ -143,9 +148,9 @@ make
 ./bin/screenReality
 ```
 
-## Detalles C++
+## Detalles
 
-- El parametro `pixelNbrPerCm` es el pixeles por centimetro del monitor y hay
+- El parametro `pixel_per_cm` es el pixeles por centimetro del monitor y hay
   que ajustarlo
 
 - Habia un error en el programa original en donde `cx` y `cy` eran el doble de
@@ -159,6 +164,11 @@ make
 - Ayuda mucho poner una caja para continuar el efecto fuera de la pantalla
 
 - Ayuda mucho cerrar un ojo
+
+- Es importantísimo que haya suficiente luz iluminando la cara de la persona.
+  Tanto para la detección como para la tasa de refresco. Por ejemplo mi webcam
+  funciona a 30fps pero noté que en ambientes no tan oscuros devuelve imágenes
+  a 15fps
 
 ## Atajos de teclado C++
 
@@ -178,9 +188,6 @@ make
   para que cuando pierda detección siga moviendose hacia donde iba y lentamente
   se vaya centrando. Filtrar un poco la ubicación de la cámara con Kalman o al
   menos un promedio de las últimas 5 posiciones metele
-
-- Hacer andar parallax con la escena 3d. Hacer la interfaz facil de usar en
-  scene_3d
 
 - Hacer que scene2d reciba la posición de la cara en unidades adimensionales (ni
   pixeles ni cm) y agregar un prm que sea la sensibilidad

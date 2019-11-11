@@ -34,6 +34,7 @@ import PIL.Image
 import numpy as np
 import os
 import random
+import misc
 
 MIN_Z = -60 # cm
 NEAR_Z = 1 # cm
@@ -572,8 +573,7 @@ def demo():
 
     def loop(screen, delta_t, screen_w, screen_h):
         screen_s = np.array((screen_w, screen_h))
-        cam_pos = get_cam_from_mouse(screen_s)
+        cam_pos = np.array(get_cam_from_mouse(screen_s))
         scene.loop(delta_t, cam_pos)
 
     v.start_loop(loop)
-
