@@ -84,7 +84,7 @@ class Image:
 
         # En el caso que incluya un scroll
         if (scroll_path):
-            scroll_img = pygame.image.load("./res/scroll.png").convert_alpha()
+            scroll_img = pygame.image.load(scroll_path).convert_alpha()
             _, _, img_w, img_h = scroll_img.get_rect()
 
             # Nuevo tamaño en píxeles
@@ -153,9 +153,9 @@ def load_images(window_s):
     '''
     return [
         Image(
-            "./res/casa_tucuman_16_9.jpg",
-            img_pos=0.5,
-            scaling_factor=1.3,
+            "./res/casa_tucuman.jpg",
+            img_pos=(0.5, 0.65),
+            scaling_factor=1.9,
             move_ratio=0.55,
             window_s=window_s
         ),
@@ -172,7 +172,7 @@ def load_images(window_s):
             scaling_factor=0.2,
             move_ratio=0.45,
             window_s=window_s,
-            scroll_path="./res/scroll.png",
+            scroll_path="./res/scroll_paso.png",
             x_threshold=(2/15, 3/15),
             scroll_pos=(1.025, 0.3)
         ),
@@ -182,7 +182,7 @@ def load_images(window_s):
             scaling_factor=0.3,
             move_ratio=0.45,
             window_s=window_s,
-            scroll_path="./res/scroll.png",
+            scroll_path="./res/scroll_larrea.png",
             x_threshold=(13/15, 14/15),
             scroll_pos=(-0.05, 0.35)
         ),
@@ -192,7 +192,7 @@ def load_images(window_s):
             scaling_factor=0.3,
             move_ratio=0.4,
             window_s=window_s,
-            scroll_path="./res/scroll.png",
+            scroll_path="./res/scroll_matheu.png",
             x_threshold=(12/15, 13/15),
             scroll_pos=(0.08, 0.3)
         ),
@@ -202,7 +202,7 @@ def load_images(window_s):
             scaling_factor=0.3,
             move_ratio=0.35,
             window_s=window_s,
-            scroll_path="./res/scroll.png",
+            scroll_path="./res/scroll_alberti.png",
             x_threshold=(3/15, 4/15),
             scroll_pos=(0.85, 0.3)
         ),
@@ -212,7 +212,7 @@ def load_images(window_s):
             scaling_factor=0.3,
             move_ratio=0.35,
             window_s=window_s,
-            scroll_path="./res/scroll.png",
+            scroll_path="./res/scroll_azcuenaga.png",
             x_threshold=(11/15, 12/15),
             scroll_pos=(0.2, 0.3)
         ),
@@ -222,7 +222,7 @@ def load_images(window_s):
             scaling_factor=0.3,
             move_ratio=0.3,
             window_s=window_s,
-            scroll_path="./res/scroll.png",
+            scroll_path="./res/scroll_belgrano.png",
             x_threshold=(4/15, 5/15),
             scroll_pos=(0.7, 0.25)
         ),
@@ -232,7 +232,7 @@ def load_images(window_s):
             scaling_factor=0.3,
             move_ratio=0.25,
             window_s=window_s,
-            scroll_path="./res/scroll.png",
+            scroll_path="./res/scroll_castelli.png",
             x_threshold=(10/15, 11/15),
             scroll_pos=(0.3, 0.25)
         ),
@@ -242,7 +242,7 @@ def load_images(window_s):
             scaling_factor=0.5,
             move_ratio=0.2,
             window_s=window_s,
-            scroll_path="./res/scroll.png",
+            scroll_path="./res/scroll_saavedra.png",
             x_threshold=(7/15, 9/15),
             scroll_pos=(0.45, 0.2)
         ),

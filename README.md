@@ -105,7 +105,10 @@ integre todo
 
 - Estampillas: Dominio público: https://commons.wikimedia.org/wiki/Stamps_of_Argentina
 
-- `casa_tucuman.jpg`: Fulviusbsas [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)]
+- `casa_tucuman.jpg`: Modificación (filtrado) de
+  https://www.flickr.com/photos/culturaargentina/27472263894/in/photostream/
+  Secretaría de Cultura de la Nación Attribution-ShareAlike 2.0 Generic
+  (CC BY-SA 2.0)
 
 - `belgrano.png`: Dominio público: https://commons.wikimedia.org/wiki/File:Retrato_del_Gral._Manuel_Belgrano_-_Atribu%C3%ADdo_a_Francois_Casimir_Carbonnier.jpg
 
