@@ -192,9 +192,10 @@ class ObjectVAO:
         GL.glUniformMatrix4fv(LOCATIONS['MVP'], 1, GL.GL_FALSE,
             glm.value_ptr(mvp))
 
-        # Usar textura como uniform, parece que no es necesario? TODO
+        # Usar textura como uniform
         GL.glActiveTexture(GL.GL_TEXTURE0)
         GL.glBindTexture(GL.GL_TEXTURE_2D, texture)
+        # Esto no es necesario?
         #  GL.glUniform1i(texture, LOCATIONS['texture'])
 
         # Dibujar
@@ -360,7 +361,7 @@ class Cards:
                     glm.vec3(0, 0, -1 * self.screen_s_cm[0]))
             # 2°: Escalar imagen
             scale_factor = self.screen_s_cm[0] * prm['scene_3d_card_size']
-            # TODO
+            # TODO: Hacer que no sean cuadrados
             model = glm.scale(model,
                     glm.vec3(self.screen_s_cm[0]/10, self.screen_s_cm[0]/10, self.screen_s_cm[0]/10))
             # 1°: Rotar
