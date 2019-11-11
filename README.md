@@ -44,14 +44,21 @@ Herramientas:
 
 ## Dependencias Python
 
-Usar Pipenv:
+Usar Pipenv para instalar todas las dependencias en un virtualenv:
 
 ```
 pipenv install
 ```
 
-Sino se puede instalar con `pip3` cada dependencia que aparece en el archivo
-`Pipfile`
+Puede que tarde muchísimo en `Locking...`, pero después de un tiempo largo
+termina.
+
+Si no anda puede que algunas dependencias como pyopengl requieran paquetes de
+GNU/Linux, en tal caso mirar la lista de dependencias en el archivo `Pipfile` y
+buscar los requerimientos de cada dependencia.
+
+Si no se quiere usar Pipenv, instalar cada paquete que figura en el archivo
+`Pipfile` con `pip3`.
 
 ## Ejecucion de Python
 
@@ -61,13 +68,13 @@ Si se usa Pipenv primero hacer:
 pipenv shell
 ```
 
-Despues para iniciar el programa posta:
+Despues para iniciar el programa:
 
 ```
 ./main.py parallax
 ```
 
-Para probar las distintas partes puede hacer
+Para probar las distintas demos se puede hacer:
 
 ```
 ./main.py scene_3d
@@ -75,33 +82,34 @@ Para probar las distintas partes puede hacer
 ...
 ```
 
+Presionar tecla espacio para ver el menú de debug.
+
 ## Estructura Python
 
 Hay varios archivos, la idea es que `main.py` dependiendo de los argumentos
 inicie el programa posta en el `main()` de `parallax.py` o ejecute funciones
-`main()` en distintos modulos. De esa forma cada modulo tiene una "demo" o una
-prueba cortita para ver que anda lo que esta ahi adentro. Cada uno puede
-trabajar en esa demo sin pisarse y mas adelante hacemos `parallax.py` que
-integre todo
+`demo()` en distintos modulos. De esa forma cada modulo tiene una "demo" o una
+prueba cortita para ver que anda lo que esta ahi adentro. Cada uno pudo
+trabajar en esa demo sin pisarse y mas adelante hicimos `parallax.py` que
+integró todo.
 
 - `main.py`: Es el punto de inicio, el programa se ejecuta desde aca.
 
 - `parallax.py`: Importa todos los modulos y usa las funciones de todos los
   demas archivos, tiene una funcion `main()` que corre el programa en serio.
 
-- `video.py`: Maneja la ventana, pygame y las cosas basicas de OpenGL
+- `video.py`: Maneja la ventana, pygame y las cosas basicas de OpenGL.
 
-- `scene_3d.py`: Tiene las funciones de dibujado para OpenGL y en su `main()`
-  tiene una demo que al menos muestra algo para verificar que anda OpenGL
+- `scene_3d.py`: Tiene las funciones de dibujado para OpenGL y en su `demo()`
+  muestra la escena 2D manejada por el mouse.
 
-- `scene_2d.py`: Tiene las funciones de dibujado 2D en pygame y en su `main()`
-  tiene una demo que al menos muestra algo para verificar que anda pygame
+- `scene_2d.py`: Tiene las funciones de dibujado 2D en pygame y en su `demo()`
+  muestra la escena 3D manejada por el mouse.
 
 - `face_detection.py`: Tiene las funciones de deteccion de cara en OpenCV y en
-  su `main()` tiene una demo que al menos muestra algo para verificar que anda
-  OpenCV
+  su `demo()` muestra la cámara y la cara detectada
 
-## Atribuciones
+## Atribuciones de imágenes
 
 - Estampillas: Dominio público: https://commons.wikimedia.org/wiki/Stamps_of_Argentina
 
@@ -132,22 +140,6 @@ integre todo
 
 - Skybox: Ivar Leidus [CC BY-SA 3.0 ee (https://creativecommons.org/licenses/by-sa/3.0/ee/deed.en)] https://commons.wikimedia.org/wiki/File:Suurupi_alumine_tuletorn_panoraam.jpg
 
-## Dependencias C++
-
-- OpenCV 2.4.10 : `sudo apt install libopencv-dev`
-
-- OpenGL & freeGLUT : `sudo apt install libxi-dev libxmu-dev freeglut3-dev`
-
-## Ejecución C++
-
-```
-mkdir build
-cd build
-cmake ..
-make
-./bin/screenReality
-```
-
 ## Detalles
 
 - El parametro `pixel_per_cm` es el pixeles por centimetro del monitor y hay
@@ -170,40 +162,24 @@ make
   funciona a 30fps pero noté que en ambientes no tan oscuros devuelve imágenes
   a 15fps
 
-## Atajos de teclado C++
-
-* **Q** : *Salir*
-* **F** : *Pantalla completa*
-* **I** : *Invertir imagen de cámara*
-* **C** : *Mostrar u ocultar camara*
-* **D** : *Mostrar información de detección*
-* **+/-** : *Cambiar tamaño de ventana de cámara*
-* **M** : *Cambiar PolygonMode entre LINE y FILL*
-* **P** : *Cambiar ProjectionMode entre Off-Axis y Regular*
-* **B** : *Bounding box display ON/OFF*
-
 ## Tareas
 
-- Disminuir tembleque, ver si ponerle como inercia a la posicion de la camara
-  para que cuando pierda detección siga moviendose hacia donde iba y lentamente
-  se vaya centrando. Filtrar un poco la ubicación de la cámara con Kalman o al
-  menos un promedio de las últimas 5 posiciones metele
-
-- Hacer que scene2d reciba la posición de la cara en unidades adimensionales (ni
-  pixeles ni cm) y agregar un prm que sea la sensibilidad
+- Hacer que la posicion de la camara cuando pierda detección siga moviendose
+  hacia donde iba y lentamente se vaya centrando
 
 - Ver que hacer para pasar de escena a escena, por ejemplo al detectar
   movimiento de la mano al frente de la camara
 
 - Ver si estamos usando el XML del haarcascade correcto
 
-- Documentar de que es importante que haya luz de frente
+- Documentar de que es importante que haya luz de frente, también que en
+  condiciones de poca luz los fps disminuyen
 
 - Si va al museo, poner un mensaje que diga algo de "No hay caras detectadas,
   acercarse para ver el efecto, una persona a la vez"
 
 - Hacer configurable en prm la ubicación de la camara respecto al centro de la
-  pantalla.
+  pantalla. Cambiar nombre del prm
 
 - En parallax calcular posicion en cm a partir de posicion en pixeles y del f
   de la camara que tambien tiene que ser configurable
@@ -213,9 +189,3 @@ make
 - Documentar que instalar GLM y OpenGL no es tan facil
 
 - Hacer mas linda la escena 3d
-
-- Buscar imagenes temáticas
-
-## Preguntar
-
-- Posibilidad de comprar una PC Mini ITX y hasta cuánto gastar

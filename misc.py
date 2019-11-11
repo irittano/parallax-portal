@@ -125,7 +125,6 @@ class PositionFilter:
         ])
 
         # Calcular velocidades y crear vector de medición
-        vel = (pos - self.x[:3]) / delta_t
         m = np.append(pos, self.x[3:])
 
         # Paso de predicción
