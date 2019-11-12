@@ -92,6 +92,14 @@ class Parameters:
                 'descr': 'Valor usado en matriz A de Kalman',
                 'val': 0.95, 'min': 0.7, 'max': 1, 'step': 0.0001,
             },
+            'filter_v_threshold': {
+                'descr': 'Minimo de velocidad vertical en cm/s? para detectar un salto',
+                'val': 0.3, 'min': 0.05, 'max': 1, 'step': 0.01,
+            },
+            'filter_jump_timer': {
+                'descr': 'Minimo tiempo entre detección de saltos, en segundos',
+                'val': 2, 'min': 0.5, 'max': 10, 'step': 0.5,
+            },
 
             'video_show_fps': {
                 'descr': 'Si mostrar FPS',

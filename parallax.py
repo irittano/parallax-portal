@@ -139,8 +139,10 @@ def main():
 
                     if face_rect is not None:
                         eyes_center, eyes_distance = fd.face_rect_to_norm(cam_size, face_rect)
-                        pos = pos_filter.filter(delta_t,
+                        pos, jump_detected = pos_filter.filter(delta_t,
                                 np.array((eyes_center[0], eyes_center[1], 0)))
+                        if jump_detected:
+                            prm['parallax_mode'] = prm.mode_3d
                         draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
                     else:
                         pos = pos_filter.predict(delta_t)
@@ -157,7 +159,10 @@ def main():
 
                     if face_rect is not None:
                         face_pos = fd.face_rect_to_cm(cam_size, face_rect)
-                        pos = pos_filter.filter(delta_t, face_pos)
+                        pos, jump_detected = pos_filter.filter(delta_t, face_pos)
+                        if jump_detected:
+                            prm['parallax_mode'] = prm.mode_2d
+                        # TODO: update_scene?
                         update_scene = scene_3d_obj.loop(delta_t, pos)
                     else:
                         pos = pos_filter.predict(delta_t)
