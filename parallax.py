@@ -100,7 +100,7 @@ def main():
 
                 if face_rect is not None:
                     eyes_center, eyes_distance = fd.face_rect_to_norm(cam_size, face_rect)
-                    pos = pos_filter.filter(delta_t,
+                    pos, jump_detected = pos_filter.filter(delta_t,
                             np.array((eyes_center[0], eyes_center[1], 0)))
                     draw_scene_2d(pos, delta_t, screen, screen_s)
                 else:
