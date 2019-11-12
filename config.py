@@ -98,7 +98,7 @@ class Parameters:
             },
             'filter_jump_timer': {
                 'descr': 'Minimo tiempo entre detección de saltos, en segundos',
-                'val': 2, 'min': 0.5, 'max': 10, 'step': 0.5,
+                'val': 20, 'min': 0.5, 'max': 10, 'step': 0.5,
             },
 
             'video_show_fps': {
