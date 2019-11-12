@@ -83,15 +83,12 @@ def main():
         # Inicializar filtro
         pos_filter = misc.PositionFilter()
 
-
         state = {
             'scene_3d_obj': None,
             'scene_2d_images': None,
             'screen_s': None,
             'current_video_mode': None,
         }
-        # Objeto de escena 3D e imagenes de escena 2D, por ahora no lo
-        # inicializamos
 
         v.set_mode_2d()
 
@@ -101,42 +98,46 @@ def main():
             screen_s = state['screen_s']
             current_video_mode = state['current_video_mode']
 
+            # Si se acaba de pasar de modo 3D a 2D
             if prm['parallax_mode'] == prm.mode_2d \
                and current_video_mode != prm.mode_2d:
 
+                # Configurar el video en modo 2D
                 v.set_mode_2d()
-                current_video_mode = prm.mode_2d
                 screen_s = np.array(v.screen_size)
-                print("Poniendi 2D")
+                current_video_mode = prm.mode_2d
 
-                # Si es la primera vez que se muestra la escena y todavía no se
-                # cargaron las imágenes
+                # Cargar escena 2D y borrar la escena 3D
                 if scene_2d_images == None:
                     scene_2d_images = scene_2d.load_images(screen_s)
+                scene_3d_obj = None
 
-
+            # Si se acaba de pasar de modo 2D a 3D
             if prm['parallax_mode'] == prm.mode_3d \
                and current_video_mode != prm.mode_3d:
 
+                # Configurar el video en modo 3D
                 v.set_mode_3d()
-                current_video_mode = prm.mode_3d
                 screen_s = np.array(v.screen_size)
-                print("Poniendi 3D")
+                current_video_mode = prm.mode_3d
 
-                # Si es la primera vez que se muestra la escena y todavía no se
-                # cargó el objeto de escena
+                # Cargar escena 3D y borrar la escena 2D
                 if scene_3d_obj == None:
                     scene_3d_obj = scene_3d.Scene3D(screen_s)
+                scene_2d_images = None
 
             # Limpiar pantalla
             screen.fill(COLOR_BLACK)
 
-            if prm['parallax_mode'] == prm.mode_2d:
+            # Dibujar escena 2D
+            if prm['parallax_mode'] == prm.mode_2d \
+               and scene_2d_images is not None:
 
                 # Ver si se procesó un frame de video
                 try:
                     face_rect = face_queue.get_nowait()
 
+                    # El otro thread detectó una cara
                     if face_rect is not None:
                         eyes_center, eyes_distance = fd.face_rect_to_norm(cam_size, face_rect)
                         pos, jump_detected = pos_filter.filter(delta_t,
@@ -144,42 +145,51 @@ def main():
                         if jump_detected:
                             prm['parallax_mode'] = prm.mode_3d
                         draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
+
+                    # El otro thread no detectó ninguna cara
                     else:
                         pos = pos_filter.predict(delta_t)
                         draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
 
+                # El otro thread no llegó a procesar ningún frame de video
                 except queue.Empty:
                     pos = pos_filter.predict(delta_t)
                     draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
 
-            if prm['parallax_mode'] == prm.mode_3d:
+            # Dibujar escena 3D
+            elif prm['parallax_mode'] == prm.mode_3d \
+                 and scene_3d_obj is not None:
 
+                # Ver si se procesó un frame de video
                 try:
                     face_rect = face_queue.get_nowait()
 
+                    # El otro thread detectó una cara
                     if face_rect is not None:
                         face_pos = fd.face_rect_to_cm(cam_size, face_rect)
                         pos, jump_detected = pos_filter.filter(delta_t, face_pos)
                         if jump_detected:
                             prm['parallax_mode'] = prm.mode_2d
-                        # TODO: update_scene?
-                        update_scene = scene_3d_obj.loop(delta_t, pos)
+                        scene_3d_obj.loop(delta_t, pos)
+
+                    # El otro thread no detectó ninguna cara
                     else:
                         pos = pos_filter.predict(delta_t)
-                        update_scene = scene_3d_obj.loop(delta_t, pos)
+                        scene_3d_obj.loop(delta_t, pos)
 
+                # El otro thread no llegó a procesar ningún frame de video
                 except queue.Empty:
                     pos = pos_filter.predict(delta_t)
-                    update_scene = scene_3d_obj.loop(delta_t, pos)
+                    scene_3d_obj.loop(delta_t, pos)
 
+            # TODO dejar de usar este diccionario de state
             state['scene_3d_obj'] = scene_3d_obj
             state['scene_2d_images'] = scene_2d_images
             state['screen_s'] = screen_s
             state['current_video_mode'] = current_video_mode
 
-
-
         try:
+            # TODO dejar de usar este diccionario de state
             v.start_loop(lambda screen, delta_t, screen_w, screen_h: loop(state, screen, delta_t, screen_w, screen_h))
         except RequestRestartException:
             request_restart_event.set()
