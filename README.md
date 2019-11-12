@@ -142,6 +142,17 @@ integró todo.
 
 ## Detalles
 
+- Ayuda mucho poner una caja para continuar el efecto fuera de la pantalla
+
+- Ayuda mucho cerrar un ojo
+
+- Es importantísimo que haya suficiente luz iluminando la cara de la persona.
+  Tanto para la detección como para la tasa de refresco. Por ejemplo mi webcam
+  funciona a 30fps pero noté que en ambientes no tan oscuros devuelve imágenes
+  a 15fps
+
+## Arreglar del proyecto de C++
+
 - El parametro `pixel_per_cm` es el pixeles por centimetro del monitor y hay
   que ajustarlo
 
@@ -167,8 +178,7 @@ integró todo.
 - Hacer que la posicion de la camara cuando pierda detección siga moviendose
   hacia donde iba y lentamente se vaya centrando
 
-- Ver que hacer para pasar de escena a escena, por ejemplo al detectar
-  movimiento de la mano al frente de la camara
+- Agregar predicciones en Kalman
 
 - Ver si estamos usando el XML del haarcascade correcto
 
@@ -180,9 +190,6 @@ integró todo.
 
 - Hacer configurable en prm la ubicación de la camara respecto al centro de la
   pantalla. Cambiar nombre del prm
-
-- En parallax calcular posicion en cm a partir de posicion en pixeles y del f
-  de la camara que tambien tiene que ser configurable
 
 - Al terminar parallax borrar codigo C++
 
