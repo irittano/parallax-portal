@@ -32,6 +32,10 @@ class Parameters:
         cuando se cambia el valor usando el teclado. Ver video.py
         '''
 
+        # Enumeración de valores posibles de prm['parallax_mode']
+        self.mode_2d = True
+        self.mode_3d = False
+
         self.parameters = {
             'camera_device_index': {
                 'descr': 'Numero de camara a usar para la deteccion de caras',
@@ -87,6 +91,14 @@ class Parameters:
             'filter_a': {
                 'descr': 'Valor usado en matriz A de Kalman',
                 'val': 0.95, 'min': 0.7, 'max': 1, 'step': 0.0001,
+            },
+            'filter_v_threshold': {
+                'descr': 'Minimo de velocidad vertical en cm/s? para detectar un salto',
+                'val': 0.3, 'min': 0.05, 'max': 1, 'step': 0.01,
+            },
+            'filter_jump_timer': {
+                'descr': 'Minimo tiempo entre detección de saltos, en segundos',
+                'val': 2, 'min': 0.5, 'max': 10, 'step': 0.5,
             },
 
             'video_show_fps': {
@@ -144,7 +156,12 @@ class Parameters:
                 'descr': 'Alto de pantalla a usar si no es automático',
                 'val': 1080, 'min': 100, 'max': 10000, 'step': 10,
             },
+            'parallax_mode': {
+                'descr': 'Cambiar entre modo 2D y 3D',
+                'val': False,
         }
+
+    }
 
     def __getitem__(self, key):
         '''

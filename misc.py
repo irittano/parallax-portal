@@ -93,6 +93,9 @@ class PositionFilter:
         # Matriz identidad, la defino por conveniencia
         self.I = np.identity(6)
 
+        # Temporizador de salto, cuenta el tiempo desde el último salto detectado
+        self.jump_timer = 0
+
     def filter(self, delta_t, pos):
         '''
         Ejecutar un paso del filtro
@@ -100,6 +103,9 @@ class PositionFilter:
         Ingresar tiempo en segundos desde último filtrado y nuevo vector de
         posicion: [X, Y, Z]
         '''
+
+        # Incrementar timer de salto con el tiempo pasado desde ultimo frame
+        self.jump_timer += delta_t
 
         # Si el filtro está deshabilitado, almacenar posición (dejando
         # velocidades en cero) y devolver lo mismo que se recibió
@@ -141,18 +147,24 @@ class PositionFilter:
         self.x = self.x + (K @ y)
         self.P = (self.I - (K @ self.H)) @ self.P
 
-        #  pred_x = self.x
-        #  for i in range(2):
-            #  pred_x = (self.A @ pred_x)
+        jump_detected = False
+        if self.x[4] < -prm['filter_v_threshold']:
+            # Salto detectado debido a velocidad vertical
+            if self.jump_timer > prm['filter_jump_timer']:
+                # Pasó suficiente tiempo desde último salto
+                jump_detected = True
+                self.jump_timer = 0
 
-        #  return pred_x[:3]
-        return self.x[:3]
+        return self.x[:3], jump_detected
 
     def predict(self, delta_t):
 
         # Si el filtro está deshabilitado devolver última posición
         if not prm['filter_enabled']:
             return self.x[:3]
+
+        # Incrementar timer de salto con el tiempo pasado desde ultimo frame
+        self.jump_timer += delta_t
 
         # Matrix de predicción, se usa para decir que en la predicción
         # nuevo_x = A * viejo_x
