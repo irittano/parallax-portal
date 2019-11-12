@@ -38,17 +38,6 @@ class PositionFilter:
         tampoco usamos matriz B
         '''
 
-        # Matriz de estimación de error, se puede dejar en cero y luego se va
-        # actualizando en cada paso
-        self.P = np.array([
-            [ 0, 0, 0, 0, 0, 0],
-            [ 0, 0, 0, 0, 0, 0],
-            [ 0, 0, 0, 0, 0, 0],
-            [ 0, 0, 0, 0, 0, 0],
-            [ 0, 0, 0, 0, 0, 0],
-            [ 0, 0, 0, 0, 0, 0],
-        ])
-
         # Se puede usar para determinar qué estados se pueden medir y cuales no
         #  h = 0.1
         h = prm['filter_h']
@@ -87,14 +76,33 @@ class PositionFilter:
             [ 0, 0, 0, 0, 0, r],
         ])
 
-        # Estimación de estado, se va actualizando
-        self.x = np.array([0, 0, 0, 0, 0, 0])
-
         # Matriz identidad, la defino por conveniencia
         self.I = np.identity(6)
 
+        # Terminar de inicializar las cosas, que se hacen en reset()
+        self.reset()
+
+    def reset(self):
+        '''
+        Reinicia el filtro de Kalman a valores iniciales
+        '''
+
         # Temporizador de salto, cuenta el tiempo desde el último salto detectado
         self.jump_timer = 0
+
+        # Estimación de estado, se va actualizando
+        self.x = np.array([0, 0, 0, 0, 0, 0])
+
+        # Matriz de estimación de error, se puede dejar en cero y luego se va
+        # actualizando en cada paso
+        self.P = np.array([
+            [ 0, 0, 0, 0, 0, 0],
+            [ 0, 0, 0, 0, 0, 0],
+            [ 0, 0, 0, 0, 0, 0],
+            [ 0, 0, 0, 0, 0, 0],
+            [ 0, 0, 0, 0, 0, 0],
+            [ 0, 0, 0, 0, 0, 0],
+        ])
 
     def filter(self, delta_t, pos):
         '''

@@ -107,6 +107,10 @@ def main():
                 screen_s = np.array(v.screen_size)
                 current_video_mode = prm.mode_2d
 
+                # Reiniciar el filtro de Kalman, porque estamos cambiando
+                # unidades
+                pos_filter.reset()
+
                 # Cargar escena 2D y borrar la escena 3D
                 if scene_2d_images == None:
                     scene_2d_images = scene_2d.load_images(screen_s)
@@ -120,6 +124,10 @@ def main():
                 v.set_mode_3d()
                 screen_s = np.array(v.screen_size)
                 current_video_mode = prm.mode_3d
+
+                # Reiniciar el filtro de Kalman, porque estamos cambiando
+                # unidades
+                pos_filter.reset()
 
                 # Cargar escena 3D y borrar la escena 2D
                 if scene_3d_obj == None:
