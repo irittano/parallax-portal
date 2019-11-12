@@ -32,6 +32,10 @@ class Parameters:
         cuando se cambia el valor usando el teclado. Ver video.py
         '''
 
+        # Enumeración de valores posibles de prm['parallax_mode']
+        self.mode_2d = True
+        self.mode_3d = False
+
         self.parameters = {
             'camera_device_index': {
                 'descr': 'Numero de camara a usar para la deteccion de caras',
@@ -146,8 +150,9 @@ class Parameters:
             },
             'parallax_mode': {
                 'descr': 'Cambiar entre modo 2D y 3D',
-                'val': True,
+                'val': False,
         }
+
     }
 
     def __getitem__(self, key):

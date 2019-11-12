@@ -19,6 +19,12 @@ from config import prm
 COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
 
+def draw_scene_2d(images, pos, delta_t, screen, screen_s):
+    eyes_center = pos[:2]
+
+    for image in images:
+        image.draw(eyes_center, screen_s, screen, delta_t)
+
 def main():
 
     # Inicializar webcam
@@ -73,30 +79,59 @@ def main():
 
         # Inicializar video para mostrado en pantalla
         v = video.Video()
-        v.set_mode_2d()
-        screen_s = np.array(v.screen_size)
-
-        # Crear imagenes a mostrar
-        images = scene_2d.load_images(screen_s)
 
         # Inicializar filtro
         pos_filter = misc.PositionFilter()
 
-        def draw_scene_2d(pos, delta_t, screen, screen_s):
-            eyes_center = pos[:2]
 
-            for image in images:
-                image.draw(eyes_center, screen_s, screen, delta_t)
+        state = {
+            'scene_3d_obj': None,
+            'scene_2d_images': None,
+            'screen_s': None,
+            'current_video_mode': None,
+        }
+        # Objeto de escena 3D e imagenes de escena 2D, por ahora no lo
+        # inicializamos
+
+        v.set_mode_2d()
+
+        def loop(state, screen, delta_t, screen_w, screen_h):
+            scene_3d_obj = state['scene_3d_obj']
+            scene_2d_images = state['scene_2d_images']
+            screen_s = state['screen_s']
+            current_video_mode = state['current_video_mode']
+
+            if prm['parallax_mode'] == prm.mode_2d \
+               and current_video_mode != prm.mode_2d:
+
+                v.set_mode_2d()
+                current_video_mode = prm.mode_2d
+                screen_s = np.array(v.screen_size)
+                print("Poniendi 2D")
+
+                # Si es la primera vez que se muestra la escena y todavía no se
+                # cargaron las imágenes
+                if scene_2d_images == None:
+                    scene_2d_images = scene_2d.load_images(screen_s)
 
 
-        def loop(screen, delta_t, screen_w, screen_h):
+            if prm['parallax_mode'] == prm.mode_3d \
+               and current_video_mode != prm.mode_3d:
 
-            if prm['parallax_mode'] == True:
+                v.set_mode_3d()
+                current_video_mode = prm.mode_3d
+                screen_s = np.array(v.screen_size)
+                print("Poniendi 3D")
 
-                prev_mode = scene_2d
+                # Si es la primera vez que se muestra la escena y todavía no se
+                # cargó el objeto de escena
+                if scene_3d_obj == None:
+                    scene_3d_obj = scene_3d.Scene3D(screen_s)
 
-                # Limpiar pantalla
-                screen.fill(COLOR_BLACK)
+            # Limpiar pantalla
+            screen.fill(COLOR_BLACK)
+
+            if prm['parallax_mode'] == prm.mode_2d:
 
                 # Ver si se procesó un frame de video
                 try:
@@ -106,28 +141,41 @@ def main():
                         eyes_center, eyes_distance = fd.face_rect_to_norm(cam_size, face_rect)
                         pos = pos_filter.filter(delta_t,
                                 np.array((eyes_center[0], eyes_center[1], 0)))
-                        draw_scene_2d(pos, delta_t, screen, screen_s)
+                        draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
                     else:
                         pos = pos_filter.predict(delta_t)
-                        draw_scene_2d(pos, delta_t, screen, screen_s)
+                        draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
 
                 except queue.Empty:
                     pos = pos_filter.predict(delta_t)
-                    draw_scene_2d(pos, delta_t, screen, screen_s)
-            else:
+                    draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
+
+            if prm['parallax_mode'] == prm.mode_3d:
 
                 try:
                     face_rect = face_queue.get_nowait()
 
                     if face_rect is not None:
+                        face_pos = fd.face_rect_to_cm(cam_size, face_rect)
+                        pos = pos_filter.filter(delta_t, face_pos)
+                        update_scene = scene_3d_obj.loop(delta_t, pos)
                     else:
+                        pos = pos_filter.predict(delta_t)
+                        update_scene = scene_3d_obj.loop(delta_t, pos)
 
                 except queue.Empty:
                     pos = pos_filter.predict(delta_t)
-                    draw_scene_2d(pos, delta_t, screen, screen_s)
+                    update_scene = scene_3d_obj.loop(delta_t, pos)
+
+            state['scene_3d_obj'] = scene_3d_obj
+            state['scene_2d_images'] = scene_2d_images
+            state['screen_s'] = screen_s
+            state['current_video_mode'] = current_video_mode
+
+
 
         try:
-            v.start_loop(loop)
+            v.start_loop(lambda screen, delta_t, screen_w, screen_h: loop(state, screen, delta_t, screen_w, screen_h))
         except RequestRestartException:
             request_restart_event.set()
 
