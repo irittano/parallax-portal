@@ -119,9 +119,10 @@ class PositionFilter:
 
         # Si el filtro está deshabilitado, almacenar posición (dejando
         # velocidades en cero) y devolver lo mismo que se recibió
+        # También devolver que no hubo salto
         if not prm['filter_enabled']:
             self.x = np.append(pos, (0, 0, 0))
-            return pos
+            return self.x[:3], False
 
         # Matrix de predicción, se usa para decir que en la predicción
         # nuevo_x = A * viejo_x
