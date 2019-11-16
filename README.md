@@ -188,11 +188,6 @@ integró todo.
 - Si va al museo, poner un mensaje que diga algo de "No hay caras detectadas,
   acercarse para ver el efecto, una persona a la vez"
 
-- Hacer configurable en prm la ubicación de la camara respecto al centro de la
-  pantalla. Cambiar nombre del prm
-
-- Al terminar parallax borrar codigo C++
-
 - Documentar que instalar GLM y OpenGL no es tan facil
 
 - Hacer mas linda la escena 3d

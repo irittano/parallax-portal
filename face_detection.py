@@ -126,7 +126,7 @@ def face_rect_to_cm(cam_size, face_rect):
 
     z = prm['eyes_gap'] / norm_eyes_distance,
     x = norm_center[0] * np.float64(z)
-    y = -norm_center[1] * np.float64(z) + prm["distance_camera_screen"]
+    y = -norm_center[1] * np.float64(z) + prm["camera_vertical_distance"]
 
     return np.array((x, y, z))
 

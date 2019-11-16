@@ -63,13 +63,14 @@ class Parameters:
                 'descr': 'Parámetro f de la cámara',
                 'val': 400, 'min': 1, 'max': 1000, 'step': 2,
             },
-            'distance_camera_screen': {
-                'descr': 'Distancia de la posición de la camara al centro de la pantalla en cm',
+            'camera_vertical_distance': {
+                'descr': ('Distancia vertical de la posición de la camara al '
+                          'centro de la pantalla en cm'),
                 'val': 10, 'min': 1, 'max': 100, 'step': 1,
             },
             'eyes_gap': {
-                'descr': 'Distancia entre los ojos en cm',
-                'val': 6.5, 'min': 5, 'max': 8, 'step': 0.1,
+                'descr': 'Distancia esperada entre los ojos en cm',
+                'val': 6.3, 'min': 5, 'max': 8, 'step': 0.1,
             },
 
             'filter_enabled': {
@@ -77,23 +78,28 @@ class Parameters:
                 'val': True,
             },
             'filter_h': {
-                'descr': 'Valor usado en matriz H de Kalman',
+                'descr': ('Valor usado en matriz H, mientras mayor es el valor '
+                          'más filtrado se hace'),
                 'val': 0.01, 'min': 0.001, 'max': 5, 'step': 0.001,
             },
             'filter_q': {
-                'descr': 'Valor usado en matriz Q de Kalman',
+                'descr': ('Valor usado en matriz de error de acción, mientras '
+                          'menor es el valor más filtrado se hace'),
                 'val': 0.1, 'min': 0.001, 'max': 5, 'step': 0.001,
             },
             'filter_r': {
-                'descr': 'Valor usado en matriz R de Kalman',
+                'descr': ('Valor usado en matriz de error de sensor, mientras '
+                          'mayor es el valor más filtrado se hace'),
                 'val': 0.2, 'min': 0.0001, 'max': 0.5, 'step': 0.0001,
             },
             'filter_a': {
-                'descr': 'Valor usado en matriz A de Kalman',
+                'descr': ('Valor usado en matriz A, mientras mayor es el valor '
+                          'menos fricción tiene la velocidad'),
                 'val': 0.95, 'min': 0.7, 'max': 1, 'step': 0.0001,
             },
             'filter_v_threshold': {
-                'descr': 'Minimo de velocidad vertical en cm/s? para detectar un salto',
+                'descr': ('Minimo de velocidad vertical en cm/s? para detectar '
+                          'un salto'),
                 'val': 0.3, 'min': 0.05, 'max': 1, 'step': 0.01,
             },
             'filter_jump_timer': {
@@ -108,7 +114,7 @@ class Parameters:
             'video_show_prm': {
                 'descr': ('Si mostrar estos parametros para permitir '
                           'modificaciones'),
-                'val': True,
+                'val': False,
             },
 
             'scene_2d_sensibility': {
@@ -158,7 +164,7 @@ class Parameters:
             },
             'parallax_mode': {
                 'descr': 'Cambiar entre modo 2D y 3D',
-                'val': False,
+                'val': self.mode_2d,
         }
 
     }

@@ -87,11 +87,13 @@ class PositionFilter:
         Reinicia el filtro de Kalman a valores iniciales
         '''
 
-        # Temporizador de salto, cuenta el tiempo desde el último salto detectado
+        # Temporizador de salto, cuenta el tiempo desde el último salto
+        # detectado para no permitir dos saltos en muy poco tiempo
         self.jump_timer = 0
 
         # Estimación de estado, se va actualizando
-        self.x = np.array([0, 0, 0, 0, 0, 0])
+        # Comenzar suponiendo que la cara está al centro y a 30cm de la pantalla
+        self.x = np.array([0, 0, 30, 0, 0, 0])
 
         # Matriz de estimación de error, se puede dejar en cero y luego se va
         # actualizando en cada paso

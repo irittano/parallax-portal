@@ -20,10 +20,16 @@ COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
 
 def draw_scene_2d(images, pos, delta_t, screen, screen_s):
-    eyes_center = pos[:2]
+
+    # Convertir de centimetros a posición normalizada
+    x, y, z = pos
+    face_norm = np.array((
+        x / z,
+        - y / z
+    ))
 
     for image in images:
-        image.draw(eyes_center, screen_s, screen, delta_t)
+        image.draw(face_norm, screen_s, screen, delta_t)
 
 def main():
 
@@ -147,9 +153,8 @@ def main():
 
                     # El otro thread detectó una cara
                     if face_rect is not None:
-                        eyes_center, eyes_distance = fd.face_rect_to_norm(cam_size, face_rect)
-                        pos, jump_detected = pos_filter.filter(delta_t,
-                                np.array((eyes_center[0], eyes_center[1], 0)))
+                        face_pos = fd.face_rect_to_cm(cam_size, face_rect)
+                        pos, jump_detected = pos_filter.filter(delta_t, face_pos)
                         if jump_detected:
                             prm['parallax_mode'] = prm.mode_3d
                         draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)

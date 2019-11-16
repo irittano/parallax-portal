@@ -173,7 +173,7 @@ def load_images(window_s):
             move_ratio=0.45,
             window_s=window_s,
             scroll_path="./res/scroll_paso.png",
-            x_threshold=(2/15, 3/15),
+            x_threshold=(0, 1/8),
             scroll_pos=(1.025, 0.3)
         ),
         Image(
@@ -183,7 +183,7 @@ def load_images(window_s):
             move_ratio=0.45,
             window_s=window_s,
             scroll_path="./res/scroll_larrea.png",
-            x_threshold=(13/15, 14/15),
+            x_threshold=(7/8, 1),
             scroll_pos=(-0.05, 0.35)
         ),
         Image(
@@ -193,7 +193,7 @@ def load_images(window_s):
             move_ratio=0.4,
             window_s=window_s,
             scroll_path="./res/scroll_matheu.png",
-            x_threshold=(12/15, 13/15),
+            x_threshold=(6/8, 7/8),
             scroll_pos=(0.08, 0.3)
         ),
         Image(
@@ -203,18 +203,18 @@ def load_images(window_s):
             move_ratio=0.35,
             window_s=window_s,
             scroll_path="./res/scroll_alberti.png",
-            x_threshold=(3/15, 4/15),
+            x_threshold=(1/8, 2/8),
             scroll_pos=(0.85, 0.3)
         ),
         Image(
             "./res/azcuenaga.png",
-            img_pos=(0.2, 0.8),
+            img_pos=(0.23, 0.8),
             scaling_factor=0.3,
-            move_ratio=0.35,
+            move_ratio=0.34,
             window_s=window_s,
             scroll_path="./res/scroll_azcuenaga.png",
-            x_threshold=(11/15, 12/15),
-            scroll_pos=(0.2, 0.3)
+            x_threshold=(5/8, 6/8),
+            scroll_pos=(0.23, 0.3)
         ),
         Image(
             "./res/belgrano.png",
@@ -223,28 +223,28 @@ def load_images(window_s):
             move_ratio=0.3,
             window_s=window_s,
             scroll_path="./res/scroll_belgrano.png",
-            x_threshold=(4/15, 5/15),
+            x_threshold=(2/8, 3/8),
             scroll_pos=(0.7, 0.25)
         ),
         Image(
             "./res/castelli.png",
-            img_pos=(0.3, 0.75),
+            img_pos=(0.36, 0.75),
             scaling_factor=0.3,
             move_ratio=0.25,
             window_s=window_s,
             scroll_path="./res/scroll_castelli.png",
-            x_threshold=(10/15, 11/15),
-            scroll_pos=(0.3, 0.25)
+            x_threshold=(4/8, 5/8),
+            scroll_pos=(0.36, 0.25)
         ),
         Image(
             "./res/saavedra.png",
-            img_pos=(0.5, 0.9),
+            img_pos=(0.57, 0.9),
             scaling_factor=0.5,
             move_ratio=0.2,
             window_s=window_s,
             scroll_path="./res/scroll_saavedra.png",
-            x_threshold=(7/15, 9/15),
-            scroll_pos=(0.45, 0.2)
+            x_threshold=(3/8, 4/8),
+            scroll_pos=(0.52, 0.2)
         ),
     ]
 
