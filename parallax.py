@@ -89,20 +89,21 @@ def main():
         # Inicializar filtro
         pos_filter = misc.PositionFilter()
 
-        state = {
-            'scene_3d_obj': None,
-            'scene_2d_images': None,
-            'screen_s': None,
-            'current_video_mode': None,
-        }
+        # Declarar variables que mantienen estado, se inicializan en el loop
+        scene_3d_obj = None
+        scene_2d_images = None
+        screen_s = None
+        current_video_mode = None
 
+        # Poner un modo cualquiera
         v.set_mode_2d()
 
-        def loop(state, screen, delta_t, screen_w, screen_h):
-            scene_3d_obj = state['scene_3d_obj']
-            scene_2d_images = state['scene_2d_images']
-            screen_s = state['screen_s']
-            current_video_mode = state['current_video_mode']
+        def loop(screen, delta_t, screen_w, screen_h):
+            # Variables que mantienen estado
+            nonlocal scene_3d_obj
+            nonlocal scene_2d_images
+            nonlocal screen_s
+            nonlocal current_video_mode
 
             # Si se acaba de pasar de modo 3D a 2D
             if prm['parallax_mode'] == prm.mode_2d \
@@ -112,10 +113,6 @@ def main():
                 v.set_mode_2d()
                 screen_s = np.array(v.screen_size)
                 current_video_mode = prm.mode_2d
-
-                # Reiniciar el filtro de Kalman, porque estamos cambiando
-                # unidades
-                pos_filter.reset()
 
                 # Cargar escena 2D y borrar la escena 3D
                 if scene_2d_images == None:
@@ -131,10 +128,6 @@ def main():
                 screen_s = np.array(v.screen_size)
                 current_video_mode = prm.mode_3d
 
-                # Reiniciar el filtro de Kalman, porque estamos cambiando
-                # unidades
-                pos_filter.reset()
-
                 # Cargar escena 3D y borrar la escena 2D
                 if scene_3d_obj == None:
                     scene_3d_obj = scene_3d.Scene3D(screen_s)
@@ -143,67 +136,44 @@ def main():
             # Limpiar pantalla
             screen.fill(COLOR_BLACK)
 
+            # Ver si se procesó un frame de video, obtener posición de cabeza
+            # (detectada o predicha) y si se detectó un salto
+            pos = None
+            jump_detected = None
+
+            try:
+                face_rect = face_queue.get_nowait()
+                # El otro thread detectó una cara
+                if face_rect is not None:
+                    face_pos = fd.face_rect_to_cm(cam_size, face_rect)
+                    pos, jump_detected = pos_filter.filter(delta_t, face_pos)
+                # El otro thread no detectó ninguna cara
+                else:
+                    pos = pos_filter.predict(delta_t)
+                    jump_detected = False
+            # El otro thread no llegó a procesar ningún frame de video
+            except queue.Empty:
+                pos = pos_filter.predict(delta_t)
+                jump_detected = False
+
+            if jump_detected:
+                # Change between scene_2d and scene_3d
+                prm['parallax_mode'] = not prm['parallax_mode']
+
             # Dibujar escena 2D
             if prm['parallax_mode'] == prm.mode_2d \
                and scene_2d_images is not None:
 
-                # Ver si se procesó un frame de video
-                try:
-                    face_rect = face_queue.get_nowait()
-
-                    # El otro thread detectó una cara
-                    if face_rect is not None:
-                        face_pos = fd.face_rect_to_cm(cam_size, face_rect)
-                        pos, jump_detected = pos_filter.filter(delta_t, face_pos)
-                        if jump_detected:
-                            prm['parallax_mode'] = prm.mode_3d
-                        draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
-
-                    # El otro thread no detectó ninguna cara
-                    else:
-                        pos = pos_filter.predict(delta_t)
-                        draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
-
-                # El otro thread no llegó a procesar ningún frame de video
-                except queue.Empty:
-                    pos = pos_filter.predict(delta_t)
-                    draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
+                draw_scene_2d(scene_2d_images, pos, delta_t, screen, screen_s)
 
             # Dibujar escena 3D
             elif prm['parallax_mode'] == prm.mode_3d \
                  and scene_3d_obj is not None:
 
-                # Ver si se procesó un frame de video
-                try:
-                    face_rect = face_queue.get_nowait()
-
-                    # El otro thread detectó una cara
-                    if face_rect is not None:
-                        face_pos = fd.face_rect_to_cm(cam_size, face_rect)
-                        pos, jump_detected = pos_filter.filter(delta_t, face_pos)
-                        if jump_detected:
-                            prm['parallax_mode'] = prm.mode_2d
-                        scene_3d_obj.loop(delta_t, pos)
-
-                    # El otro thread no detectó ninguna cara
-                    else:
-                        pos = pos_filter.predict(delta_t)
-                        scene_3d_obj.loop(delta_t, pos)
-
-                # El otro thread no llegó a procesar ningún frame de video
-                except queue.Empty:
-                    pos = pos_filter.predict(delta_t)
-                    scene_3d_obj.loop(delta_t, pos)
-
-            # TODO dejar de usar este diccionario de state
-            state['scene_3d_obj'] = scene_3d_obj
-            state['scene_2d_images'] = scene_2d_images
-            state['screen_s'] = screen_s
-            state['current_video_mode'] = current_video_mode
+                scene_3d_obj.loop(delta_t, pos)
 
         try:
-            # TODO dejar de usar este diccionario de state
-            v.start_loop(lambda screen, delta_t, screen_w, screen_h: loop(state, screen, delta_t, screen_w, screen_h))
+            v.start_loop(loop)
         except RequestRestartException:
             request_restart_event.set()
 
