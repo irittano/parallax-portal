@@ -159,7 +159,7 @@ class PositionFilter:
         self.P = (self.I - (K @ self.H)) @ self.P
 
         jump_detected = False
-        if self.x[4] < -prm['filter_v_threshold']:
+        if self.x[4] > prm['filter_v_threshold']:
             # Salto detectado debido a velocidad vertical
             if self.jump_timer > prm['filter_jump_timer']:
                 # Pasó suficiente tiempo desde último salto

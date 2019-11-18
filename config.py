@@ -57,7 +57,7 @@ class Parameters:
             },
             'px_per_cm': {
                 'descr': 'Algo asi como DPI pero en centimetros',
-                'val': 44, 'min': 10, 'max': 200, 'step': 0.5,
+                'val': 39.5, 'min': 10, 'max': 200, 'step': 0.5,
             },
             'camera_f': {
                 'descr': 'Parámetro f de la cámara',
@@ -80,17 +80,17 @@ class Parameters:
             'filter_h': {
                 'descr': ('Valor usado en matriz H, mientras mayor es el valor '
                           'más filtrado se hace'),
-                'val': 0.01, 'min': 0.001, 'max': 5, 'step': 0.001,
+                'val': 0.000, 'min': 0.0001, 'max': 0.01, 'step': 0.001,
             },
             'filter_q': {
                 'descr': ('Valor usado en matriz de error de acción, mientras '
                           'menor es el valor más filtrado se hace'),
-                'val': 0.1, 'min': 0.001, 'max': 5, 'step': 0.001,
+                'val': 0.01, 'min': 0.005, 'max': 5, 'step': 0.005,
             },
             'filter_r': {
                 'descr': ('Valor usado en matriz de error de sensor, mientras '
                           'mayor es el valor más filtrado se hace'),
-                'val': 0.2, 'min': 0.0001, 'max': 0.5, 'step': 0.0001,
+                'val': 0.03, 'min': 0.0001, 'max': 0.5, 'step': 0.0001,
             },
             'filter_a': {
                 'descr': ('Valor usado en matriz A, mientras mayor es el valor '
@@ -100,16 +100,16 @@ class Parameters:
             'filter_v_threshold': {
                 'descr': ('Minimo de velocidad vertical en cm/s? para detectar '
                           'un salto'),
-                'val': 0.3, 'min': 0.05, 'max': 1, 'step': 0.01,
+                'val': 25, 'min': 10, 'max': 40, 'step': 1,
             },
             'filter_jump_timer': {
                 'descr': 'Minimo tiempo entre detección de saltos, en segundos',
-                'val': 20, 'min': 0.5, 'max': 10, 'step': 0.5,
+                'val': 3, 'min': 0.5, 'max': 10, 'step': 0.5,
             },
 
             'video_show_fps': {
                 'descr': 'Si mostrar FPS',
-                'val': True,
+                'val': False,
             },
             'video_show_prm': {
                 'descr': ('Si mostrar estos parametros para permitir '
