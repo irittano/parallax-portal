@@ -53,8 +53,8 @@ class FaceDetector():
                 scaleFactor=prm['face_detection_scale_factor'],
                 minNeighbors=prm['face_detection_min_neighbors'],
                 minSize=(
-                    prm['face_detection_min_size'],
-                    prm['face_detection_min_size']
+                    int(width / (2 * prm['face_detection_scale_factor'])),
+                    int(width / (2 * prm['face_detection_scale_factor']))
                 ),
             )
 

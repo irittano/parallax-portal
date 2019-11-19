@@ -1,0 +1,1349 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass IEEEtran
+\begin_preamble
+% for subfigures/subtables
+\usepackage[caption=false,font=footnotesize]{subfig}
+\end_preamble
+\options journal
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package auto
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures false
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement tbh
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Your Title"
+\pdf_author "Your Name"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle false
+\pdf_quoted_options "pdfpagelayout=OneColumn, pdfnewwindow=true, pdfstartview=XYZ, plainpages=false"
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style french
+\dynamic_quotes 0
+\papercolumns 2
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Realidad Aumentada a partir de detección de rostros
+\end_layout
+
+\begin_layout Author
+\begin_inset Flex Author Name
+status open
+
+\begin_layout Plain Layout
+Bernardi
+\begin_inset space ~
+\end_inset
+
+Martín
+\begin_inset space ~
+\end_inset
+
+Gustavo
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+
+, Remedi
+\begin_inset space ~
+\end_inset
+
+Augusto
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
+, Rittano
+\begin_inset space ~
+\end_inset
+
+Ignacio
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex Author Affiliation
+status open
+
+\begin_layout Plain Layout
+Universidad Nacional de Río Cuarto, Facultad de Ingeniería, Departamento
+ de Telecomunicaciones
+\begin_inset Newline newline
+\end_inset
+
+Río Cuarto, Córdoba, Argentina
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+martin@mbernardi.com.ar
+\family default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Author Affiliation
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+agustoremedi@gmail.com
+\family default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Author Affiliation
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+rittanoignacio@gmail.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+En este trabajo se realizó una experiencia de realidad aumentada, consiste
+ de una aplicación que a partir de la detección de cara de una persona,
+ muestra imágenes en un monitor que producen una experiencia inmersiva.
+ Mediante el uso de una cámara web fija, se toman imágenes que serán utilizadas
+ para realizar la detección de la posición tridimensional de la cara del
+ usuario en tiempo real.
+ Es posible generar imágenes dinámicamente dependiendo de la posición detectada
+ y generar una aproximación a una realidad aumentada, en la que las imágenes
+ mostradas generan la sensación de que la pantalla es una ventana hacia
+ un espacio tridimensional detrás de ésta.
+\end_layout
+
+\begin_layout Section
+Introducción
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Paragraph Start
+status open
+
+\begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+E
+\end_layout
+
+\end_inset
+
+l
+\end_layout
+
+\end_inset
+
+ objetivo de este proyecto fue lograr la sensación de profundidad en una
+ pantalla tradicional por medio de la visualización de imágenes que dependen
+ de la posición de la cabeza del usuario.
+ El primer punto principal del trabajo fue la detección precisa de la posición
+ de la cara de la persona utilizando simplemente una cámara web y las técnicas
+ estándar de detección.
+ Además de la optimización de ésta y su posterior filtrado para lograr una
+ detección en tiempo real y una experiencia suave.
+\end_layout
+
+\begin_layout Standard
+El segundo punto importante fue la generación de imágenes a partir de esta
+ estimación para lograr una sensación convincente de profundidad.
+ La primera aproximación fue el mostrado de imágenes bidimensionales utilizando
+ la técnica de paralaje, pero luego a partir de la utilización de librerías
+ gráficas tridimensionales y del trabajo realizado por 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper-de-frustum"
+literal "false"
+
+\end_inset
+
+.
+ se logró crear una experiencia más inmersiva.
+\end_layout
+
+\begin_layout Standard
+Una aplicación posible de este proyecto es su colocación en una exposición
+ de museo ya que es posible mostrar imágenes temáticas y educativas al mismo
+ tiempo que se logra una experiencia corta e interesante, además no es necesario
+ ningún elemento ni la interacción con elementos físicos que puedan deteriorarse.
+ Como desventaja el efecto solo funciona para sólo una persona a la vez,
+ pero de todos modos las personas que se encuentren cerca pueden también
+ observar la información mostrada en pantalla.
+\end_layout
+
+\begin_layout Section
+Detección de rostros
+\end_layout
+
+\begin_layout Standard
+Para detectar la ubicación de la cara del usuario utilizamos el algoritmo
+ Haar cascade implementado por OpenCV.
+ Este algoritmo puede ser entrenado para la detección de cualquier tipo
+ de objetos, para nuestro caso utilizamos un clasificador entrenado para
+ la detección de caras.
+\end_layout
+
+\begin_layout Standard
+El algoritmo va tomando secciones rectangulares o cuadradas de la imagen
+ en forma secuencial y determinando si esa sección de la imagen es o no
+ la cara de una persona.
+ Comienza recorriendo la imagen secuencialmente analizando de a un cuadrado
+ pequeño a la vez, y en cada pasada va analizando secciones más grandes
+ de la imagen.
+\end_layout
+
+\begin_layout Standard
+Si los cuadrados mínimos fuesen más pequeños se podrán encontrar caras más
+ pequeñas en la imagen pero al mismo tiempo se afectará negativamente la
+ performance.
+ En este caso este tamaño mínimo es un indicador de cuán lejos se puede
+ ubicar una persona.
+\end_layout
+
+\begin_layout Standard
+Debido a que se va haciendo un barrido a lo largo de toda la imagen, es
+ posible que alrededor de una misma cara encuentre múltiples positivos.
+ De todos los resultados obtenidos, selecciona aquella que tenga la mayor
+ intersección con el resto.
+ Esto también es útil para evitar falsos positivos, haciendo que el algoritmo
+ tenga que encontrar al menos una cantidad determinada de vecinos alrededor
+ para poder afirmar que es una cara.
+\end_layout
+
+\begin_layout Standard
+Todo este procedimiento se realiza de manera independiente para cada cuadro
+ de video, por lo que generalmente se necesita ejecutar el algoritmo treinta
+ veces por segundo y se necesita mucho procesamiento.
+ Para reducir este costo computacional, ideamos unas optimizaciones que
+ nos permitieron lograr la detección en tiempo real.
+\end_layout
+
+\begin_layout Standard
+Si en el cuadro de video anterior se detectó una cara, el próximo cuadro
+ no será analizado de forma completa, se realiza un recorte de la imagen
+ en la ubicación de la cara anterior con un 20% de margen.
+ De esta forma una vez localizada la cara de la persona, las siguientes
+ búsquedas se harán solo en las proximidades de la última posición conocida.
+ Otra optimización menor es que además de buscar en las cercanías de la
+ detección anterior, sólo se buscarán caras con tamaños similares.
+\end_layout
+
+\begin_layout Section
+Filtrado con Kalman
+\end_layout
+
+\begin_layout Standard
+El filtro de Kalman es un filtro digital recursivo que se puede utilizar
+ en sistemas dinámicos donde hay un cierto grado de incertidumbre acerca
+ de lo que puede ocurrir en lo inmediato, debido a su poco requerimiento
+ computacional es muy apto para problemas de detección en tiempo real.
+ Además de permitir filtrar las detecciones y reducir su ruido, es capaz
+ de realizar predicciones.
+\end_layout
+
+\begin_layout Standard
+En nuestro caso el filtro de Kalman se basó en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "filtro_kalman"
+literal "false"
+
+\end_inset
+
+, trabaja con las variables que se corresponden con la posición de la cara
+ en el espacio tridimensional (X, Y, Z) y también con las velocidades en
+ los respectivos ejes.
+ A partir de conocer las detecciones pasadas el filtro es capaz de predecir
+ el siguiente estado y al mismo tiempo disminuir el ruido producido en la
+ detección de cara.
+\end_layout
+
+\begin_layout Standard
+La predicción de la posición a partir de las velocidades de movimiento conocidas
+ no sólo es aprovechada para lograr una sensación de fluidez cuando se pierde
+ la detección de la cara por momentos, sino también para interpolar muestras
+ cuando la tasa de refresco del monitor es mayor que la tasa de refresco
+ de la cámara.
+ Otra utilidad del filtro es que al estimar la velocidad de la cabeza, tomamos
+ del vector de estado la velocidad vertical para determinar si la persona
+ ha realizado un salto.
+\end_layout
+
+\begin_layout Section
+Arquitectura del código
+\end_layout
+
+\begin_layout Standard
+Este proyecto fue desarrollado en el lenguaje de programación Python, el
+ código está compuesto por diversos archivos que fueron desarrollados de
+ manera independiente por los distintos integrantes del grupo.
+ Cada archivo además de contener funciones indispensables para el funcionamiento
+ completo de la experiencia, contiene una pequeña demostración para comprobar
+ el correcto funcionamiento de cada parte del programa.
+\end_layout
+
+\begin_layout Standard
+Una característica importante del programa es que se utilizaron dos hilos
+ o threads para separar en cuestiones de procesamiento dos partes importantes:
+ la detección de caras y el dibujado de las imágenes.
+ La finalidad detrás de la utilización de dos hilos yace en que los procesos
+ de detección y dibujado se encuentran limitados en sus tasas de refresco.
+ El hilo de la detección de caras va a estar limitado debido a los cuadros
+ por segundo que soporte la cámara que se esté utilizando, mientras que
+ para el dibujado el limitante está dado por la velocidad en el cual la
+ pantalla puede mostrar las imágenes.
+\end_layout
+
+\begin_layout Standard
+Por lo tanto al utilizar dos threads es posible desacoplar estos dos bucles
+ para permitirles funcionar a su tasa máxima de refresco.
+ Como se muestra en la figura ?, el thread de detección almacena la posición
+ de la última cara detectada mientras que el thread principal leerá esa
+ posición cuando lo necesite, si la detección es más rápida que el dibujado
+ habrán estimaciones de la posición de la cabeza que no se utilizarán para
+ el filtrado o visualización.
+ El caso más común es que la tasa de refresco de la pantalla sea mayor que
+ la tasa de detección, por lo tanto si el thread principal determina que
+ no hay una nueva ubicación de cabeza disponible, simplemente estimará la
+ nueva posición realizando una predicción con el filtro de Kalman.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tp
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename flujo.png
+	lyxscale 10
+	width 95line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:threads"
+
+\end_inset
+
+Flujo de ejecución del programa
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El programa necesita una gran cantidad de constantes y parámetros que deben
+ ser ajustados manualmente para la puesta a punto y calibración, ya sea
+ para la detección de caras, filtro de Kalman, o dimensiones físicas de
+ la pantalla.
+ Encontramos muy útil crear de forma temprana una estructura que almacene
+ todos estos parámetros y que permita su modificación de manera sencilla
+ durante la ejecución del programa.
+\end_layout
+
+\begin_layout Section
+Visualización
+\end_layout
+
+\begin_layout Standard
+Se comenzó realizando una escena en dos dimensiones en forma de prototipo
+ y a forma de realizar pruebas, pero es en la escena de tres dimensiones
+ donde realmente se termina de apreciar la sensación de realidad aumentada.
+\end_layout
+
+\begin_layout Subsection
+Visualización bidimensional
+\end_layout
+
+\begin_layout Standard
+Se creó una escena bidimensional en la cual se utilizó la técnica de paralaje
+ para darle a las imágenes una sensación de profundidad.
+ Paralaje se refiere a la diferencia en la posición aparente de un objeto
+ según el ángulo en el que se lo mire.
+\end_layout
+
+\begin_layout Standard
+Se utilizó la librería de Pygame para crear una ventana para la aplicación
+ y dibujar las imágenes en ella.
+ El efecto de paralaje y sensación de profundidad fue simulado mediante
+ la modificación de la posición de las imágenes colocando a cada una de
+ ellas un factor de movimiento, el cual modifica la sensibilidad de estas
+ respecto a la posición de la cabeza.
+ Como consecuencia, las imágenes que simulan ser cercanas tienen un bajo
+ factor de movimiento, mientras las que están lejos, como el fondo, tienen
+ un factor mayor.
+\end_layout
+
+\begin_layout Standard
+Un problema de este método es que no permite realizar escenas con objetos
+ tridimensionales complejos, además, la utilización de Pygame como librería
+ gráfica no permite la aceleración por hardware y esto afecta en gran medida
+ la fluidez de la aplicación en sistemas con limitada capacidad de procesamiento.
+\end_layout
+
+\begin_layout Standard
+En la figura ? se muestra la escena creada a modo de ejemplo, consiste de
+ un fondo a una gran profundidad y de figuras de personas a diversas profundidad
+es.
+ La temática es mostrar los próceres que participaron en la Primera Junta
+ de 1810 ubicados en el patio de la Casa de Tucumán, al mover la cabeza
+ es posible seleccionar un prócer para visualizar más información sobre
+ éste.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tp
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename scene_2d.png
+	lyxscale 10
+	width 95line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:escena-2d"
+
+\end_inset
+
+Visualización creada con Pygame para demostrar el efecto de paralaje.
+ Imagen de fondo basada en foto de 
+\begin_inset Quotes fld
+\end_inset
+
+Secretaría de Cultura de la Nación
+\begin_inset Quotes frd
+\end_inset
+
+ [CC BY-SA 2.0].
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Visualización tridimensional
+\end_layout
+
+\begin_layout Standard
+Como librería de dibujado utilizamos OpenGL y GLM, el cual permite el renderizad
+o de escenas tridimensionales utilizando aceleración por hardware de video.
+ Buscamos representar el interior de una casa colonial, al mismo tiempo
+ que se muestran cartas con diversas estampillas o sellos postales históricos.
+ En la figura ? se pueden observar capturas de pantalla.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tp
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename scene_3d.png
+	lyxscale 10
+	width 95line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:escena-3d"
+
+\end_inset
+
+Ejemplo de visualización de la escena 3D.
+ Texturas basadas en imágenes de Sailko [CC BY-SA 4.0], 
+\begin_inset Quotes fld
+\end_inset
+
+Darkwood67
+\begin_inset Quotes frd
+\end_inset
+
+ (https://www.deviantart.com/darkwood67/gallery/11280947) y Øyvind Holmstad
+ [CC BY-SA 4.0]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+OpenGL es principalmente utilizado para el desarrollo de videojuegos, en
+ la gran mayoría de los casos se utiliza una visualización de perspectiva
+ con la función glm::perspective(), pero en nuestro caso es necesario utilizar
+ una matriz de proyección creada con glm::frustum().
+ La diferencia es que la visualización en perspectiva es simétrica hacia
+ arriba y hacia los lados y es creada a partir de un cierto ángulo de campo
+ de visión, mientras que en esta experiencia necesitamos una matriz de proyecció
+n asimétrica.
+\end_layout
+
+\begin_layout Standard
+Esto es porque al jugar videojuegos el usuario siempre se ubica de frente
+ hacia la pantalla, pero en nuestro trabajo el usuario se mueve y observa
+ al monitor desde diferentes ángulos, esto produce que la imagen se deforme
+ y sea aparente que la imagen se ubica en el plano de la pantalla.
+ Al usar una proyección asimétrica es posible compensar esta deformación
+ de la imagen, una ilustración del fenómeno se muestra en la Figura ?.
+ Nuestra implementación es una traducción a Python del trabajo de [2], el
+ cuál está basado en [1]
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tp
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename frustum.png
+	lyxscale 10
+	width 95line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:frustum"
+
+\end_inset
+
+Visualización de las diferencias entre proyección simétrica con 
+\begin_inset Quotes fld
+\end_inset
+
+glm::perspective()
+\begin_inset Quotes frd
+\end_inset
+
+ (izquierda) y proyección asimétrica con 
+\begin_inset Quotes fld
+\end_inset
+
+glm::frustum()
+\begin_inset Quotes frd
+\end_inset
+
+ (derecha).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Respecto a la programación de las animaciones de la escena, las estampillas
+ o sellos postales mostrados vuelan por la habitación siguiendo una trayectoria
+ descripta por una curva paramétrica mostrada en la figura ?, cuyas ecuaciones
+ son:
+\end_layout
+
+\begin_layout Standard
+X(t) = t^5
+\end_layout
+
+\begin_layout Standard
+Y(t) = 0.2 * cos(pi * t / 2)
+\end_layout
+
+\begin_layout Standard
+Z(t) = 0.4 * cos(pi * t / 2)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tp
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename curva_parametrica.png
+	lyxscale 10
+	width 95line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:curva"
+
+\end_inset
+
+Visualización con [5] de curva paramétrica de la trayectoria de las estampillas
+ en la habitación
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para lograr un efecto de realidad aumentada convincente es útil colocar
+ una caja impresa para lograr una sensación de continuidad hacia fuera de
+ la pantalla del espacio tridimensional virtual, es importante al realizar
+ el diseño la utilización de líneas rectas para demostrar de forma clara
+ que la perspectiva se mantiene fuera y dentro de la pantalla.
+ Nuestro prototipo se muestra en la imagen ?, observar que de manera intencional
+ las paredes contienen líneas rectas y que el piso es de baldosas cuadradas.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tp
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename curva_parametrica.png
+	lyxscale 10
+	width 95line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:caja"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusiones
+\end_layout
+
+\begin_layout Appendices
+Observamos que es posible realizar una experiencia de realidad aumentada
+ de manera simple y económica por medio de la detección de la ubicación
+ de la cabeza del usuario, la implementación se puede realizar en computadoras
+ de gama baja con cámaras web de mediana definición.
+ Es posible aplicar este método de manera directa en dispositivos con cámaras
+ frontales como notebooks o teléfonos celulares, pero consideramos de interés
+ su colocación en una galería de museo.
+\end_layout
+
+\begin_layout Appendices
+Como mejoras recomendamos descartar las librerías de dibujado bidimensional
+ como Pygame y profundizar el trabajo en la generación de escenas tridimensional
+es con librerías ampliamente utilizadas para el desarrollo de videojuegos.
+\end_layout
+
+\begin_layout Appendices
+Consideramos que como proyecto futuro, la utilización de un televisor 3D
+ no requerirá mucho trabajo de programación y producirá una gran mejora
+ de la experiencia.
+ De lo contrario, otra forma de lograr una sensación de profundidad convincente
+ es la colocación de una caja alrededor de la pantalla para lograr una continuid
+ad entre el espacio virtual y el real.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "paper-de-frustum"
+literal "false"
+
+\end_inset
+
+R.
+ Kooima, “Generalized Perspective Projection”.
+ https://csc.lsu.edu/~kooima/pdfs/gen-perspective.pdf
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "filtro_kalman"
+literal "false"
+
+\end_inset
+
+R.
+ Teammco, “Kalman Filter Simulation”.
+ https://www.cs.utexas.edu/~teammco/misc/kalman_filter/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "Non-Orthogonal-Multiple-Access-for-5G-Solutions-Challenges-Opportunities-and-Future-Research-Trends"
+literal "false"
+
+\end_inset
+
+L.
+ Dai, B.
+ Wang, Y.
+ Yuan, S.
+ Han, C.
+ I and Z.
+ Wang, "Non-orthogonal multiple access for 5G: solutions, challenges, opportunit
+ies, and future research trends," in IEEE Communications Magazine, vol.
+ 53, no.
+ 9, pp.
+ 74-81, September 2015.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "Impact-of-user-pairing-on-5G-non-orthogonal-multiple-access"
+literal "false"
+
+\end_inset
+
+Z.
+ Ding, P.
+ Fan, and H.
+ V.
+ Poor, “Impact of user pairing on 5G non-orthogonal multiple access,” IEEE
+ Trans.
+ Veh.
+ Technol.
+ , vol.
+ 65, no.
+ 8, pp.
+ 6010–6023, Aug 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "5"
+key "Non-Orthogonal Multiple Access for 5G and Beyond"
+literal "false"
+
+\end_inset
+
+Y.
+ Liu, Z.
+ Qin, M.
+ Elkashlan, Z.
+ Ding, A.
+ Nallanathan and L.
+ Hanzo, "Nonorthogonal Multiple Access for 5G and Beyond," in Proceedings
+ of the IEEE, vol.
+ 105, no.
+ 12, pp.
+ 2347-2381, Dec.
+ 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "A Tutorial on Nonorthogonal Multiple Access for 5G and Beyond"
+literal "false"
+
+\end_inset
+
+Aldababsa, M., Toka, M., Gökçeli, S., Kurt, G.
+ K., & Kucur, O.
+ (2018).
+ “A tutorial on nonorthogonal multiple access for 5G and beyond.” Wireless
+ Communications and Mobile Computing, 2018.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "7"
+key "Fairness for Non-Orthogonal Multiple Access in 5G Systems"
+literal "false"
+
+\end_inset
+
+S.
+ Timotheou and I.
+ Krikidis, "Fairness for Non-Orthogonal Multiple Access in 5G Systems,"
+ in IEEE Signal Processing Letters, vol.
+ 22, no.
+ 10, pp.
+ 1647-1651, Oct.
+ 2015.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "On the Performance of Non-Orthogonal Multiple Access in 5G Systems with Randomly Deployed Users"
+literal "false"
+
+\end_inset
+
+Z.
+ Ding, Z.
+ Yang, P.
+ Fan and H.
+ V.
+ Poor, "On the Performance of Non-Orthogonal Multiple Access in 5G Systems
+ with Randomly Deployed Users," in IEEE Signal Processing Letters, vol.
+ 21, no.
+ 12, pp.
+ 1501-1505, Dec.
+ 2014.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "9"
+key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions"
+literal "false"
+
+\end_inset
+
+Z.
+ Ding, P.
+ Fan and H.
+ V.
+ Poor, "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink
+ Transmissions," in IEEE Transactions on Vehicular Technology, vol.
+ 65, no.
+ 8, pp.
+ 6010-6023, Aug.
+ 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "10"
+key "Application of Non-Orthogonal Multiple Access in LTE and 5G Networks (368)-1"
+literal "false"
+
+\end_inset
+
+Z.
+ Ding et al., "Application of Non-Orthogonal Multiple Access in LTE and 5G
+ Networks," in IEEE Communications Magazine, vol.
+ 55, no.
+ 2, pp.
+ 185-191, February 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "11"
+key "Power-Domain Non-Orthogonal Multiple Access (NOMA) in 5G Systems"
+literal "false"
+
+\end_inset
+
+S.
+ M.
+ R.
+ Islam, N.
+ Avazov, O.
+ A.
+ Dobre and K.
+ Kwak, "Power-Domain Non-Orthogonal Multiple Access (NOMA) in 5G Systems:
+ Potentials and Challenges," in IEEE Communications Surveys & Tutorials,
+ vol.
+ 19, no.
+ 2, pp.
+ 721-742, Secondquarter 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "12"
+key "Non-Orthogonal Multiple Access (NOMA) in Cellular Uplink and Downlink: Challenges and Enabling Techniques-1"
+literal "false"
+
+\end_inset
+
+Tabassum, H., Ali, M.
+ S., Hossain, E., Hossain, M., & Kim, D.
+ I.
+ (2016).
+ “Non-orthogonal multiple access (NOMA) in cellular uplink and downlink:
+ Challenges and enabling techniques”.
+ arXiv preprint arXiv:1608.05783.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "13"
+key "Proportional Fairness-Based User Pairing and Power Allocation for Non-Orthogonal Multiple Access"
+literal "false"
+
+\end_inset
+
+F.
+ Liu, P.
+ Mähönen and M.
+ Petrova, "Proportional fairness-based user pairing and power allocation
+ for non-orthogonal multiple access," 2015 IEEE 26th Annual International
+ Symposium on Personal, Indoor, and Mobile Radio Communications (PIMRC),
+ Hong Kong, 2015, pp.
+ 1127-1131.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "14"
+key "On User Pairing in Uplink NOMA"
+literal "false"
+
+\end_inset
+
+M.
+ A.
+ Sedaghat and R.
+ R.
+ Müller, "On User Pairing in Uplink NOMA," in IEEE Transactions on Wireless
+ Communications, vol.
+ 17, no.
+ 5, pp.
+ 3474-3486, May 2018.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "15"
+key "User Pairing for Downlink Non-Orthogonal Multiple Access Networks Using Matching Algorithm"
+literal "false"
+
+\end_inset
+
+W.
+ Liang, Z.
+ Ding, Y.
+ Li and L.
+ Song, "User Pairing for Downlink Non-Orthogonal Multiple Access Networks
+ Using Matching Algorithm," in IEEE Transactions on Communications, vol.
+ 65, no.
+ 12, pp.
+ 5319-5332, Dec.
+ 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "16"
+key "Fairness of User Clustering in MIMO Non-Orthogonal Multiple Access Systems"
+literal "false"
+
+\end_inset
+
+Y.
+ Liu, M.
+ Elkashlan, Z.
+ Ding and G.
+ K.
+ Karagiannidis, "Fairness of User Clustering in MIMO Non-Orthogonal Multiple
+ Access Systems," in IEEE Communications Letters, vol.
+ 20, no.
+ 7, pp.
+ 1465-1468, July 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "17"
+key "Low-complexity user pairing and power allocation algorithm for 5G cellular network non-orthogonal multiple access"
+literal "false"
+
+\end_inset
+
+J.
+ He and Z.
+ Tang, "Low-complexity user pairing and power allocation algorithm for 5G
+ cellular network non-orthogonal multiple access," in Electronics Letters,
+ vol.
+ 53, no.
+ 9, pp.
+ 626-627, 27 4 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "18"
+key "User Pairing and Pair Scheduling in Massive MIMO-NOMA Systems"
+literal "false"
+
+\end_inset
+
+X.
+ Chen, F.
+ Gong, G.
+ Li, H.
+ Zhang and P.
+ Song, "User Pairing and Pair Scheduling in Massive MIMO-NOMA Systems,"
+ in IEEE Communications Letters, vol.
+ 22, no.
+ 4, pp.
+ 788-791, April 2018.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "19"
+key "Resource Allocation for Downlink NOMA Systems Key Techniques and Open Issues"
+literal "false"
+
+\end_inset
+
+S.
+ M.
+ R.
+ Islam, M.
+ Zeng, O.
+ A.
+ Dobre and K.
+ Kwak, "Resource Allocation for Downlink NOMA Systems: Key Techniques and
+ Open Issues," in IEEE Wireless Communications, vol.
+ 25, no.
+ 2, pp.
+ 40-47, April 2018.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "20"
+key "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum of Unpaired Users in Non-orthogonal Multiple Access"
+literal "false"
+
+\end_inset
+
+M.
+ B.
+ Shahab, M.
+ F.
+ Kader and S.
+ Y.
+ Shin, "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum
+ of Unpaired Users in Non-orthogonal Multiple Access," in IEEE Signal Processing
+ Letters, vol.
+ 23, no.
+ 12, pp.
+ 1766-1770, Dec.
+ 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "21"
+key "Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems"
+literal "false"
+
+\end_inset
+
+M.
+ S.
+ Ali, H.
+ Tabassum and E.
+ Hossain, "Dynamic User Clustering and Power Allocation for Uplink and Downlink
+ Non-Orthogonal Multiple Access (NOMA) Systems," in IEEE Access, vol.
+ 4, pp.
+ 6325-6343, 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "22"
+key "Energy-Efficient Power Allocation for MIMO-NOMA With Multiple Users in a Cluster"
+literal "false"
+
+\end_inset
+
+M.
+ Zeng, A.
+ Yadav, O.
+ A.
+ Dobre and H.
+ V.
+ Poor, "Energy-Efficient Power Allocation for MIMO-NOMA With Multiple Users
+ in a Cluster," in IEEE Access, vol.
+ 6, pp.
+ 5170-5181, 2018.
+\end_layout
+
+\end_body
+\end_document

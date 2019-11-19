@@ -1,0 +1,2069 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass IEEEtran
+\begin_preamble
+% for subfigures/subtables
+\usepackage[caption=false,font=footnotesize]{subfig}
+\end_preamble
+\options journal
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package auto
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures false
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement tbh
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Your Title"
+\pdf_author "Your Name"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle false
+\pdf_quoted_options "pdfpagelayout=OneColumn, pdfnewwindow=true, pdfstartview=XYZ, plainpages=false"
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style french
+\dynamic_quotes 0
+\papercolumns 2
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Emparejamiento de usuarios en Power Domain NOMA para 5G
+\end_layout
+
+\begin_layout Author
+\begin_inset Flex Author Name
+status open
+
+\begin_layout Plain Layout
+Bernardi
+\begin_inset space ~
+\end_inset
+
+Martín
+\begin_inset space ~
+\end_inset
+
+Gustavo
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+
+, Remedi
+\begin_inset space ~
+\end_inset
+
+Augusto
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
+, Rittano
+\begin_inset space ~
+\end_inset
+
+Ignacio
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex Author Affiliation
+status open
+
+\begin_layout Plain Layout
+Universidad Nacional de Río Cuarto, Facultad de Ingeniería, Departamento
+ de Telecomunicaciones
+\begin_inset Newline newline
+\end_inset
+
+Río Cuarto, Córdoba, Argentina
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+martin@mbernardi.com.ar
+\family default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Author Affiliation
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+agustoremedi@gmail.com
+\family default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Author Affiliation
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex Author Mark
+status open
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+rittanoignacio@gmail.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+NOMA (Non-Orthogonal Multiple access) es un método de acceso propuesto para
+ las comunicaciones celulares que se advienen con la llegada del 5G a contrapart
+e de las técnicas usadas en la actualidad basadas en OMA (Orthogonal Multiple
+ Access).
+ La insistencia en el uso del principio de la ortogonalidad en la separación
+ y manejo espectral significa un gran reto bajo las restricciones impuestas
+ por la ITU sobre el rendimiento de las tecnologías 5G, tales como cantidad
+ de usuarios (densidad de conexión), velocidades máximas de subida y de
+ bajada, eficiencia espectral, etc.
+ En este trabajo a modo introducción/reseña, nos centraremos en explicar
+ los conceptos esenciales de NOMA y tratar uno de los mayores problemas
+ a la hora de diseño e implementación práctica de estos esquemas: Emparejamiento
+ de usuarios.
+\end_layout
+
+\begin_layout Section
+Introducción
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Paragraph Start
+status open
+
+\begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+L
+\end_layout
+
+\end_inset
+
+a
+\end_layout
+
+\end_inset
+
+ ITU (International Technology University), ha sido la institución encargada
+ de declarar los estándares actuales y previos de las exigencias de las
+ comunicaciones celulares.
+ IMT (International Mobile Communications) es el nombre que ha sido otorgado
+ a las diferentes estandarizaciones de tecnología celular a través del tiempo,
+ desde la IMT-2000 (3G) a IMT-Advanced (4G).
+ Con el surgimiento de nuevas tecnologías y servicios, tal como la popularizació
+n de Internet de las cosas (IoT), la ITU introdujo el nuevo estándar de
+ comunicaciones llamado IMT-2020 mejor conocido como 5G 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ITU-Minimum-requirements-related-to-technical-performance-for-IMT-2020-radio-interface(s)."
+literal "false"
+
+\end_inset
+
+.
+ La implementación de esta nueva tecnología, como lo indica su nombre, está
+ pensada para ser desplegada en el 2020, y en ella se encuentran los principales
+ requerimientos técnicos:
+\end_layout
+
+\begin_layout Itemize
+Ancho de banda de al menos 100 MHz.
+\end_layout
+
+\begin_layout Itemize
+Ancho de banda de hasta 1 GHz es requerido para frecuencias más altas (Encima
+ de los 6 GHz).
+\end_layout
+
+\begin_layout Itemize
+Mínimo requerimiento de la densidad de conexión es de 1 millón de dispositivos
+ por kilómetro cuadrado.
+\end_layout
+
+\begin_layout Itemize
+Máxima tasa de bajada de 20 Gigabits por segundo.
+\end_layout
+
+\begin_layout Itemize
+Máxima tasa de subida de 10 Gigabits por segundo.
+\end_layout
+
+\begin_layout Itemize
+Tasa de bajada experimentada por el usuario de al menos 100 Megabits por
+ segundo.
+\end_layout
+
+\begin_layout Itemize
+Tasa de subida experimentada por el usuario de al menos 50 Megabits por
+ segundo.
+\end_layout
+
+\begin_layout Standard
+Hasta ahora, en las previas generaciones de comunicación celular, se han
+ utilizado varias técnicas de múltiple acceso, que permiten a varios usuarios
+ compartir un mismo recurso de comunicaciones:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+FDMA
+\emph default
+: Múltiple acceso por división de frecuencia - 1G
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+TDMA
+\emph default
+: Múltiple acceso por división de tiempo - 2G
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+CDMA
+\emph default
+: Múltiple acceso por división de código - 3G
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+OFDMA
+\emph default
+: Múltiple acceso por división de frecuencia ortogonal - 4G
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+SDMA
+\emph default
+: Múltiple acceso por división de espacio
+\end_layout
+
+\begin_layout Standard
+Estos esquemas han sido diseñados y utilizados bajo la concepción de crear
+ señales ortogonales para alocar el recurso ya sea de tiempo/frecuencia/código
+ para ser recibidas por distintos usuarios del lado receptor y minimizar
+ la interferencia entre usuarios 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal-Multiple-Access:-Myths-and-Critical-Questions,Non-Orthogonal-Multiple-Access-for-5G-Solutions-Challenges-Opportunities-and-Future-Research-Trends"
+literal "false"
+
+\end_inset
+
+.
+ Tomemos el estándar 4G long term evolution (4G-LTE) como ejemplo, un Bloque
+ de Recurso, o RB por su sigla en inglés, ocupa 180 KHz de ancho de banda,
+ y no puede ser otorgado a más de un solo usuario.
+\end_layout
+
+\begin_layout Standard
+Sin embargo, con el incremento masivo de necesidad de tráfico de datos,
+ conectividad masiva de dispositivos de bajo costo, latencias reducidas
+ y aumento de servicios multimedia, se necesita de una tecnología que permita
+ satisfacer todas estas necesidades emergentes.
+\end_layout
+
+\begin_layout Standard
+Por consiguiente, se propone utilizar NOMA como un método de acceso no-ortogonal
+, debido a varias razones: Alta eficiencia del ancho de banda, lo cual permite
+ mejorar el throughput.
+ User Fairness, NOMA otorga mayor potencia a usuarios con una pobre calidad
+ de canal 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Impact-of-user-pairing-on-5G-non-orthogonal-multiple-access"
+literal "false"
+
+\end_inset
+
+, lo que permite aprovechar el estado del canal para regular el servicio
+ de forma equitativa.
+ Alta conectividad, a diferencia del convencional OMA, NOMA puede servir
+ a varios usuarios en un mismo bloque de recursos.
+ Compatibilidad con técnicas anteriores OMA, debido al uso de una nueva
+ dimensión, el dominio de la potencia.
+ Las técnicas NOMA pueden ser clasificadas principalmente en dos categorías:
+ NOMA por dominio de código y NOMA por dominio de potencia 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal-Multiple-Access-for-5G-Solutions-Challenges-Opportunities-and-Future-Research-Trends"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En la Sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:conceptos-basicos"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ de este trabajo, nos centraremos en explicar los conceptos básicos de NOMA
+ a forma introductoria del tema y definiremos los términos comunes a utilizar
+ en todo lo que refiere a NOMA.
+ En la Sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:emparejamiento"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ se tratará el problema de emparejamiento de usuarios, uno de los problemas
+ más importantes a la hora de diseño e implementación práctica de esta arquitect
+ura de servicios.
+ En la Sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:discusion"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, se realiza una discusión sobre los diversos acercamientos propuestos de
+ los distintos autores que se han analizado.
+ Finalmente, en la Sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:conclusiones"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, se da una conclusión con respecto al estado actual de investigación de
+ la academia y se proponen otros temas a analizar en los problemas de implementa
+ción práctica de NOMA.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:conceptos-basicos"
+
+\end_inset
+
+Conceptos básicos de NOMA
+\end_layout
+
+\begin_layout Standard
+La idea principal en NOMA por dominio de potencia es asegurar que se pueda
+ brindar servicio a múltiples usuarios en un mismo RB de tiempo/frecuencia,
+ con la ayuda de técnicas de superposición de código (SC) en el transmisor
+ y SIC (successive interference cancellation) en el receptor.
+ NOMA es capaz de explotar los recursos de una forma más eficiente según
+ las condiciones específicas del canal y es capaz de servir a múltiples
+ usuarios con diferentes requerimientos de calidad de servicio dentro del
+ mismo bloque de recursos 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal Multiple Access for 5G and Beyond"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+NOMA es un método de acceso que se utiliza en las comunicaciones móviles
+ para los agentes intervinientes, que son las BS (Base Station) y los diferentes
+ usuarios o UEs (User Equipment).
+ El mecanismo principal por el cual se basa la multiplexación en NOMA es
+ la transmisión no ortogonal de información hacia diferentes usuarios utilizando
+ un único canal, mientras que al mismo tiempo es posible la transmisión
+ de más de un canal por medio de OMA convencional.
+ Específicamente en el caso de “Power domain” NOMA la estación base realiza
+ la suma de señales destinadas a diferentes usuarios para la transmisión
+ en un mismo canal, en donde cada señal previamente es ponderada para asignar
+ un nivel de potencia diferente a cada una de ellas.
+ En el otro extremo se utiliza la técnica de SIC para separar las señales
+ y obtener la información destinada al equipamiento de usuario en particular.
+\end_layout
+
+\begin_layout Subsection
+Successive Interference Cancelation (SIC)
+\end_layout
+
+\begin_layout Standard
+Consiste en que cada usuario a partir del conjunto de señales superpuestas
+ primero decodifica la señal más potente, si la información que contiene
+ está destinada a otro usuario, esta señal será restada al conjunto para
+ luego continuar el procedimiento con la segunda señal de mayor potencia.
+ Este procedimiento se repite hasta obtener la señal destinada a un equipamiento
+ de usuario específico, es importante tener en cuenta que mientras las señales
+ más potentes son canceladas mediante SIC, las señales de menor potencia
+ no son eliminadas y se consideran ruido para el usuario en particular.
+\end_layout
+
+\begin_layout Standard
+Las señales superpuestas que llegan de la estación base a cada uno de los
+ usuarios son demoduladas en estos a partir de SIC.
+ Un problema que puede surgir cuando se lleva a cabo este proceso es cometer
+ un error al demodular a alguno de los usuarios, lo cual conlleva a que
+ se propague el error para el resto de la demodulaciones.
+ Al ocurrir un error en esta etapa, la resta que se realiza no elimina la
+ señal completamente y cuando se va a demodular la segunda señal, esta ya
+ se encuentra con el error de la etapa anterior.
+\end_layout
+
+\begin_layout Subsection
+Power allocation
+\end_layout
+
+\begin_layout Standard
+Debido a que en NOMA el flujo de datos de cada usuario está superpuesto
+ en el dominio de la potencia, la performance del sistema depende en gran
+ medida de cómo se reparte en cada flujo la potencia disponible 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fairness for Non-Orthogonal Multiple Access in 5G Systems"
+literal "false"
+
+\end_inset
+
+.
+ Como se analiza en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "On the Performance of Non-Orthogonal Multiple Access in 5G Systems with Randomly Deployed Users"
+literal "false"
+
+\end_inset
+
+, la asignación de potencia es crítica para garantizar las tasas de datos
+ esperadas y un funcionamiento continuo sin cortes, una incorrecta asignación
+ puede incluso producir una interrupción permanente.
+\end_layout
+
+\begin_layout Standard
+Al igual que en cualquier sistema de método de acceso, se busca alcanzar
+ la máxima tasa de datos.
+ Si solo se busca brindar la máxima tasa de datos posible a los usuarios
+ en conjunto, toda la potencia se dedicaría al usuario con las mejores condicion
+es y los demás usuarios no tendrían servicio, por esto es importante considerar
+ además que el servicio sea equitativo para todos los usuarios, aunque esto
+ suponga que la suma de la tasa de datos de cada usuario sea menor 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Application of Non-Orthogonal Multiple Access in LTE and 5G Networks (368)-1"
+literal "false"
+
+\end_inset
+
+, Este concepto se denomina “Fairness”.
+ Por lo tanto en la práctica se otorga mayor potencia de transmisión a los
+ usuarios con canales en peores condiciones, lo que asegura de que éstos
+ puedan decodificar los mensajes.
+\end_layout
+
+\begin_layout Subsection
+Cooperative NOMA
+\end_layout
+
+\begin_layout Standard
+Se basa en apoyarse en los usuarios con mejores condiciones, para ayudar
+ a los que presentan canales peores condiciones.
+ Esto es muy útil para aquellos usuarios que se encuentran ubicados en un
+ radio alejado a la estación base, y gracias a la retransmisión de un usuario
+ posicionado más cerca, es posible mejorar el nivel de señal recibido.
+ De esta manera, se mejora uno de los principios de NOMA que es la igualdad
+ para todos los usuarios.
+ Un problema que tiene esta técnica es que el usuario con canal débil experiment
+a un mayor retardo ya que debe esperar a que el usuario con mejor canal
+ reciba la señal y la retransmita 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal Multiple Access for 5G and Beyond"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Los repetidores actúan utilizando un protocolo que puede ser amplify-and-forward
+ (AF) o decode-and-forward (DF).
+ A su vez, se pueden dividir por la forma en la que funcionan, que pueden
+ ser half duplex o full duplex.
+ La diferencia que existe entre estos es que en full duplex se utiliza el
+ mismo espectro de frecuencia e instante de tiempo para la recepción y transmisi
+ón de datos, mientras que en half duplex no 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal Multiple Access for 5G and Beyond"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:emparejamiento"
+
+\end_inset
+
+Emparejamiento y agrupamiento de usuarios
+\end_layout
+
+\begin_layout Standard
+Los problemas que abarcan el agrupamiento de usuarios y la distribución
+ de potencia requieren soluciones que satisfagan las tasas de transmisión
+ de datos asegurando una distribución equitativa de ésta entre los usuarios.
+ Al utilizar NOMA en gran cantidad de usuarios simultáneamente la complejidad
+ del sistema puede aumentar considerablemente 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Application of Non-Orthogonal Multiple Access in LTE and 5G Networks (368)-1"
+literal "false"
+
+\end_inset
+
+.
+ En escenarios con gran cantidad de usuarios se busca emparejar o agrupar
+ usuarios en donde cada conjunto de éstos se diseña ortogonal a los demás,
+ por medio de técnicas que incluyen el beamforming o el uso de MIMO en conjunto
+ con NOMA 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Power-Domain Non-Orthogonal Multiple Access (NOMA) in 5G Systems"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Otra razón que incentiva al emparejamiento es que NOMA al ser no ortogonal
+ está limitado por interferencia entre usuarios, por lo tanto en lugar de
+ ubicar a todos los usuarios en canales no ortogonales se busca crear grupos
+ para utilizar NOMA y OMA al mismo tiempo, muchas veces los grupos consisten
+ de tan sólo dos usuarios.
+ La performance del sistema dependerá en gran medida de la composición de
+ cada grupo por lo tanto es importante realizar un agrupamiento efectivo
+ de los usuarios 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions"
+literal "false"
+
+\end_inset
+
+.
+ El problema es que optimizar la agrupación dinámica de usuarios es computaciona
+lmente costoso si se buscan soluciones óptimas, por lo tanto se buscan algoritmo
+s optimizados en donde existe un tradeoff entre complejidad y calidad del
+ agrupamiento 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Application of Non-Orthogonal Multiple Access in LTE and 5G Networks (368)-1"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Además del emparejamiento, otro problema relacionado a resolver es la asignación
+ de los coeficientes de potencia para cada usuario dentro de cada grupo,
+ por lo tanto parte de las publicaciones revisadas tratan ambos problemas
+ de forma conjunta.
+ Es posible además optimizar la distribución de potencia de cada grupo de
+ manera independiente, ya sea para maximizar la tasa de datos total o para
+ buscar una tasa equitativa entre los usuarios 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal Multiple Access (NOMA) in Cellular Uplink and Downlink: Challenges and Enabling Techniques-1"
+literal "false"
+
+\end_inset
+
+.
+ Las técnicas de distribución de potencia (PA) se pueden dividir en fijos
+ (F-NOMA) o dinámicas, en el primer caso se considera la calidad del canal
+ promedio de cada usuario y la distribución de potencia es fija, mientras
+ que en el caso dinámico se analiza el estado instantáneo de los canales
+ y se modifican los coeficientes de potencia de manera acorde 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Proportional Fairness-Based User Pairing and Power Allocation for Non-Orthogonal Multiple Access"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Asignación fija de potencia
+\end_layout
+
+\begin_layout Standard
+En 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions"
+literal "false"
+
+\end_inset
+
+ se analiza el impacto de la agrupación de usuarios en F-NOMA y Cognitive
+ Radio NOMA (CR-NOMA), que será analizado posteriormente, para el caso de
+ downlink.
+\end_layout
+
+\begin_layout Standard
+En downlink, gracias a SIC el usuario con el canal en mejores condiciones
+ no está limitado por interferencias con los otros usuarios del grupo, en
+ su lugar, el throughput depende de la calidad del canal y de la potencia.
+ Al mismo tiempo, cuando la ganancia del canal es lo suficientemente grande,
+ es posible utilizar una potencia de transmisión muy baja sin afectar el
+ throughput.
+ Los usuarios en peores condiciones de canal son beneficiados al ser emparejados
+ con los usuarios de gran ganancia de canal ya que éstos utilizarán bajas
+ potencias, dejando una gran fracción de potencia disponible para el usuario
+ con menores ganancias de canal 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Es importante asegurar de que ésta propiedad se mantenga para todos los
+ pares de usuarios.
+ Una estrategia válida para downlink llamada NLUPA (Next largest difference
+ UP Algorithm) ordena a los usuarios según sus ganancias de canal y empareja
+ al primero con el último, al segundo con el penúltimo y así sucesivamente
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Resource Allocation for Downlink NOMA Systems Key Techniques and Open Issues,Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems"
+literal "false"
+
+\end_inset
+
+.
+ Este método consigue un buen emparejamiento en los primeros grupos pero
+ en los últimos las condiciones de canal de los usuarios son similares producien
+do pocas ganancias de throughput.
+\end_layout
+
+\begin_layout Standard
+En 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Resource Allocation for Downlink NOMA Systems Key Techniques and Open Issues"
+literal "false"
+
+\end_inset
+
+ se propone un algoritmo para downlink llamado D-NLUPA (Divide Next largest
+ difference UP Algorithm) que consiste en agrupar los pares de usuarios
+ de forma tal de maximizar la distancia entre ellos.
+ Esto se lleva a cabo eligiendo una distancia mínima de separación, que
+ permite no incurrir en el problema de agrupar dos usuarios cercanos y obtener
+ una ganancia de throughput casi nula.
+ Se muestra que la tasa de datos total del sistema en NLUPA es la misma
+ que en D-NLUPA, pero en el último se logra una distribución más equitativa
+ de las ganancias de throughput.
+\end_layout
+
+\begin_layout Standard
+En uplink se requiere que la potencia de las señales que llegan a la BS
+ sean lo suficientemente diferentes para realizar SIC, pero a diferencia
+ del downlink es conveniente que los usuarios transmitan a máxima potencia
+ para alcanzar un mayor throughput.
+ Como los usuarios ya presentan ganancias de canal diferentes, es posible
+ realizar SIC si los grupos contienen usuarios con ganancias lo suficientemente
+ distintivas 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand cite
+key "On User Pairing in Uplink NOMA"
+literal "false"
+
+\end_inset
+
+ investiga el agrupamiento de usuarios de a pares para el uplink en diferentes
+ escenarios, tales como SISO (una antena en la BS y una en el usuario),
+ MISO (varias antenas en la BS y una en el usuario) y para MIMO (múltiples
+ antenas en la BS y en los usuarios), basándose en el análisis del emparejamient
+o con coeficientes de potencia fijos (F-NOMA) y conocimiento perfecto del
+ estado del canal.
+ En SISO el emparejamiento se realiza con un algoritmo sub-óptimo con un
+ comportamiento similar al del emparejamiento óptimo, mientras que en MISO
+ y MIMO es posible llegar a un algoritmo óptimo de complejidad polinómica.
+ Concluye que en los escenarios realizados se alcanzan resultados mucho
+ mejores al que se obtienen de un emparejamiento aleatorio, pero estas mejoras
+ son pequeñas cuando el número de antenas en la estación base y el número
+ de usuarios es grande.
+\end_layout
+
+\begin_layout Standard
+En 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems"
+literal "false"
+
+\end_inset
+
+ se proponen distintos algoritmos de distribución en grupos de más de dos
+ usuarios teniendo en cuenta diferencias entre la agrupación en downlink
+ y uplink y una implementación perfecta de SIC en el receptor.
+ En particular, primero se agrupan los usuarios y luego se optimizan la
+ distribución de potencia dentro de cada uno de ellos.
+ Previo al agrupamiento se determina la cantidad de usuarios que presentan
+ mucha mejor condición de canal en comparación con los demás, si la cantidad
+ de éstos usuarios es menor que la mitad de usuarios totales se creará un
+ grupo para cada uno de ellos, de lo contrario, la cantidad de grupos será
+ igual a la mitad de la cantidad de usuarios totales.
+ Luego de la selección de cantidad de grupos, se utiliza un algoritmo simple
+ de emparejamiento diferente para downlink y uplink tal como se muestra
+ en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:grupos"
+
+\end_inset
+
+.
+ Los resultados tanto en el uplink como el downlink demuestran ganancias
+ considerables en el throughput del sistema cuando las condiciones del canal
+ entre los usuarios del mismo grupo son grandes, también se muestra que
+ el rendimiento de NOMA en downlink se deteriora si el tamaño del cluster
+ aumenta más allá de un determinado margen.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement htbp
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../../../../documentosMartin.git/universidad/2019/metodos_de_acceso/paper_noma/imagenes/grupos_1.png
+	lyxscale 10
+	width 95line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Downlink
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../../../../documentosMartin.git/universidad/2019/metodos_de_acceso/paper_noma/imagenes/grupos_2.png
+	lyxscale 10
+	width 95line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Uplink
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:grupos"
+
+\end_inset
+
+Ejemplos de agrupamiento de usuarios en grupos de 2, 3 y 4 usuarios para
+ downlink y uplink 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Low-complexity user pairing and power allocation algorithm for 5G cellular network non-orthogonal multiple access"
+literal "false"
+
+\end_inset
+
+ se busca un algoritmo de baja complejidad para la distribución de usuarios
+ en grupos de uno o dos usuarios, utilizando una estrategia de distribución
+ de potencia fija.
+ Se define el coeficiente de prioridad (PC) de un usuario como la razón
+ entre el throughput instantáneo máximo alcanzable por el Physical Resource
+ Block (PRB) y el throughput promedio esperado para el usuario en particular.
+ Para encontrar al primer usuario de cada grupo primero se analizan los
+ coeficientes de prioridad de cada usuario ante cada PRB y luego se colocan
+ los usuarios con mayores PC en los PRB que maximizan los coeficientes.
+ El segundo usuario de cada par consiste del que presente mayor relación
+ señal ruido y que asegure SIC correcto.
+ La potencia asignada a entre los usuarios del par es del 80% y del 20%
+ del total respectivamente ya que esta aproximación no afecta al throughput
+ considerablemente.
+\end_layout
+
+\begin_layout Subsection
+Asignación dinámica de potencia
+\end_layout
+
+\begin_layout Standard
+Cognitive Radio es un término amplio que implica que usuarios secundarios
+ acceden al espectro otorgado a usuarios primarios de forma dinámica y adaptativ
+a, en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions"
+literal "false"
+
+\end_inset
+
+ se analiza el caso que un usuario con buenas condiciones de canal llamado
+ CU (Cognitive User), accede al espectro ocupado por otro usuario llamado
+ PU (Primary User) con una asignación dinámica de potencia bajo la condición
+ de no degradar la calidad de servicio del PU, en este caso, a diferencia
+ de F-NOMA se prefiere agrupar al usuario en mejores condiciones junto con
+ el que presenta la segunda mejor condición de canal para una utilización
+ más eficiente del espectro.
+\end_layout
+
+\begin_layout Standard
+Relacionado a lo estudiado sobre CR-NOMA en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions"
+literal "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "User Pairing for Downlink Non-Orthogonal Multiple Access Networks Using Matching Algorithm"
+literal "false"
+
+\end_inset
+
+ propone un algoritmo de emparejamiento de usuarios llamado DMA (Distributed
+ Matching Algorithm, negociando los coeficientes de potencia del PU y CU
+ de forma tal que se satisfaga una mínima tasa de transmisión requerida.
+ El algoritmo propuesto está diseñado para downlink y muestra obtener un
+ mayor rendimiento que las técnicas de asignación del recurso convencionales,
+ especialmente en comparación al convencional OMA.
+\end_layout
+
+\begin_layout Standard
+En 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Energy-Efficient Power Allocation for MIMO-NOMA With Multiple Users in a Cluster"
+literal "false"
+
+\end_inset
+
+ se analiza el caso de MIMO-NOMA downlink en donde cada usuario tiene un
+ requerimiento específico de calidad de servicio haciendo énfasis en la
+ eficiencia energética del sistema.
+ Primero se determina si es posible alcanzar los requerimientos de throughput
+ de los usuarios con la potencia total disponible, si es posible se busca
+ maximizar la eficiencia energética, de lo contrario se busca maximizar
+ el número de usuarios admitidos.
+ Las estrategias propuestas superan a OMA en términos de eficiencia energética
+ y de usuarios admitidos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fairness of User Clustering in MIMO Non-Orthogonal Multiple Access Systems"
+literal "false"
+
+\end_inset
+
+ abarca el problema de agrupar usuarios dinámicamente en conjuntos de tamaño
+ variable de al menos dos usuarios, y determina la potencia destinada a
+ cada uno de ellos para MIMO NOMA.
+ Para buscar una distribución equitativa del ancho de banda de cada usuario,
+ se proponen tres algoritmos subóptimos de agrupamiento, con la finalidad
+ de reducir el costo computacional del sistema, cada uno con diferentes
+ complejidades y eficacias.
+ Los tres algoritmos se basan en realizar una distribución aleatoria inicial
+ de usuarios hasta que la cantidad de usuarios restantes es lo suficientemente
+ chica como para realizar una búsqueda exhaustiva y agruparlos de la manera
+ óptima.
+ Los algoritmos propuestos demuestran numéricamente que pueden llegar a
+ un buen compromiso entre complejidad y throughput.
+\end_layout
+
+\begin_layout Standard
+Para la determinación de los coeficientes de potencia, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fairness of User Clustering in MIMO Non-Orthogonal Multiple Access Systems"
+literal "false"
+
+\end_inset
+
+ utiliza el algoritmo de búsqueda por bisección para maximizar la relación
+ señal ruido del peor usuario en cada grupo, estos coeficientes son optimizados
+ de acuerdo a las condiciones instantáneas del canal.
+\end_layout
+
+\begin_layout Subsection
+Otras consideraciones
+\end_layout
+
+\begin_layout Standard
+Por otro lado 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal Multiple Access (NOMA) in Cellular Uplink and Downlink: Challenges and Enabling Techniques-1"
+literal "false"
+
+\end_inset
+
+ demuestra que en el caso de transmisión downlink, desde la estación base
+ hacia los usuarios, para un buen aprovechamiento del canal es vital el
+ conocimiento de una distancia umbral que depende de la potencia de la base.
+ Como se muestra en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:estacion-1"
+
+\end_inset
+
+ el emparejamiento se debe realizar entre un usuario que se encuentre a
+ una distancia mayor y otro que se encuentre a una distancia menor al umbral
+ para garantizar una performance de NOMA superior a OMA.
+ De forma similar en el caso del uplink existe otro umbral que depende de
+ la potencia de transmisión de los usuarios, al menos uno de los dos usuarios
+ debe estar ubicado a una distancia mayor al umbral Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:estacion-2"
+
+\end_inset
+
+.
+ Esto además produce que cada estación base debe tener una cobertura mayor
+ a la distancia umbral, de lo contrario puede no ser conveniente utilizar
+ NOMA.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement htbp
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../../../../documentosMartin.git/universidad/2019/metodos_de_acceso/paper_noma/imagenes/estacion_1.png
+	lyxscale 10
+	width 80line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:estacion-1"
+
+\end_inset
+
+Downlink
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../../../../documentosMartin.git/universidad/2019/metodos_de_acceso/paper_noma/imagenes/estacion_2.png
+	lyxscale 10
+	width 80line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:estacion-2"
+
+\end_inset
+
+Uplink
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:estacion"
+
+\end_inset
+
+Restricciones respecto a distancia umbral para agrupamiento de usuarios
+ en downlink y uplink 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal Multiple Access (NOMA) in Cellular Uplink and Downlink: Challenges and Enabling Techniques-1"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand cite
+key "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum of Unpaired Users in Non-orthogonal Multiple Access"
+literal "false"
+
+\end_inset
+
+ siguiendo el caso anterior, agrega el problema de que la cantidad de usuarios
+ es impar, por lo que un usuario queda sin emparejar.
+ Entonces propone una solución en la cual se empareja un usuario a menor
+ distancia que el umbral con dos a mayor distancia de este, emparejando
+ a todos los usuarios.
+ De esta manera puede observarse en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:potencias"
+
+\end_inset
+
+ queel primer usuario posee el doble de ancho de banda permitiéndole un
+ mayor throughput, ya que ocupa dos canales.
+ En cuanto los dos usuarios restantes, permite aplicar equidad entre ellos
+ porque es posible extraer una porción del ancho de banda de uno para otorgarlo
+ al otro, equilibrando la tasa de transmisión.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement htbp
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../../../../documentosMartin.git/universidad/2019/metodos_de_acceso/paper_noma/imagenes/potencias_1.png
+	lyxscale 10
+	width 80line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+NOMA convencional
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../../../../documentosMartin.git/universidad/2019/metodos_de_acceso/paper_noma/imagenes/potencias_2.png
+	lyxscale 10
+	width 80line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+NOMA con usuarios virtuales
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:potencias"
+
+\end_inset
+
+Esquema de emparejamiento de usuarios propuesto según 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum of Unpaired Users in Non-orthogonal Multiple Access"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "User Pairing and Pair Scheduling in Massive MIMO-NOMA Systems"
+literal "false"
+
+\end_inset
+
+ se propone un algoritmo de emparejamiento y de scheduling de usuarios,
+ con especial énfasis en la reducción de la interferencia entre pares.
+ El algoritmo no presenta limitaciones en el número de antenas, lo que lo
+ hace aplicable a sistemas Massive MIMO, es decir, cuando la estación base
+ utiliza decenas o cientos de antenas simultáneamente.
+ Para el emparejamiento primero se ordenan a los usuarios por su ganancia
+ de canal y se selecciona al primer usuario de cada uno de los pares, luego
+ se analiza la interferencia presente entre estos primeros usuarios y finalmente
+ se asignan los segundos usuarios a cada par.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:discusion"
+
+\end_inset
+
+Discusión
+\end_layout
+
+\begin_layout Standard
+Se ha hecho un estudio intensivo sobre el estado del arte en los problemas
+ de implementación de la tecnología de acceso para las redes de comunicación
+ celular NOMA, centrándonos específicamente en uno de los inconvenientes
+ más importantes: Agrupación de usuarios.
+ Se han estudiado publicaciones con diversos enfoques en los cuales se proponen
+ técnicas diferentes para el uplink/downlink de un sistema y la cantidad
+ y forma de agrupar a estos usuarios.
+ Por un lado 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions,Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems,Resource Allocation for Downlink NOMA Systems Key Techniques and Open Issues"
+literal "false"
+
+\end_inset
+
+ para el caso del downlink y manteniendo la potencia fija, ordena a los
+ usuarios desde la mejor condición de canal a la peor y, posteriormente,
+ agrupa el de mejores condiciones con el peor, luego el segundo mejor con
+ el segundo peor y así sucesivamente.
+ Por otro lado, pero conservando la potencia fija, otros autores proponen
+ otras formas para agrupar los usuarios como son maximizar la diferencia
+ de canal (D-NLUPA), midiendo el throughput instantáneo o bien con técnicas
+ de MIMO utilizando algoritmos polinómicos 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Resource Allocation for Downlink NOMA Systems Key Techniques and Open Issues,Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems,Low-complexity user pairing and power allocation algorithm for 5G cellular network non-orthogonal multiple access,On User Pairing in Uplink NOMA"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En contraparte, con asignación de potencia variable, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions"
+literal "false"
+
+\end_inset
+
+ decide agrupar al usuario de mejores condiciones con el segundo mejor y
+ así sucesivamente.
+ Por otro lado 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "User Pairing for Downlink Non-Orthogonal Multiple Access Networks Using Matching Algorithm,Energy-Efficient Power Allocation for MIMO-NOMA With Multiple Users in a Cluster"
+literal "false"
+
+\end_inset
+
+ se basan en tener una calidad de servicio determinada, aunque con algunas
+ diferencias.
+ Para el primero el usuario negocia con la estación base la potencia a utilizar
+ para lograr la tasa mínima de transmisión y para el segundo lo que se busca
+ es maximizar la eficiencia energética y de no se posible maximizar la cantidad
+ de usuarios.
+ En otro caso 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fairness of User Clustering in MIMO Non-Orthogonal Multiple Access Systems"
+literal "false"
+
+\end_inset
+
+ propone primero hacer una distribución aleatoria de los usuarios en los
+ canales, y cuando ya quedan pocos usuarios por agrupar, hace una búsqueda
+ exhaustiva para lograr maximizar el throughput.
+\end_layout
+
+\begin_layout Standard
+Sin tratar las especificaciones de potencia 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Non-Orthogonal Multiple Access (NOMA) in Cellular Uplink and Downlink: Challenges and Enabling Techniques-1"
+literal "false"
+
+\end_inset
+
+, propone otro caso de emparejamiento en donde se establece un umbral que
+ distingue usuarios fuertes de usuarios débiles y agrupa uno de cada grupo,
+ y 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum of Unpaired Users in Non-orthogonal Multiple Access"
+literal "false"
+
+\end_inset
+
+ agrega la posibilidad de emparejar un usuario fuerte con dos usuarios débiles.
+ Por último 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "User Pairing and Pair Scheduling in Massive MIMO-NOMA Systems"
+literal "false"
+
+\end_inset
+
+ propone un caso de MIMO en donde se selecciona a los primeros usuarios
+ de cada par y luego mide la interferencia que hay para posteriormente asignar
+ a los segundos usuarios del par.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:conclusiones"
+
+\end_inset
+
+Conclusión
+\end_layout
+
+\begin_layout Appendices
+En este trabajo, se ha analizado el contexto actual de las necesidades advenient
+es de las redes móviles debido a la llegada del 5G, analizando NOMA como
+ la nueva tecnología de acceso propuesta.
+ Específicamente, se ha concentrado el trabajo en explicar los conceptos
+ centrales y el problema de emparejamiento de usuarios a la hora de su implement
+ación.
+ Se ha mostrado que User Pairing es un gran problema a la hora de implementar
+ NOMA y es un tema complicado que abarca una gran diversidad de propuestas.
+ A modo futuro, se propone realizar una investigación del estado del arte
+ dentro de los diversos problemas de implementación NOMA, como lo son SIC
+ o un estado del canal imperfecto (CSI).
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "ITU-Minimum-requirements-related-to-technical-performance-for-IMT-2020-radio-interface(s)."
+literal "false"
+
+\end_inset
+
+ITU, “Minimum requirements related to technical performance for IMT-2020
+ radio interface(s).” https://www.itu.int/md/R15-SG05-C-0040/.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "Non-Orthogonal-Multiple-Access:-Myths-and-Critical-Questions"
+literal "false"
+
+\end_inset
+
+Vaezi, M., Schober, R., Ding, Z., & Poor, H.
+ V.
+ (2018).
+ “Non-orthogonal multiple access: Common myths and critical questions”.
+ arXiv preprint arXiv:1809.07224.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "Non-Orthogonal-Multiple-Access-for-5G-Solutions-Challenges-Opportunities-and-Future-Research-Trends"
+literal "false"
+
+\end_inset
+
+L.
+ Dai, B.
+ Wang, Y.
+ Yuan, S.
+ Han, C.
+ I and Z.
+ Wang, "Non-orthogonal multiple access for 5G: solutions, challenges, opportunit
+ies, and future research trends," in IEEE Communications Magazine, vol.
+ 53, no.
+ 9, pp.
+ 74-81, September 2015.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "Impact-of-user-pairing-on-5G-non-orthogonal-multiple-access"
+literal "false"
+
+\end_inset
+
+Z.
+ Ding, P.
+ Fan, and H.
+ V.
+ Poor, “Impact of user pairing on 5G non-orthogonal multiple access,” IEEE
+ Trans.
+ Veh.
+ Technol.
+ , vol.
+ 65, no.
+ 8, pp.
+ 6010–6023, Aug 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "5"
+key "Non-Orthogonal Multiple Access for 5G and Beyond"
+literal "false"
+
+\end_inset
+
+Y.
+ Liu, Z.
+ Qin, M.
+ Elkashlan, Z.
+ Ding, A.
+ Nallanathan and L.
+ Hanzo, "Nonorthogonal Multiple Access for 5G and Beyond," in Proceedings
+ of the IEEE, vol.
+ 105, no.
+ 12, pp.
+ 2347-2381, Dec.
+ 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "A Tutorial on Nonorthogonal Multiple Access for 5G and Beyond"
+literal "false"
+
+\end_inset
+
+Aldababsa, M., Toka, M., Gökçeli, S., Kurt, G.
+ K., & Kucur, O.
+ (2018).
+ “A tutorial on nonorthogonal multiple access for 5G and beyond.” Wireless
+ Communications and Mobile Computing, 2018.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "7"
+key "Fairness for Non-Orthogonal Multiple Access in 5G Systems"
+literal "false"
+
+\end_inset
+
+S.
+ Timotheou and I.
+ Krikidis, "Fairness for Non-Orthogonal Multiple Access in 5G Systems,"
+ in IEEE Signal Processing Letters, vol.
+ 22, no.
+ 10, pp.
+ 1647-1651, Oct.
+ 2015.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "On the Performance of Non-Orthogonal Multiple Access in 5G Systems with Randomly Deployed Users"
+literal "false"
+
+\end_inset
+
+Z.
+ Ding, Z.
+ Yang, P.
+ Fan and H.
+ V.
+ Poor, "On the Performance of Non-Orthogonal Multiple Access in 5G Systems
+ with Randomly Deployed Users," in IEEE Signal Processing Letters, vol.
+ 21, no.
+ 12, pp.
+ 1501-1505, Dec.
+ 2014.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "9"
+key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions"
+literal "false"
+
+\end_inset
+
+Z.
+ Ding, P.
+ Fan and H.
+ V.
+ Poor, "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink
+ Transmissions," in IEEE Transactions on Vehicular Technology, vol.
+ 65, no.
+ 8, pp.
+ 6010-6023, Aug.
+ 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "10"
+key "Application of Non-Orthogonal Multiple Access in LTE and 5G Networks (368)-1"
+literal "false"
+
+\end_inset
+
+Z.
+ Ding et al., "Application of Non-Orthogonal Multiple Access in LTE and 5G
+ Networks," in IEEE Communications Magazine, vol.
+ 55, no.
+ 2, pp.
+ 185-191, February 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "11"
+key "Power-Domain Non-Orthogonal Multiple Access (NOMA) in 5G Systems"
+literal "false"
+
+\end_inset
+
+S.
+ M.
+ R.
+ Islam, N.
+ Avazov, O.
+ A.
+ Dobre and K.
+ Kwak, "Power-Domain Non-Orthogonal Multiple Access (NOMA) in 5G Systems:
+ Potentials and Challenges," in IEEE Communications Surveys & Tutorials,
+ vol.
+ 19, no.
+ 2, pp.
+ 721-742, Secondquarter 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "12"
+key "Non-Orthogonal Multiple Access (NOMA) in Cellular Uplink and Downlink: Challenges and Enabling Techniques-1"
+literal "false"
+
+\end_inset
+
+Tabassum, H., Ali, M.
+ S., Hossain, E., Hossain, M., & Kim, D.
+ I.
+ (2016).
+ “Non-orthogonal multiple access (NOMA) in cellular uplink and downlink:
+ Challenges and enabling techniques”.
+ arXiv preprint arXiv:1608.05783.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "13"
+key "Proportional Fairness-Based User Pairing and Power Allocation for Non-Orthogonal Multiple Access"
+literal "false"
+
+\end_inset
+
+F.
+ Liu, P.
+ Mähönen and M.
+ Petrova, "Proportional fairness-based user pairing and power allocation
+ for non-orthogonal multiple access," 2015 IEEE 26th Annual International
+ Symposium on Personal, Indoor, and Mobile Radio Communications (PIMRC),
+ Hong Kong, 2015, pp.
+ 1127-1131.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "14"
+key "On User Pairing in Uplink NOMA"
+literal "false"
+
+\end_inset
+
+M.
+ A.
+ Sedaghat and R.
+ R.
+ Müller, "On User Pairing in Uplink NOMA," in IEEE Transactions on Wireless
+ Communications, vol.
+ 17, no.
+ 5, pp.
+ 3474-3486, May 2018.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "15"
+key "User Pairing for Downlink Non-Orthogonal Multiple Access Networks Using Matching Algorithm"
+literal "false"
+
+\end_inset
+
+W.
+ Liang, Z.
+ Ding, Y.
+ Li and L.
+ Song, "User Pairing for Downlink Non-Orthogonal Multiple Access Networks
+ Using Matching Algorithm," in IEEE Transactions on Communications, vol.
+ 65, no.
+ 12, pp.
+ 5319-5332, Dec.
+ 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "16"
+key "Fairness of User Clustering in MIMO Non-Orthogonal Multiple Access Systems"
+literal "false"
+
+\end_inset
+
+Y.
+ Liu, M.
+ Elkashlan, Z.
+ Ding and G.
+ K.
+ Karagiannidis, "Fairness of User Clustering in MIMO Non-Orthogonal Multiple
+ Access Systems," in IEEE Communications Letters, vol.
+ 20, no.
+ 7, pp.
+ 1465-1468, July 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "17"
+key "Low-complexity user pairing and power allocation algorithm for 5G cellular network non-orthogonal multiple access"
+literal "false"
+
+\end_inset
+
+J.
+ He and Z.
+ Tang, "Low-complexity user pairing and power allocation algorithm for 5G
+ cellular network non-orthogonal multiple access," in Electronics Letters,
+ vol.
+ 53, no.
+ 9, pp.
+ 626-627, 27 4 2017.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "18"
+key "User Pairing and Pair Scheduling in Massive MIMO-NOMA Systems"
+literal "false"
+
+\end_inset
+
+X.
+ Chen, F.
+ Gong, G.
+ Li, H.
+ Zhang and P.
+ Song, "User Pairing and Pair Scheduling in Massive MIMO-NOMA Systems,"
+ in IEEE Communications Letters, vol.
+ 22, no.
+ 4, pp.
+ 788-791, April 2018.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "19"
+key "Resource Allocation for Downlink NOMA Systems Key Techniques and Open Issues"
+literal "false"
+
+\end_inset
+
+S.
+ M.
+ R.
+ Islam, M.
+ Zeng, O.
+ A.
+ Dobre and K.
+ Kwak, "Resource Allocation for Downlink NOMA Systems: Key Techniques and
+ Open Issues," in IEEE Wireless Communications, vol.
+ 25, no.
+ 2, pp.
+ 40-47, April 2018.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "20"
+key "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum of Unpaired Users in Non-orthogonal Multiple Access"
+literal "false"
+
+\end_inset
+
+M.
+ B.
+ Shahab, M.
+ F.
+ Kader and S.
+ Y.
+ Shin, "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum
+ of Unpaired Users in Non-orthogonal Multiple Access," in IEEE Signal Processing
+ Letters, vol.
+ 23, no.
+ 12, pp.
+ 1766-1770, Dec.
+ 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "21"
+key "Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems"
+literal "false"
+
+\end_inset
+
+M.
+ S.
+ Ali, H.
+ Tabassum and E.
+ Hossain, "Dynamic User Clustering and Power Allocation for Uplink and Downlink
+ Non-Orthogonal Multiple Access (NOMA) Systems," in IEEE Access, vol.
+ 4, pp.
+ 6325-6343, 2016.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "22"
+key "Energy-Efficient Power Allocation for MIMO-NOMA With Multiple Users in a Cluster"
+literal "false"
+
+\end_inset
+
+M.
+ Zeng, A.
+ Yadav, O.
+ A.
+ Dobre and H.
+ V.
+ Poor, "Energy-Efficient Power Allocation for MIMO-NOMA With Multiple Users
+ in a Cluster," in IEEE Access, vol.
+ 6, pp.
+ 5170-5181, 2018.
+\end_layout
+
+\end_body
+\end_document
