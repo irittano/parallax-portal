@@ -140,6 +140,14 @@ integró todo.
 
 - Skybox: Ivar Leidus [CC BY-SA 3.0 ee (https://creativecommons.org/licenses/by-sa/3.0/ee/deed.en)] https://commons.wikimedia.org/wiki/File:Suurupi_alumine_tuletorn_panoraam.jpg
 
+- Texturas CC0 de https://opengameart.org/
+
+- Texturas de Darkwood67 https://www.deviantart.com/darkwood67/gallery/11280947
+
+- Puerta: https://commons.wikimedia.org/wiki/File:Holmstadengen_en_rimfrostdag_i_november_04.jpg
+
+- Cuadro: Sailko [CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)]
+
 ## Detalles
 
 - Ayuda mucho poner una caja para continuar el efecto fuera de la pantalla
@@ -178,8 +186,6 @@ integró todo.
 - Hacer que la posicion de la camara cuando pierda detección siga moviendose
   hacia donde iba y lentamente se vaya centrando
 
-- Agregar predicciones en Kalman
-
 - Ver si estamos usando el XML del haarcascade correcto
 
 - Documentar de que es importante que haya luz de frente, también que en
@@ -187,6 +193,11 @@ integró todo.
 
 - Si va al museo, poner un mensaje que diga algo de "No hay caras detectadas,
   acercarse para ver el efecto, una persona a la vez"
+
+- Hacer configurable en prm la ubicación de la camara respecto al centro de la
+  pantalla. Cambiar nombre del prm
+
+- Al terminar parallax borrar codigo C++
 
 - Documentar que instalar GLM y OpenGL no es tan facil
 
