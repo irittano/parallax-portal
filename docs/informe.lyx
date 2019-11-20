@@ -313,8 +313,7 @@ literal "false"
 
 \end_inset
 
-.
- se logró crear una experiencia más inmersiva.
+ se logró crear una experiencia más inmersiva en tres dimensiones.
 \end_layout
 
 \begin_layout Standard
@@ -325,6 +324,17 @@ Una aplicación posible de este proyecto es su colocación en una exposición
  Como desventaja el efecto solo funciona para sólo una persona a la vez,
  pero de todos modos las personas que se encuentren cerca pueden también
  observar la información mostrada en pantalla.
+\end_layout
+
+\begin_layout Standard
+El código fuente del proyecto se encuentra disponible online en 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/IgnaciooR/parallax-portal"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -407,8 +417,11 @@ literal "false"
 \end_inset
 
 , trabaja con las variables que se corresponden con la posición de la cara
- en el espacio tridimensional (X, Y, Z) y también con las velocidades en
- los respectivos ejes.
+ en el espacio tridimensional 
+\begin_inset Formula $(X,Y,Z)$
+\end_inset
+
+ y también con las velocidades en los respectivos ejes.
  A partir de conocer las detecciones pasadas el filtro es capaz de predecir
  el siguiente estado y al mismo tiempo disminuir el ruido producido en la
  detección de cara.
@@ -453,11 +466,17 @@ Una característica importante del programa es que se utilizaron dos hilos
 \begin_layout Standard
 Por lo tanto al utilizar dos threads es posible desacoplar estos dos bucles
  para permitirles funcionar a su tasa máxima de refresco.
- Como se muestra en la figura ?, el thread de detección almacena la posición
- de la última cara detectada mientras que el thread principal leerá esa
- posición cuando lo necesite, si la detección es más rápida que el dibujado
- habrán estimaciones de la posición de la cabeza que no se utilizarán para
- el filtrado o visualización.
+ Como se muestra en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:threads"
+
+\end_inset
+
+, el thread de detección almacena la posición de la última cara detectada
+ mientras que el thread principal leerá esa posición cuando lo necesite,
+ si la detección es más rápida que el dibujado habrán estimaciones de la
+ posición de la cabeza que no se utilizarán para el filtrado o visualización.
  El caso más común es que la tasa de refresco de la pantalla sea mayor que
  la tasa de detección, por lo tanto si el thread principal determina que
  no hay una nueva ubicación de cabeza disponible, simplemente estimará la
@@ -474,7 +493,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename flujo.png
+	filename threads.png
 	lyxscale 10
 	width 95line%
 
@@ -509,8 +528,8 @@ Flujo de ejecución del programa
 \begin_layout Standard
 El programa necesita una gran cantidad de constantes y parámetros que deben
  ser ajustados manualmente para la puesta a punto y calibración, ya sea
- para la detección de caras, filtro de Kalman, o dimensiones físicas de
- la pantalla.
+ para corregir la detección de caras, filtro con Kalman, o dimensiones físicas
+ de la pantalla.
  Encontramos muy útil crear de forma temprana una estructura que almacene
  todos estos parámetros y que permita su modificación de manera sencilla
  durante la ejecución del programa.
@@ -557,10 +576,16 @@ Un problema de este método es que no permite realizar escenas con objetos
 \end_layout
 
 \begin_layout Standard
-En la figura ? se muestra la escena creada a modo de ejemplo, consiste de
- un fondo a una gran profundidad y de figuras de personas a diversas profundidad
-es.
- La temática es mostrar los próceres que participaron en la Primera Junta
+En la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:escena-2d"
+
+\end_inset
+
+ se muestra la escena creada a modo de ejemplo, consiste de un fondo a una
+ gran profundidad y de figuras de personas a diversas profundidades.
+ La temática es enumerar las personas que participaron en la Primera Junta
  de 1810 ubicados en el patio de la Casa de Tucumán, al mover la cabeza
  es posible seleccionar un prócer para visualizar más información sobre
  éste.
@@ -626,7 +651,14 @@ Como librería de dibujado utilizamos OpenGL y GLM, el cual permite el renderiza
 o de escenas tridimensionales utilizando aceleración por hardware de video.
  Buscamos representar el interior de una casa colonial, al mismo tiempo
  que se muestran cartas con diversas estampillas o sellos postales históricos.
- En la figura ? se pueden observar capturas de pantalla.
+ En la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:escena-3d"
+
+\end_inset
+
+ se pueden observar capturas de pantalla.
 \end_layout
 
 \begin_layout Standard
@@ -684,23 +716,53 @@ Darkwood67
 \begin_layout Standard
 OpenGL es principalmente utilizado para el desarrollo de videojuegos, en
  la gran mayoría de los casos se utiliza una visualización de perspectiva
- con la función glm::perspective(), pero en nuestro caso es necesario utilizar
- una matriz de proyección creada con glm::frustum().
+ con la función 
+\emph on
+glm::perspective()
+\emph default
+, pero en nuestro caso es necesario utilizar una matriz de proyección creada
+ con 
+\emph on
+glm::frustum()
+\emph default
+.
  La diferencia es que la visualización en perspectiva es simétrica hacia
  arriba y hacia los lados y es creada a partir de un cierto ángulo de campo
  de visión, mientras que en esta experiencia necesitamos una matriz de proyecció
-n asimétrica.
+n asimétrica con ciertos parámetros.
 \end_layout
 
 \begin_layout Standard
-Esto es porque al jugar videojuegos el usuario siempre se ubica de frente
- hacia la pantalla, pero en nuestro trabajo el usuario se mueve y observa
- al monitor desde diferentes ángulos, esto produce que la imagen se deforme
- y sea aparente que la imagen se ubica en el plano de la pantalla.
+Esto es necesario porque al jugar videojuegos el usuario siempre se ubica
+ de frente hacia la pantalla, pero en nuestro trabajo el usuario se mueve
+ y observa al monitor desde diferentes ángulos, esto produce que la imagen
+ se deforme y sea aparente que la imagen se ubica en el plano de la pantalla.
  Al usar una proyección asimétrica es posible compensar esta deformación
- de la imagen, una ilustración del fenómeno se muestra en la Figura ?.
- Nuestra implementación es una traducción a Python del trabajo de [2], el
- cuál está basado en [1]
+ de la imagen, una ilustración del fenómeno se muestra en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:frustum"
+
+\end_inset
+
+.
+ Nuestra implementación es una traducción a Python del trabajo de 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "screenreality"
+literal "false"
+
+\end_inset
+
+, el cuál está basado en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "paper-de-frustum"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -733,21 +795,14 @@ name "fig:frustum"
 \end_inset
 
 Visualización de las diferencias entre proyección simétrica con 
-\begin_inset Quotes fld
-\end_inset
-
+\emph on
 glm::perspective()
-\begin_inset Quotes frd
-\end_inset
-
- (izquierda) y proyección asimétrica con 
-\begin_inset Quotes fld
-\end_inset
-
+\emph default
+ (izquierda) y proyección asimétrica que compensa el ángulo de visión con
+ 
+\emph on
 glm::frustum()
-\begin_inset Quotes frd
-\end_inset
-
+\emph default
  (derecha).
 \end_layout
 
@@ -769,15 +824,18 @@ Respecto a la programación de las animaciones de la escena, las estampillas
 \end_layout
 
 \begin_layout Standard
-X(t) = t^5
-\end_layout
+\begin_inset Formula 
+\[
+\begin{cases}
+X(t)= & t^{5}\\
+Y(t)= & 0.2*cos(pi*t/2)\\
+Z(t)= & 0.4*cos(pi*t/2)
+\end{cases}
+\]
 
-\begin_layout Standard
-Y(t) = 0.2 * cos(pi * t / 2)
-\end_layout
+\end_inset
 
-\begin_layout Standard
-Z(t) = 0.4 * cos(pi * t / 2)
+
 \end_layout
 
 \begin_layout Standard
@@ -809,8 +867,15 @@ name "fig:curva"
 
 \end_inset
 
-Visualización con [5] de curva paramétrica de la trayectoria de las estampillas
- en la habitación
+Visualización con 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "curva"
+literal "false"
+
+\end_inset
+
+ de curva paramétrica de la trayectoria de las estampillas en la habitación
 \end_layout
 
 \end_inset
@@ -829,8 +894,15 @@ Para lograr un efecto de realidad aumentada convincente es útil colocar
  la pantalla del espacio tridimensional virtual, es importante al realizar
  el diseño la utilización de líneas rectas para demostrar de forma clara
  que la perspectiva se mantiene fuera y dentro de la pantalla.
- Nuestro prototipo se muestra en la imagen ?, observar que de manera intencional
- las paredes contienen líneas rectas y que el piso es de baldosas cuadradas.
+ Nuestro prototipo se muestra en la Imagen 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:caja"
+
+\end_inset
+
+, observar que de manera intencional las paredes contienen líneas rectas
+ y que el piso es de baldosas cuadradas.
 \end_layout
 
 \begin_layout Standard
@@ -843,7 +915,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename curva_parametrica.png
+	filename caja.png
 	lyxscale 10
 	width 95line%
 
@@ -862,7 +934,10 @@ name "fig:caja"
 
 \end_inset
 
-
+Maqueta usada fuera de la pantalla para generar una continuidad del efecto
+ de realidad aumentada.
+ Observar que se está utilizando la cámara de una laptop para realizar la
+ detección de la posición de la cabeza del usuario.
 \end_layout
 
 \end_inset
@@ -936,413 +1011,28 @@ R.
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "3"
-key "Non-Orthogonal-Multiple-Access-for-5G-Solutions-Challenges-Opportunities-and-Future-Research-Trends"
+key "screenreality"
 literal "false"
 
 \end_inset
 
-L.
- Dai, B.
- Wang, Y.
- Yuan, S.
- Han, C.
- I and Z.
- Wang, "Non-orthogonal multiple access for 5G: solutions, challenges, opportunit
-ies, and future research trends," in IEEE Communications Magazine, vol.
- 53, no.
- 9, pp.
- 74-81, September 2015.
+A.
+ Girault, “ScreenReality”.
+ https://github.com/agirault/screenReality
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "4"
-key "Impact-of-user-pairing-on-5G-non-orthogonal-multiple-access"
+key "curva"
 literal "false"
 
 \end_inset
 
-Z.
- Ding, P.
- Fan, and H.
- V.
- Poor, “Impact of user pairing on 5G non-orthogonal multiple access,” IEEE
- Trans.
- Veh.
- Technol.
- , vol.
- 65, no.
- 8, pp.
- 6010–6023, Aug 2016.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "5"
-key "Non-Orthogonal Multiple Access for 5G and Beyond"
-literal "false"
-
-\end_inset
-
-Y.
- Liu, Z.
- Qin, M.
- Elkashlan, Z.
- Ding, A.
- Nallanathan and L.
- Hanzo, "Nonorthogonal Multiple Access for 5G and Beyond," in Proceedings
- of the IEEE, vol.
- 105, no.
- 12, pp.
- 2347-2381, Dec.
- 2017.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "6"
-key "A Tutorial on Nonorthogonal Multiple Access for 5G and Beyond"
-literal "false"
-
-\end_inset
-
-Aldababsa, M., Toka, M., Gökçeli, S., Kurt, G.
- K., & Kucur, O.
- (2018).
- “A tutorial on nonorthogonal multiple access for 5G and beyond.” Wireless
- Communications and Mobile Computing, 2018.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "7"
-key "Fairness for Non-Orthogonal Multiple Access in 5G Systems"
-literal "false"
-
-\end_inset
-
-S.
- Timotheou and I.
- Krikidis, "Fairness for Non-Orthogonal Multiple Access in 5G Systems,"
- in IEEE Signal Processing Letters, vol.
- 22, no.
- 10, pp.
- 1647-1651, Oct.
- 2015.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "8"
-key "On the Performance of Non-Orthogonal Multiple Access in 5G Systems with Randomly Deployed Users"
-literal "false"
-
-\end_inset
-
-Z.
- Ding, Z.
- Yang, P.
- Fan and H.
- V.
- Poor, "On the Performance of Non-Orthogonal Multiple Access in 5G Systems
- with Randomly Deployed Users," in IEEE Signal Processing Letters, vol.
- 21, no.
- 12, pp.
- 1501-1505, Dec.
- 2014.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "9"
-key "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink Transmissions"
-literal "false"
-
-\end_inset
-
-Z.
- Ding, P.
- Fan and H.
- V.
- Poor, "Impact of User Pairing on 5G Nonorthogonal Multiple-Access Downlink
- Transmissions," in IEEE Transactions on Vehicular Technology, vol.
- 65, no.
- 8, pp.
- 6010-6023, Aug.
- 2016.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "10"
-key "Application of Non-Orthogonal Multiple Access in LTE and 5G Networks (368)-1"
-literal "false"
-
-\end_inset
-
-Z.
- Ding et al., "Application of Non-Orthogonal Multiple Access in LTE and 5G
- Networks," in IEEE Communications Magazine, vol.
- 55, no.
- 2, pp.
- 185-191, February 2017.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "11"
-key "Power-Domain Non-Orthogonal Multiple Access (NOMA) in 5G Systems"
-literal "false"
-
-\end_inset
-
-S.
- M.
- R.
- Islam, N.
- Avazov, O.
- A.
- Dobre and K.
- Kwak, "Power-Domain Non-Orthogonal Multiple Access (NOMA) in 5G Systems:
- Potentials and Challenges," in IEEE Communications Surveys & Tutorials,
- vol.
- 19, no.
- 2, pp.
- 721-742, Secondquarter 2017.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "12"
-key "Non-Orthogonal Multiple Access (NOMA) in Cellular Uplink and Downlink: Challenges and Enabling Techniques-1"
-literal "false"
-
-\end_inset
-
-Tabassum, H., Ali, M.
- S., Hossain, E., Hossain, M., & Kim, D.
- I.
- (2016).
- “Non-orthogonal multiple access (NOMA) in cellular uplink and downlink:
- Challenges and enabling techniques”.
- arXiv preprint arXiv:1608.05783.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "13"
-key "Proportional Fairness-Based User Pairing and Power Allocation for Non-Orthogonal Multiple Access"
-literal "false"
-
-\end_inset
-
-F.
- Liu, P.
- Mähönen and M.
- Petrova, "Proportional fairness-based user pairing and power allocation
- for non-orthogonal multiple access," 2015 IEEE 26th Annual International
- Symposium on Personal, Indoor, and Mobile Radio Communications (PIMRC),
- Hong Kong, 2015, pp.
- 1127-1131.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "14"
-key "On User Pairing in Uplink NOMA"
-literal "false"
-
-\end_inset
-
-M.
- A.
- Sedaghat and R.
- R.
- Müller, "On User Pairing in Uplink NOMA," in IEEE Transactions on Wireless
- Communications, vol.
- 17, no.
- 5, pp.
- 3474-3486, May 2018.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "15"
-key "User Pairing for Downlink Non-Orthogonal Multiple Access Networks Using Matching Algorithm"
-literal "false"
-
-\end_inset
-
-W.
- Liang, Z.
- Ding, Y.
- Li and L.
- Song, "User Pairing for Downlink Non-Orthogonal Multiple Access Networks
- Using Matching Algorithm," in IEEE Transactions on Communications, vol.
- 65, no.
- 12, pp.
- 5319-5332, Dec.
- 2017.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "16"
-key "Fairness of User Clustering in MIMO Non-Orthogonal Multiple Access Systems"
-literal "false"
-
-\end_inset
-
-Y.
- Liu, M.
- Elkashlan, Z.
- Ding and G.
- K.
- Karagiannidis, "Fairness of User Clustering in MIMO Non-Orthogonal Multiple
- Access Systems," in IEEE Communications Letters, vol.
- 20, no.
- 7, pp.
- 1465-1468, July 2016.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "17"
-key "Low-complexity user pairing and power allocation algorithm for 5G cellular network non-orthogonal multiple access"
-literal "false"
-
-\end_inset
-
-J.
- He and Z.
- Tang, "Low-complexity user pairing and power allocation algorithm for 5G
- cellular network non-orthogonal multiple access," in Electronics Letters,
- vol.
- 53, no.
- 9, pp.
- 626-627, 27 4 2017.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "18"
-key "User Pairing and Pair Scheduling in Massive MIMO-NOMA Systems"
-literal "false"
-
-\end_inset
-
-X.
- Chen, F.
- Gong, G.
- Li, H.
- Zhang and P.
- Song, "User Pairing and Pair Scheduling in Massive MIMO-NOMA Systems,"
- in IEEE Communications Letters, vol.
- 22, no.
- 4, pp.
- 788-791, April 2018.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "19"
-key "Resource Allocation for Downlink NOMA Systems Key Techniques and Open Issues"
-literal "false"
-
-\end_inset
-
-S.
- M.
- R.
- Islam, M.
- Zeng, O.
- A.
- Dobre and K.
- Kwak, "Resource Allocation for Downlink NOMA Systems: Key Techniques and
- Open Issues," in IEEE Wireless Communications, vol.
- 25, no.
- 2, pp.
- 40-47, April 2018.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "20"
-key "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum of Unpaired Users in Non-orthogonal Multiple Access"
-literal "false"
-
-\end_inset
-
-M.
- B.
- Shahab, M.
- F.
- Kader and S.
- Y.
- Shin, "A Virtual User Pairing Scheme to Optimally Utilize the Spectrum
- of Unpaired Users in Non-orthogonal Multiple Access," in IEEE Signal Processing
- Letters, vol.
- 23, no.
- 12, pp.
- 1766-1770, Dec.
- 2016.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "21"
-key "Dynamic User Clustering and Power Allocation for Uplink and Downlink Non-Orthogonal Multiple Access (NOMA) Systems"
-literal "false"
-
-\end_inset
-
-M.
- S.
- Ali, H.
- Tabassum and E.
- Hossain, "Dynamic User Clustering and Power Allocation for Uplink and Downlink
- Non-Orthogonal Multiple Access (NOMA) Systems," in IEEE Access, vol.
- 4, pp.
- 6325-6343, 2016.
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "22"
-key "Energy-Efficient Power Allocation for MIMO-NOMA With Multiple Users in a Cluster"
-literal "false"
-
-\end_inset
-
-M.
- Zeng, A.
- Yadav, O.
- A.
- Dobre and H.
- V.
- Poor, "Energy-Efficient Power Allocation for MIMO-NOMA With Multiple Users
- in a Cluster," in IEEE Access, vol.
- 6, pp.
- 5170-5181, 2018.
+C.
+ Chudzicki, “3D Parametric Curve Grapher”.
+ https://christopherchudzicki.github.io/MathBox-Demos/parametric_curves_3D.html
 \end_layout
 
 \end_body
