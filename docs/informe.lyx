@@ -345,8 +345,8 @@ Detección de rostros
 Para detectar la ubicación de la cara del usuario utilizamos el algoritmo
  Haar cascade implementado por OpenCV.
  Este algoritmo puede ser entrenado para la detección de cualquier tipo
- de objetos, para nuestro caso utilizamos un clasificador entrenado para
- la detección de caras.
+ de objetos, y para nuestro caso en particular, utilizamos un clasificador
+ entrenado para la detección de caras.
 \end_layout
 
 \begin_layout Standard
@@ -408,7 +408,7 @@ El filtro de Kalman es un filtro digital recursivo que se puede utilizar
 \end_layout
 
 \begin_layout Standard
-En nuestro caso el filtro de Kalman se basó en 
+En nuestro caso el filtro de Kalman basado en 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "filtro_kalman"
@@ -422,7 +422,7 @@ literal "false"
 \end_inset
 
  y también con las velocidades en los respectivos ejes.
- A partir de conocer las detecciones pasadas el filtro es capaz de predecir
+ A partir de conocer las detecciones pasadas, el filtro es capaz de predecir
  el siguiente estado y al mismo tiempo disminuir el ruido producido en la
  detección de cara.
 \end_layout
@@ -714,8 +714,8 @@ Darkwood67
 \end_layout
 
 \begin_layout Standard
-OpenGL es principalmente utilizado para el desarrollo de videojuegos, en
- la gran mayoría de los casos se utiliza una visualización de perspectiva
+OpenGL es principalmente utilizado para el desarrollo de videojuegos.
+ En la gran mayoría de los casos se utiliza una visualización de perspectiva
  con la función 
 \emph on
 glm::perspective()
@@ -730,13 +730,11 @@ glm::frustum()
  arriba y hacia los lados y es creada a partir de un cierto ángulo de campo
  de visión, mientras que en esta experiencia necesitamos una matriz de proyecció
 n asimétrica con ciertos parámetros.
-\end_layout
-
-\begin_layout Standard
-Esto es necesario porque al jugar videojuegos el usuario siempre se ubica
- de frente hacia la pantalla, pero en nuestro trabajo el usuario se mueve
- y observa al monitor desde diferentes ángulos, esto produce que la imagen
- se deforme y sea aparente que la imagen se ubica en el plano de la pantalla.
+ Esto se debe a que al jugar videojuegos el usuario siempre se ubica de
+ frente hacia la pantalla, pero en nuestro trabajo el usuario se mueve y
+ observa al monitor desde diferentes ángulos.
+ Esto produce que la imagen se deforme y sea aparente que la imagen se ubica
+ en el plano de la pantalla.
  Al usar una proyección asimétrica es posible compensar esta deformación
  de la imagen, una ilustración del fenómeno se muestra en la Figura 
 \begin_inset CommandInset ref
