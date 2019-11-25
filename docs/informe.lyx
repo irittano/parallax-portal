@@ -382,10 +382,7 @@ Todo este procedimiento se realiza de manera independiente para cada cuadro
  veces por segundo y se necesita mucho procesamiento.
  Para reducir este costo computacional, ideamos unas optimizaciones que
  nos permitieron lograr la detección en tiempo real.
-\end_layout
-
-\begin_layout Standard
-Si en el cuadro de video anterior se detectó una cara, el próximo cuadro
+ Si en el cuadro de video anterior se detectó una cara, el próximo cuadro
  no será analizado de forma completa, se realiza un recorte de la imagen
  en la ubicación de la cara anterior con un 20% de margen.
  De esta forma una vez localizada la cara de la persona, las siguientes
@@ -445,7 +442,7 @@ Arquitectura del código
 \begin_layout Standard
 Este proyecto fue desarrollado en el lenguaje de programación Python, el
  código está compuesto por diversos archivos que fueron desarrollados de
- manera independiente por los distintos integrantes del grupo.
+ manera independiente para cumplir con distintos fines.
  Cada archivo además de contener funciones indispensables para el funcionamiento
  completo de la experiencia, contiene una pequeña demostración para comprobar
  el correcto funcionamiento de cada parte del programa.
@@ -731,12 +728,13 @@ glm::frustum()
  de visión, mientras que en esta experiencia necesitamos una matriz de proyecció
 n asimétrica con ciertos parámetros.
  Esto se debe a que al jugar videojuegos el usuario siempre se ubica de
- frente hacia la pantalla, pero en nuestro trabajo el usuario se mueve y
- observa al monitor desde diferentes ángulos.
- Esto produce que la imagen se deforme y sea aparente que la imagen se ubica
- en el plano de la pantalla.
+ frente a la pantalla, pero en nuestro trabajo el usuario se mueve y observa
+ al monitor desde diferentes ángulos.
+ Esto produce que la imagen se deforme y aparenta que está ubicada en el
+ plano de la pantalla.
  Al usar una proyección asimétrica es posible compensar esta deformación
- de la imagen, una ilustración del fenómeno se muestra en la Figura 
+ de la imagen.
+ La diferencia entre estos efectos se muestra en la Figura 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:frustum"
@@ -817,8 +815,14 @@ glm::frustum()
 \begin_layout Standard
 Respecto a la programación de las animaciones de la escena, las estampillas
  o sellos postales mostrados vuelan por la habitación siguiendo una trayectoria
- descripta por una curva paramétrica mostrada en la figura ?, cuyas ecuaciones
- son:
+ descripta por una curva paramétrica mostrada en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:curva"
+
+\end_inset
+
+, cuyas ecuaciones son:
 \end_layout
 
 \begin_layout Standard
