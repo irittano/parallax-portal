@@ -1,13 +1,16 @@
 # parallax-portal
 
-![Escena 2D](./docs/scene_2d.png)
+![Escena 2D](./docs/scene_2d.gif)
 
-![Escena 3D](./docs/caja.png)
+![Escena 3D](./docs/scene_3d.gif)
 
 ## Description on English
 
 Augmented reality demo. Determines the position of your head using your webcam
 and shows images giving the illusion of a 3D space behind your screen.
+
+The GIFs above show a small offset because the program is tracking my face
+instead of the camera.
 
 Code written in English with comments and documentation on Spanish.
 
@@ -42,6 +45,9 @@ pipenv shell
 Demostración de realidad aumentada. Determina la ubicación de tu cabeza usando
 tu webcam y muestra imágenes dando la ilusión de que hay un espacio
 tridimensional dentro de la pantalla.
+
+Los GIFs de arriba muestran la experiencia con una pequeña desviación debido a
+que el programa hace el seguimiento de mi cara en lugar de la cámara.
 
 Código escrito en Inglés con comentarios y documentación en Español.
 
